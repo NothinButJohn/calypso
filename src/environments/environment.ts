@@ -3,7 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebaseConfig: {
+    apiKey: "AIzaSyAIK5yUsj3eHjBr_k7uXpYFus73Rx6OoHg",
+    authDomain: "buddha-sasana.firebaseapp.com",
+    databaseURL: "https://buddha-sasana.firebaseio.com",
+    projectId: "buddha-sasana",
+    storageBucket: "buddha-sasana.appspot.com",
+    messagingSenderId: "173347213096",
+    appId: "1:173347213096:web:f7a34822d621fe9b798a1d",
+    measurementId: "G-MBX23Q2MZ3"
+  }
 };
 
 /*

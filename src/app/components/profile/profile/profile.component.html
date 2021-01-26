@@ -1,0 +1,19 @@
+
+<div class="header">
+
+</div>
+
+
+
+
+<div class="information">
+    <div *ngIf="users$ | async; let users">
+        <div *ngFor="let user of users">
+            <img class="profile__picture" src="{{user.profile.userImage}}">
+            {{user.profile.name}}
+        </div>
+    </div>
+    
+</div>
+
+<div class="column"></div>

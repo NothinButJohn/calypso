@@ -28,6 +28,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/purple-green.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -92,6 +93,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/purple-green.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -123,6 +125,11 @@
           }
         }
       }
-    }},
-  "defaultProject": "calypso"
+    }
+  },
+  "defaultProject": "calypso",
+  "cli": {
+    "analytics": "d3b80471-846b-4b1f-b23e-99865a4dfde7",
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
