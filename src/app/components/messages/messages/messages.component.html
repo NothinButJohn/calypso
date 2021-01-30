@@ -1,1 +1,6 @@
 <button>Send a new message</button>
+<ng-container *ngIf="chats$ | async as chats">
+    <div *ngFor="let chat of chats" (click)="chatSelected(chat)">
+        {{chat?.title}}
+    </div>
+</ng-container>
