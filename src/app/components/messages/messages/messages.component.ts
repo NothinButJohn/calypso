@@ -61,6 +61,7 @@ export class MessagesComponent implements OnInit {
     }
     console.log(msg)
     this.msg.sendMessage(this.selectedChat.id, msg)
+    this.chatForm.reset();
   }
 
 

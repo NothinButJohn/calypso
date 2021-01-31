@@ -22,14 +22,14 @@
     <div class="chatRoom" *ngIf="chatHistory$ | async as chatHistory">
         
             <div *ngFor="let message of chatHistory">
-                <div [ngClass]="message.sender === currUsername ? 'sent' : 'received'"><p>{{message.text}}</p></div>
+                <div [ngClass]="message.sender === currUsername ? 'message sent' : 'message received'"><p>{{message.text}}</p></div>
             </div>
         
 
         <div class="controls">
             <form [formGroup]="chatForm" (ngSubmit)="sendMessage()">
-                <input matInput class="form-control" formControlName="text">
-                <button mat-raised-button color="accent" type="submit">Send</button>
+                <input matInput class="form-control chat__input" formControlName="text">
+                <button mat-raised-button class="send__button" color="accent" type="submit">Send</button>
             </form>
         </div>
     </div>
