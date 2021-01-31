@@ -1,20 +1,38 @@
-.header {
-    background-color: #303030;
-    height: 25%;
-    padding: 10px;
+.profile__container{
+    display: grid;
 }
 
-.information {
-    background-color: #303030;
-    height: 25%;
-    padding: 10px;
-
+.profile__header{
+    position: relative;
+    flex-direction: column;
+    top: auto;
+    display: grid;
 
 }
 
-.column {
-    background-color: #303030;
-    float: left;
-    width: 33.33%;
-    
+.profile__header__img{
+    height: 200px;
+    width: auto;
+}
+
+.profile__bio{
+    display: grid;
+    position: relative;
+}
+
+.profile__pic{
+    display: grid;
+    position: absolute;
+    flex-direction: column;
+}
+
+.profile__pic__img{
+    width: 25%;
+    height: auto;
+    border-radius: 9999px;
+    border: 1px;
+}
+
+.profile__edit__button{
+    right: auto;
 }
