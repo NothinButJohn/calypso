@@ -1,6 +1,27 @@
 <button>Send a new message</button>
-<ng-container *ngIf="chats$ | async as chats">
+<!-- <ng-container *ngIf="chats$ | async as chats">
     <div *ngFor="let chat of chats" (click)="chatSelected(chat)">
-        {{chat?.title}}
+        <mat-card-title>
+            {{chat?.title}}
+        </mat-card-title>
     </div>
-</ng-container>
+</ng-container> -->
+<div class="flex-container">
+    <div class="messages">
+        <ng-container *ngIf="query | async as chats">
+            <div *ngFor="let chat of chats" (click)="chatSelected(chat)">
+                <mat-card>
+                    <mat-card-title>
+                        {{chat.data()?.title}}
+                    </mat-card-title>
+                </mat-card>
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="chatRoom" *ngIf="chatHistory$ | async as chatHistory">
+        <div *ngFor="let message of chatHistory">
+            <div [ngClass]="message.sender === currUsername ? 'sent' : 'received'"><p>{{message.text}}</p></div>
+        </div>
+    </div>
+</div>

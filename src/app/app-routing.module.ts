@@ -9,12 +9,13 @@ import { map } from 'rxjs/operators';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import { MessagesComponent } from './components/messages/messages/messages.component';
+import { MaterialDashComponent } from './components/dashboard/material-dash/material-dash.component';
 
 const userDashboard = () => map;
 
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full' , component: MaterialNavComponent },
+  { path: '', pathMatch: 'full' , component: MaterialDashComponent },
   { path: 'user/:username', component: ProfileComponent },
   { path: 'messages', component: MessagesComponent }
 ];

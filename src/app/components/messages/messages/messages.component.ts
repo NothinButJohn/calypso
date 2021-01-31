@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot, QuerySnapshot } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { FireAuthService } from 'src/app/services/fire-auth.service';
 import { MessagingService } from 'src/app/services/messaging.service';
 
@@ -18,23 +18,31 @@ export interface Message{
   styleUrls: ['./messages.component.scss']
 })
 export class MessagesComponent implements OnInit {
-  public chats$: Observable<any[]>
+  public chats$: Observable<unknown>
+  public chatHistory$: Observable<any[]>
+  public query;
+  public currUsername;
+
   constructor(
     private msg: MessagingService,
+    private fa: FireAuthService
    ) 
     {
 
     }
 
   ngOnInit(): void {
-    this.chats$ = this.msg.getChats();
-    this.chats$.pipe(
-      tap(x => console.log(x))
+    this.query = this.msg.getChats();
+    this.currUsername = this.fa.authUserDoc.get().pipe(
+      map(d => {
+        this.currUsername = d.data().profile.username
+      })
     )
   }
 
-  chatSelected(chat) {
+  chatSelected(chat: QueryDocumentSnapshot<unknown>) {
     console.log(chat)
+    this.chatHistory$ = this.msg.getMessageHistory(chat.id)
   }
 
 

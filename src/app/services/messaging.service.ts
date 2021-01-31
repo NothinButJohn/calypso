@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, DocumentData, QueryFn } from '@angular/fire/firestore';
+import { AngularFirestore, DocumentData, QueryFn, QuerySnapshot } from '@angular/fire/firestore';
 import { FireAuthService } from './fire-auth.service';
 
 import { Message } from '../components/messages/messages/messages.component'
@@ -27,7 +27,7 @@ export class MessagingService {
       this.fa.authUserDoc.get().subscribe(x=>console.log(x.data()))
     }
 
-    getChats():Observable<any[]> {
+    getChats() {
       return this.fa.authUserDoc.get().pipe(
         map(x => {
           return x.data().profile.username
@@ -36,9 +36,13 @@ export class MessagingService {
           let query: QueryFn = ref => ref.where('members', "array-contains", username)
           return this.afs.collection('messages', query).get()
         }),
-        map(r => r.docs.map(d => d.data())),
-        tap(x =>console.log(x))
+        map(r => {return r.docs})
+        // tap(x =>console.log(x))
       )
+    }
+
+    getMessageHistory(docID: string){
+      return this.afs.collection(`messages/${docID}/messageHistory`, ref => ref.orderBy('createdAt')).valueChanges()
     }
 
 
