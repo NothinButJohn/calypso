@@ -45,5 +45,9 @@ export class MessagingService {
       return this.afs.collection(`messages/${docID}/messageHistory`, ref => ref.orderBy('createdAt')).valueChanges()
     }
 
+    sendMessage(docID: string, message: Message){
+      this.afs.collection(`messages/${docID}/messageHistory`).add(message)
+    }
+
 
 }

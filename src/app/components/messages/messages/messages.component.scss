@@ -5,6 +5,14 @@
 
 .chatRoom {
     display: flex;
+
+    padding: 10px;
+    height: 80vh;
+    margin: 1vh 0 1vh;
+    overflow-y: scroll;
+    flex-direction: column;
+    flex-grow: 2;
+
 }
 
 .flex-container {
@@ -15,12 +23,39 @@
     flex-direction: row-reverse;
   }
   
-  .sent p {
+p {
+    max-width: 500px;
+    margin-bottom: 12px;
+    line-height: 24px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    position: relative;
+    color: white;
+    text-align: center;
+    display: flex;
+}
+.sent {
+    flex-direction: row-reverse;
+}
+.sent p {
     color: white;
     background: #0b93f6;
     align-self: flex-end;
   }
-  .received p {
+.received p {
     background: #e5e5ea;
     color: black;
+}
+
+
+
+  .controls{
+    height: 10vh;
+    position: fixed;
+    bottom: 0;
+    background-color: rgb(24, 23, 23);
+    width: 100%;
+    max-width: 728px;
+    display: flex;
+    font-size: 1.5rem;
   }

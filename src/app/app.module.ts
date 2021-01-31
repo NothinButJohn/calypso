@@ -26,7 +26,8 @@ import { reducers, metaReducers } from './reducers/index'
 import { EffectsModule } from '@ngrx/effects';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { MessagesComponent } from './components/messages/messages/messages.component';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
 
 
 
@@ -58,6 +59,10 @@ import { MessagesComponent } from './components/messages/messages/messages.compo
     MatMenuModule,
     StoreModule,
     EffectsModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatInputModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
