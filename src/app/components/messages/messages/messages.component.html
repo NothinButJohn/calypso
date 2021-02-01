@@ -1,13 +1,14 @@
 
-<!-- <ng-container *ngIf="chats$ | async as chats">
-    <div *ngFor="let chat of chats" (click)="chatSelected(chat)">
-        <mat-card-title>
-            {{chat?.title}}
-        </mat-card-title>
-    </div>
-</ng-container> -->
+
+
+
 <div class="flex-container">
+    <div class="search">
+    </div>
     <div class="messages">
+
+
+        <button mat-button (click)="openDialog()">New Message</button>
         <ng-container *ngIf="query | async as chats">
             <div *ngFor="let chat of chats" (click)="chatSelected(chat)">
                 <mat-card>

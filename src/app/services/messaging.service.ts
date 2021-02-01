@@ -49,5 +49,21 @@ export class MessagingService {
       this.afs.collection(`messages/${docID}/messageHistory`).add(message)
     }
 
+    search(){
+      
+    }
+
+    getAllUsers(){
+      let users = [];
+      this.afs.collection('users').get().pipe(
+        map(qs => {
+          qs.docs.forEach(qds => {
+            users.push(qds.get('profile.username'));
+          })
+        })
+      ).subscribe()
+      return users;
+    }
+
 
 }

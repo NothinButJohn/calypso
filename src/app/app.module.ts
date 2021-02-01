@@ -25,11 +25,12 @@ import { LandingComponent } from './components/landing/landing/landing.component
 import { reducers, metaReducers } from './reducers/index'
 import { EffectsModule } from '@ngrx/effects';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { MessagesComponent } from './components/messages/messages/messages.component';
+import { MessagesComponent, NewMessageDialog } from './components/messages/messages/messages.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
-
-
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatDialogModule} from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {MatInputModule} from '@angular/material/input';
     MaterialDashComponent,
     ProfileComponent,
     LandingComponent,
-    MessagesComponent
+    MessagesComponent,
+    NewMessageDialog
   ],
   imports: [
     BrowserModule,
@@ -62,7 +64,10 @@ import {MatInputModule} from '@angular/material/input';
     ReactiveFormsModule,
     MatIconModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatAutocompleteModule,
+    MatDialogModule,
+    MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]

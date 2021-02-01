@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import { MessagingService } from 'src/app/services/messaging.service';
 
 @Component({
   selector: 'app-material-dash',
   templateUrl: './material-dash.component.html',
   styleUrls: ['./material-dash.component.scss']
 })
-export class MaterialDashComponent {
+export class MaterialDashComponent implements OnInit {
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
@@ -29,5 +30,12 @@ export class MaterialDashComponent {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(private breakpointObserver: BreakpointObserver,
+    private msg: MessagingService) {
+      
+    }
+
+    ngOnInit(){
+
+    }
 }

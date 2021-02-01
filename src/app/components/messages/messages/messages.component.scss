@@ -1,3 +1,8 @@
+.search {
+  display: flex;
+  flex-direction: column;
+}
+
 .messages {
     display: flex;
     flex-direction: column;
@@ -60,7 +65,10 @@ form{
   font-size: 1.5rem;
 }
   .controls{
-
+    position: absolute;
+    flex-direction: column;
+    bottom: 0;
+    width: auto;
   }
 
   .chat__input{

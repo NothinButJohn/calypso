@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot, QuerySnapshot } from '@angular/fire/firestore';
+import { QueryDocumentSnapshot} from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { Timestamp } from 'rxjs/internal/operators/timestamp';
-import { map, tap, timestamp } from 'rxjs/operators';
+import { MatDialog} from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
+import { map, startWith, tap, timestamp } from 'rxjs/operators';
 import { FireAuthService } from 'src/app/services/fire-auth.service';
 import { MessagingService } from 'src/app/services/messaging.service';
 
@@ -26,13 +25,22 @@ export class MessagesComponent implements OnInit {
   public currUsername: string;
   private selectedChat
 
+  allUsernames: string[];
+  filteredUsernames
+
   chatForm = new FormGroup({
     text: new FormControl('', Validators.required)
   })
 
+  searchForm = new FormGroup({
+    searchUsers: new FormControl('')
+  
+  })
+
   constructor(
     private msg: MessagingService,
-    private fa: FireAuthService
+    private fa: FireAuthService,
+    public dialog: MatDialog
    ) 
     {
 
@@ -45,6 +53,23 @@ export class MessagesComponent implements OnInit {
         this.currUsername = d.data().profile.username
       })
     ).subscribe();
+
+    this.allUsernames = this.msg.getAllUsers();
+    this.filteredUsernames = this.searchForm.get('searchUsers').valueChanges.pipe(
+      startWith(''),
+      map(searchQuery => {
+        console.log(searchQuery, this.allUsernames)
+        let fv = searchQuery.toLowerCase();
+        return this.allUsernames.filter(u => u.toLowerCase().includes(fv))
+        })
+    )
+  }
+
+  openDialog() {
+    let dialogRef = this.dialog.open(NewMessageDialog);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    })
   }
 
   chatSelected(chat: QueryDocumentSnapshot<unknown>) {
@@ -64,6 +89,14 @@ export class MessagesComponent implements OnInit {
     this.chatForm.reset();
   }
 
-
+  search(){
+    this.searchForm.get('searchMessages').valueChanges
+  }
 
 }
+
+@Component({
+  selector: 'new-message-dialog-content',
+  templateUrl: 'newchat-dialog.html'
+})
+export class NewMessageDialog extends MessagesComponent{}
