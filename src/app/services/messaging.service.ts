@@ -52,13 +52,16 @@ export class MessagingService {
 
     
     createChatroom(members: string[]){
+      console.log("stepped into the service")
       return this.afs.collection('messages', ref => ref.where('members', "==", members)).get().pipe(
         map(col => {
           if(col.empty === true){
-            this.afs.collection('messages').add({members, title: "New Chat Room"}).then(dr => {
+            console.log(members)
+            this.afs.collection('messages').add({members: members, title: "New Chat Room"}).then(dr => {
               return dr.get()
             }, (res) => console.log("could not create the new chatroom. rejected: "+res))
           } else {
+            console.log("chat room exists!", col.docs);
             return col.docs.pop()
           }
         })

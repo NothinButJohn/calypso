@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterViewChecked, Component, ElementRef, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { QueryDocumentSnapshot} from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
@@ -34,6 +34,7 @@ export class MessagesComponent implements OnInit, OnChanges, AfterContentChecked
   @ViewChild('userInput', {static: false}) userInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
 
+  // @ViewChild('chatRoom', {static: false}) chatRoom: ElementRef<ViewChild>
   
 
   newChatroom = false;
@@ -50,7 +51,8 @@ export class MessagesComponent implements OnInit, OnChanges, AfterContentChecked
   constructor(
     private msg: MessagingService,
     private fa: FireAuthService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private changeDetectorRef: ChangeDetectorRef
    ) 
     {
 
@@ -64,7 +66,8 @@ export class MessagesComponent implements OnInit, OnChanges, AfterContentChecked
       })
     ).subscribe();
 
-    this.allUsernames = this.msg.getAllUsers();
+    this.allUsernames = this.msg.getAllUsers()
+    console.log(this.allUsernames)
     this.filteredUsernames = this.searchForm.get('searchUsers').valueChanges.pipe(
       startWith(null),
       map((searchQuery: string | null) => searchQuery ? this.allUsernames.filter(u => u.toLowerCase().includes(searchQuery.toLowerCase())) :
@@ -88,19 +91,29 @@ export class MessagesComponent implements OnInit, OnChanges, AfterContentChecked
   }
 
   createChatroom(){
+    if(!this.newChatMembers.includes(this.currUsername)){this.newChatMembers.push(this.currUsername)}
     this.msg.createChatroom(this.newChatMembers.sort()).pipe(
       map(val => {
+        console.log("back from service, in the pipe",val.data())
         this.query.pipe(
           map(v => { 
-            if(v.includes(val)){
-              this.chatSelected(v[v.indexOf(val)]);
-            } else{
-              this.chatSelected(v[v.push(val)-1]);
+            console.log("v",v, "val", val)
+            let chatExists = false;
+            v.forEach( (qds) => {
+              console.log(val.id, qds.id, qds.id == val.id)
+              if(qds.id == val.id){
+                this.chatSelected(qds)
+                chatExists = true;
+                return;
+              }
+            })
+            if(!chatExists){
+              this.chatSelected(v[v.push(val)-1])
             }
           })
-        )
+        ).subscribe()
       })
-    )
+    ).subscribe()
     this.newChatMembers.splice(0)
     this.newChatroom = false;
   }
@@ -142,6 +155,8 @@ export class MessagesComponent implements OnInit, OnChanges, AfterContentChecked
   chatSelected(chat: QueryDocumentSnapshot<unknown>) {
     this.selectedChat = chat;
     this.chatHistory$ = this.msg.getMessageHistory(chat.id)
+    console.log("chatSelected happened: ", chat)
+    
   }
 
   sendMessage(){
