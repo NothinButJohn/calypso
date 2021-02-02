@@ -1,8 +1,8 @@
-import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { QueryDocumentSnapshot} from '@angular/fire/firestore';
+import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { DocumentSnapshot, QueryDocumentSnapshot} from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { map, startWith, tap, timestamp } from 'rxjs/operators';
 import { FireAuthService } from 'src/app/services/fire-auth.service';
 import { MessagingService } from 'src/app/services/messaging.service';
@@ -20,7 +20,7 @@ export interface Message{
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.scss']
 })
-export class MessagesComponent implements OnInit, OnChanges, AfterContentChecked, AfterViewChecked {
+export class MessagesComponent implements OnInit, OnDestroy {
   public chats$: Observable<unknown>
   public chatHistory$: Observable<any[]>
   public query: Observable<QueryDocumentSnapshot<unknown>[]>;
@@ -35,7 +35,7 @@ export class MessagesComponent implements OnInit, OnChanges, AfterContentChecked
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
 
   // @ViewChild('chatRoom', {static: false}) chatRoom: ElementRef<ViewChild>
-  
+  // subscriptions: Subscription[] = [];
 
   newChatroom = false;
 
@@ -75,25 +75,18 @@ export class MessagesComponent implements OnInit, OnChanges, AfterContentChecked
     )
   }
 
-  ngOnChanges(){
-    
-  }
+  ngOnDestroy(){
 
-  ngAfterContentChecked(){
-
-  }
-
-  ngAfterViewChecked(){
-    // if(this.newChatroom){
-    //   this.createChatroom()
-    // }
-    // console.log('ngavc:', this.newChatroom)
   }
 
   createChatroom(){
+    console.log(this.newChatMembers)
     if(!this.newChatMembers.includes(this.currUsername)){this.newChatMembers.push(this.currUsername)}
-    this.msg.createChatroom(this.newChatMembers.sort()).pipe(
-      map(val => {
+    this.newChatMembers.sort()
+    console.log(this.newChatMembers)
+    this.msg.createChatroom(this.newChatMembers).pipe(
+      map((val: QueryDocumentSnapshot<unknown> | DocumentSnapshot<unknown>) => {
+        console.log('back with', val)
         console.log("back from service, in the pipe",val.data())
         this.query.pipe(
           map(v => { 
@@ -108,14 +101,15 @@ export class MessagesComponent implements OnInit, OnChanges, AfterContentChecked
               }
             })
             if(!chatExists){
+              console.log('104 executed')
               this.chatSelected(v[v.push(val)-1])
             }
           })
         ).subscribe()
       })
     ).subscribe()
-    this.newChatMembers.splice(0)
-    this.newChatroom = false;
+    // this.newChatMembers.splice(0)
+    // this.newChatroom = false;
   }
 
   openDialog() {
@@ -155,7 +149,7 @@ export class MessagesComponent implements OnInit, OnChanges, AfterContentChecked
   chatSelected(chat: QueryDocumentSnapshot<unknown>) {
     this.selectedChat = chat;
     this.chatHistory$ = this.msg.getMessageHistory(chat.id)
-    console.log("chatSelected happened: ", chat)
+    console.log("chatSelected happened: ", this.chatHistory$)
     
   }
 

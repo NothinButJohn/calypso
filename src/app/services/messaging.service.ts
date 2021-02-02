@@ -55,7 +55,7 @@ export class MessagingService {
       console.log("stepped into the service")
       return this.afs.collection('messages', ref => ref.where('members', "==", members)).get().pipe(
         map(col => {
-          if(col.empty === true){
+          if(col.empty == true){
             console.log(members)
             this.afs.collection('messages').add({members: members, title: "New Chat Room"}).then(dr => {
               return dr.get()
