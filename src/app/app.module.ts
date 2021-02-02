@@ -31,6 +31,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     FormsModule,
     MatAutocompleteModule,
     MatDialogModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

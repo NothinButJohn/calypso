@@ -4,19 +4,36 @@
 
             <form>
                 <mat-form-field [formGroup]="searchForm">
-                    <mat-autocomplete #auto="matAutocomplete">
+                    <mat-chip-list #chipList>
+                        <mat-chip *ngFor="let user of newChatMembers"
+                        [selectable]="selectable"
+                        [removable]="removable"
+                        (removed)="remove(user)">
+                        {{user}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input type="text" 
+                        placeholder="search for users" 
+                        matInput
+                        #userInput
+                        [matAutocomplete]="auto" 
+                        [matChipInputFor]="chipList" 
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" 
+                        (matChipInputTokenEnd)="add($event)" 
+                        formControlName="searchUsers">
+                    </mat-chip-list>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                         <mat-option *ngFor="let option of filteredUsernames | async" [value]="option">
                             {{option}}
                         </mat-option>
                     </mat-autocomplete>
-                    <input type="text" placeholder="search for users" matInput 
-                    [matAutocomplete]="auto" formControlName="searchUsers">
+
                 </mat-form-field>
             </form>
 
             <mat-dialog-actions>
                 <button mat-button mat-dialog-close>Cancel</button>
-                <button mat-button [mat-dialog-close]="true">Create</button>
+                <button mat-button [mat-dialog-close]='true' (click)="createChatroom()">Create</button>
             </mat-dialog-actions>
         </mat-dialog-content>
 </div>
