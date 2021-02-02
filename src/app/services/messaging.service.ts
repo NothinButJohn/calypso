@@ -50,7 +50,7 @@ export class MessagingService {
     }
 
 
-
+    
     createChatroom(members: string[]){
       return this.afs.collection('messages', ref => ref.where('members', "==", members)).get().pipe(
         map(col => {

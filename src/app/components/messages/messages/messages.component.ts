@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterContentChecked, AfterViewChecked, Component, ElementRef, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { QueryDocumentSnapshot} from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
@@ -20,7 +20,7 @@ export interface Message{
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.scss']
 })
-export class MessagesComponent implements OnInit {
+export class MessagesComponent implements OnInit, OnChanges, AfterContentChecked, AfterViewChecked {
   public chats$: Observable<unknown>
   public chatHistory$: Observable<any[]>
   public query: Observable<QueryDocumentSnapshot<unknown>[]>;
@@ -33,6 +33,8 @@ export class MessagesComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   @ViewChild('userInput', {static: false}) userInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+
+  
 
   newChatroom = false;
 
@@ -70,13 +72,45 @@ export class MessagesComponent implements OnInit {
     )
   }
 
+  ngOnChanges(){
+    
+  }
+
+  ngAfterContentChecked(){
+
+  }
+
+  ngAfterViewChecked(){
+    // if(this.newChatroom){
+    //   this.createChatroom()
+    // }
+    // console.log('ngavc:', this.newChatroom)
+  }
+
+  createChatroom(){
+    this.msg.createChatroom(this.newChatMembers.sort()).pipe(
+      map(val => {
+        this.query.pipe(
+          map(v => { 
+            if(v.includes(val)){
+              this.chatSelected(v[v.indexOf(val)]);
+            } else{
+              this.chatSelected(v[v.push(val)-1]);
+            }
+          })
+        )
+      })
+    )
+    this.newChatMembers.splice(0)
+    this.newChatroom = false;
+  }
+
   openDialog() {
     let dialogRef = this.dialog.open(NewMessageDialog);
     dialogRef.afterClosed().subscribe(result => {
-    console.log(`Dialog result: ${result}`);
-    if(result){
-
-    }
+    // console.log(`Dialog result: ${result}`);
+    // this.newChatroom = true;
+    // this.createChatroom()
     })
   }
 
@@ -106,7 +140,6 @@ export class MessagesComponent implements OnInit {
   }
 
   chatSelected(chat: QueryDocumentSnapshot<unknown>) {
-    console.log("chat selected"+chat)
     this.selectedChat = chat;
     this.chatHistory$ = this.msg.getMessageHistory(chat.id)
   }
@@ -126,15 +159,7 @@ export class MessagesComponent implements OnInit {
     this.searchForm.get('searchMessages').valueChanges
   }
 
-  createChatroom(){
-    this.msg.createChatroom(this.newChatMembers.sort()).pipe(
-      map(x => {
-        this.selectedChat = x
-        this.chatHistory$ = this.msg.getMessageHistory(x.id)
-      })
-    )
-    this.newChatMembers.splice(0)
-  }
+
 
 }
 
