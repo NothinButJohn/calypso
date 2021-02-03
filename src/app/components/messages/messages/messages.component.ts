@@ -21,28 +21,12 @@ export interface Message{
   styleUrls: ['./messages.component.scss']
 })
 export class MessagesComponent implements OnInit, OnDestroy {
-  public chats$: Observable<unknown>
-  public chatHistory$: Observable<any[]>
-  public query: Observable<QueryDocumentSnapshot<unknown>[]>;
-  public currUsername: string;
-  private selectedChat
-
-  allUsernames: string[];
-  filteredUsernames
-  newChatMembers: string[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  @ViewChild('userInput', {static: false}) userInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
 
-  // @ViewChild('chatRoom', {static: false}) chatRoom: ElementRef<ViewChild>
-  // subscriptions: Subscription[] = [];
-
-  newChatroom = false;
 
   chatForm = new FormGroup({
     text: new FormControl('', Validators.required)
   })
-
   searchForm = new FormGroup({
     searchUsers: new FormControl('')
   
@@ -52,72 +36,22 @@ export class MessagesComponent implements OnInit, OnDestroy {
     private msg: MessagingService,
     private fa: FireAuthService,
     public dialog: MatDialog,
-    private changeDetectorRef: ChangeDetectorRef
    ) 
     {
 
     }
 
   ngOnInit(): void {
-    this.query = this.msg.getChats();
-    this.fa.authUserDoc.get().pipe(
-      map(d => {
-        this.currUsername = d.data().profile.username
-      })
-    ).subscribe();
 
-    this.allUsernames = this.msg.getAllUsers()
-    console.log(this.allUsernames)
-    this.filteredUsernames = this.searchForm.get('searchUsers').valueChanges.pipe(
-      startWith(null),
-      map((searchQuery: string | null) => searchQuery ? this.allUsernames.filter(u => u.toLowerCase().includes(searchQuery.toLowerCase())) :
-      this.allUsernames.slice())
-    )
   }
 
   ngOnDestroy(){
 
   }
 
-  createChatroom(){
-    console.log(this.newChatMembers)
-    if(!this.newChatMembers.includes(this.currUsername)){this.newChatMembers.push(this.currUsername)}
-    this.newChatMembers.sort()
-    console.log(this.newChatMembers)
-    this.msg.createChatroom(this.newChatMembers).pipe(
-      map((val: QueryDocumentSnapshot<unknown> | DocumentSnapshot<unknown>) => {
-        console.log('back with', val)
-        console.log("back from service, in the pipe",val.data())
-        this.query.pipe(
-          map(v => { 
-            console.log("v",v, "val", val)
-            let chatExists = false;
-            v.forEach( (qds) => {
-              console.log(val.id, qds.id, qds.id == val.id)
-              if(qds.id == val.id){
-                this.chatSelected(qds)
-                chatExists = true;
-                return;
-              }
-            })
-            if(!chatExists){
-              console.log('104 executed')
-              this.chatSelected(v[v.push(val)-1])
-            }
-          })
-        ).subscribe()
-      })
-    ).subscribe()
-    // this.newChatMembers.splice(0)
-    // this.newChatroom = false;
-  }
-
   openDialog() {
     let dialogRef = this.dialog.open(NewMessageDialog);
     dialogRef.afterClosed().subscribe(result => {
-    // console.log(`Dialog result: ${result}`);
-    // this.newChatroom = true;
-    // this.createChatroom()
     })
   }
 
@@ -145,30 +79,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.userInput.nativeElement.value = '';
     this.searchForm.get('searchUsers').setValue('');
   }
-
-  chatSelected(chat: QueryDocumentSnapshot<unknown>) {
-    this.selectedChat = chat;
-    this.chatHistory$ = this.msg.getMessageHistory(chat.id)
-    console.log("chatSelected happened: ", this.chatHistory$)
-    
-  }
-
-  sendMessage(){
-    let msg: Message = {
-      sender: this.currUsername,
-      text: this.chatForm.get('text').value,
-      createdAt: timestamp().toString()
-    }
-    console.log(msg)
-    this.msg.sendMessage(this.selectedChat.id, msg)
-    this.chatForm.reset();
-  }
-
-  search(){
-    this.searchForm.get('searchMessages').valueChanges
-  }
-
-
 
 }
 
