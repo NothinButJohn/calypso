@@ -2,7 +2,7 @@ import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, El
 import { DocumentSnapshot, QueryDocumentSnapshot} from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import { map, startWith, tap, timestamp } from 'rxjs/operators';
 import { FireAuthService } from 'src/app/services/fire-auth.service';
 import { MessagingService } from 'src/app/services/messaging.service';
@@ -23,6 +23,10 @@ export interface Message{
 export class MessagesComponent implements OnInit, OnDestroy {
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
+  aSubject: Subject<any>
+
+  chatroomSubject: Subject<QueryDocumentSnapshot<unknown>[]>;
+
 
   chatForm = new FormGroup({
     text: new FormControl('', Validators.required)
@@ -42,7 +46,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit(): void {
-
+    this.msg.queryChatroomsOnce(this.chatroomSubject).subscribe()
   }
 
   ngOnDestroy(){
@@ -55,30 +59,30 @@ export class MessagesComponent implements OnInit, OnDestroy {
     })
   }
 
-  add(event: MatChipInputEvent) {
-    let input = event.input;
-    let value = event.value;
-    if ((value || '').trim()) {
-      this.newChatMembers.push(value.trim())
-    }
-    if(input) {
-      input.value = null;
-    }
-  }
+  // add(event: MatChipInputEvent) {
+  //   let input = event.input;
+  //   let value = event.value;
+  //   if ((value || '').trim()) {
+  //     this.newChatMembers.push(value.trim())
+  //   }
+  //   if(input) {
+  //     input.value = null;
+  //   }
+  // }
 
-  remove(user: string) {
-    let index = this.newChatMembers.indexOf(user);
-    if(index >=0) {
-      this.newChatMembers.splice(index, 1);
-    }
-  }
+  // remove(user: string) {
+  //   let index = this.newChatMembers.indexOf(user);
+  //   if(index >=0) {
+  //     this.newChatMembers.splice(index, 1);
+  //   }
+  // }
 
-  selected(event: MatAutocompleteSelectedEvent) {
-    console.log(event.option)
-    this.newChatMembers.push(event.option.viewValue);
-    this.userInput.nativeElement.value = '';
-    this.searchForm.get('searchUsers').setValue('');
-  }
+  // selected(event: MatAutocompleteSelectedEvent) {
+  //   console.log(event.option)
+  //   this.newChatMembers.push(event.option.viewValue);
+  //   this.userInput.nativeElement.value = '';
+  //   this.searchForm.get('searchUsers').setValue('');
+  // }
 
 }
 

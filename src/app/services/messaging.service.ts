@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, DocumentData, QueryDocumentSnapshot, QueryFn, QuerySnapshot } from '@angular/fire/firestore';
+import { AngularFirestore, DocumentData, DocumentReference, QueryDocumentSnapshot, QueryFn, QuerySnapshot } from '@angular/fire/firestore';
 import { FireAuthService } from './fire-auth.service';
 
 import { Message } from '../components/messages/messages/messages.component'
@@ -15,7 +15,11 @@ export class MessagingService {
   private allUsernames: string[] = [];
   private newChatroomMembers: string[] = [];
   private messageSubject: Subject<QueryDocumentSnapshot<unknown>>;
-  private chatroomSubject: Subject<QueryDocumentSnapshot<unknown>>;
+  // private chatroomSubject: Subject<QueryDocumentSnapshot<unknown>[]>;
+
+  private chatRooms: DocumentReference<DocumentData>[] = [];
+
+  
 
 
   constructor(
@@ -23,24 +27,40 @@ export class MessagingService {
     private fa: FireAuthService
   )
     {
-      this.fa.authUserDoc.get().subscribe(doc => this.currAuthUser = doc.data().profile.username)
+      
 
     }
 
-    getChatroomsOnce(authUser: string): Observable<QueryDocumentSnapshot<unknown>[]> {
-      return this.afs.collection('messages', ref=> ref.where('members', 'array-contains', authUser)).get().pipe(
-        map(qs => {
-          return qs.docs
-        })
+    queryChatroomsOnce(chatroomSubject: Subject<QueryDocumentSnapshot<unknown>[]>) {
+      return this.fa.authUserDoc.get().pipe(
+        map(x => {
+          console.log(x.get('profile.username'))
+          return x.get('profile.username')
+        }),
+        map(username => {
+          return this.afs.collection('messages', ref=> ref.where('members', 'array-contains', username)).get().pipe(
+            map(qs => {
+              // qs.docs.forEach(qds => {this.chatRooms.push(qds.ref)})
+              console.log(qs.docs)
+              chatroomSubject.next(qs.docs)
+            })
+          )
+        }),
+        concatAll()
       )
+
     }
 
-    getAllUsernames(){
+    queryAllUsernames(){
       this.afs.collection('users').get().pipe(
         map(qs => {
            qs.docs.forEach(qds => {this.allUsernames.push(qds.get('profile.username'))})
         })
       )
+    }
+
+    getChatrooms(){
+
     }
 
 

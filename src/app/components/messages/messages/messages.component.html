@@ -9,7 +9,7 @@
 
 
         <button mat-button (click)="openDialog()">New Message</button>
-        <ng-container *ngIf="query | async as chats">
+        <ng-container *ngIf="chatroomSubject | async as chats">
             <div *ngFor="let chat of chats" (click)="chatSelected(chat)">
                 <mat-card>
                     <mat-card-title>
@@ -20,7 +20,7 @@
         </ng-container>
     </div>
 
-    <div class="chatRoom" *ngIf="chatHistory$ | async as chatHistory">
+    <!-- <div class="chatRoom" *ngIf="chatHistory$ | async as chatHistory">
         
             <div *ngFor="let message of chatHistory">
                 <div [ngClass]="message.sender === currUsername ? 'message sent' : 'message received'"><p>{{message.text}}</p></div>
@@ -33,5 +33,5 @@
                 <button mat-raised-button class="send__button" color="accent" type="submit">Send</button>
             </form>
         </div>
-    </div>
+    </div> -->
 </div>
