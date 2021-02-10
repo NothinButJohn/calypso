@@ -23,9 +23,9 @@ export interface Message{
 export class MessagesComponent implements OnInit, OnDestroy {
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  aSubject: Subject<any>
+  chatroomList$: Observable<any> = new Observable();
 
-  chatroomSubject: Subject<QueryDocumentSnapshot<unknown>[]>;
+  chatroomSubject: Subject<any> = new Subject<any>();
 
 
   chatForm = new FormGroup({
@@ -46,16 +46,24 @@ export class MessagesComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit(): void {
-    this.msg.queryChatroomsOnce(this.chatroomSubject).subscribe()
+    this.chatroomSubject.subscribe({
+      next: (value) => this.chatroomList$ = value
+    })
+    this.updateChatrooms();
+  }
+
+  updateChatrooms(){
+    this.chatroomSubject.next(this.msg.queryChatroomsOnce())
   }
 
   ngOnDestroy(){
-
+    this.chatroomSubject.unsubscribe()
   }
 
   openDialog() {
     let dialogRef = this.dialog.open(NewMessageDialog);
     dialogRef.afterClosed().subscribe(result => {
+
     })
   }
 

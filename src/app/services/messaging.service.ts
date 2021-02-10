@@ -31,7 +31,7 @@ export class MessagingService {
 
     }
 
-    queryChatroomsOnce(chatroomSubject: Subject<QueryDocumentSnapshot<unknown>[]>) {
+    queryChatroomsOnce() {
       return this.fa.authUserDoc.get().pipe(
         map(x => {
           console.log(x.get('profile.username'))
@@ -42,7 +42,7 @@ export class MessagingService {
             map(qs => {
               // qs.docs.forEach(qds => {this.chatRooms.push(qds.ref)})
               console.log(qs.docs)
-              chatroomSubject.next(qs.docs)
+              return qs.docs
             })
           )
         }),

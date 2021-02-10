@@ -9,7 +9,7 @@
 
 
         <button mat-button (click)="openDialog()">New Message</button>
-        <ng-container *ngIf="chatroomSubject | async as chats">
+        <ng-container *ngIf="chatroomList$ | async as chats">
             <div *ngFor="let chat of chats" (click)="chatSelected(chat)">
                 <mat-card>
                     <mat-card-title>
