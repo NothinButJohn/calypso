@@ -14,6 +14,8 @@ export class MessagingService {
   private currAuthUser: string
   private allUsernames: string[] = [];
   private newChatroomMembers: string[] = [];
+  private filteredUsernames$: Observable<string[]>;
+
   private messageSubject: Subject<QueryDocumentSnapshot<unknown>>;
   // private chatroomSubject: Subject<QueryDocumentSnapshot<unknown>[]>;
 
@@ -47,14 +49,26 @@ export class MessagingService {
           )
         }),
         concatAll()
-      )
+      )}
 
-    }
+      filterAllUsernames(username: string){
+        console.log('filter value: ', username, "allUsernames: ", this.allUsernames, "val")
+        let filterValue = username.toLowerCase();
+        return this.allUsernames.filter(un => un.toLowerCase().indexOf(filterValue) === 0)
+      }
+
+      getAllUsernames(){
+        return this.allUsernames
+      }
+
 
     queryAllUsernames(){
-      this.afs.collection('users').get().pipe(
+      // console.log('query all usernames', this.allUsernames)
+      return this.afs.collection('users').get().pipe(
         map(qs => {
-           qs.docs.forEach(qds => {this.allUsernames.push(qds.get('profile.username'))})
+           qs.docs.forEach(qds => {
+            this.allUsernames.includes(qds.get('profile.username')) ? console.log('im stupid') : this.allUsernames.push(qds.get('profile.username'))
+          })
         })
       )
     }

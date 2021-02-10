@@ -24,8 +24,10 @@ export class MessagesComponent implements OnInit, OnDestroy {
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
   chatroomList$: Observable<any> = new Observable();
-
   chatroomSubject: Subject<any> = new Subject<any>();
+
+  filteredUsernames$: Observable<any>;
+  newChatMembers$: Observable<string[]> = new Observable();
 
 
   chatForm = new FormGroup({
@@ -50,6 +52,13 @@ export class MessagesComponent implements OnInit, OnDestroy {
       next: (value) => this.chatroomList$ = value
     })
     this.updateChatrooms();
+    this.msg.queryAllUsernames().subscribe();
+
+    this.filteredUsernames$ = this.searchForm.get('searchUsers').valueChanges.pipe(
+      startWith(null),
+      map((username: string | null) => username ? this.msg.filterAllUsernames(username) : this.msg.getAllUsernames().slice() )
+    )
+
   }
 
   updateChatrooms(){
@@ -62,35 +71,37 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   openDialog() {
     let dialogRef = this.dialog.open(NewMessageDialog);
+
     dialogRef.afterClosed().subscribe(result => {
 
     })
   }
 
-  // add(event: MatChipInputEvent) {
-  //   let input = event.input;
-  //   let value = event.value;
-  //   if ((value || '').trim()) {
-  //     this.newChatMembers.push(value.trim())
-  //   }
-  //   if(input) {
-  //     input.value = null;
-  //   }
-  // }
+  add(event: MatChipInputEvent) {
+    let input = event.input;
+    let value = event.value;
+    if ((value || '').trim()) {
+      // this.newChatMembers.push(value.trim())
+    }
+    if(input) {
+      input.value = null;
+    }
+  }
 
-  // remove(user: string) {
-  //   let index = this.newChatMembers.indexOf(user);
-  //   if(index >=0) {
-  //     this.newChatMembers.splice(index, 1);
-  //   }
-  // }
+  remove(user: string) {
+    // let index = this.newChatMembers.indexOf(user);
+    // if(index >=0) {
+      // this.newChatMembers.splice(index, 1);
+    // }
+  }
 
-  // selected(event: MatAutocompleteSelectedEvent) {
-  //   console.log(event.option)
-  //   this.newChatMembers.push(event.option.viewValue);
-  //   this.userInput.nativeElement.value = '';
-  //   this.searchForm.get('searchUsers').setValue('');
-  // }
+  selected(event: MatAutocompleteSelectedEvent) {
+    console.log(event.option)
+    // this.newChatMembers.push(event.option.viewValue);
+    // this.userInput.nativeElement.value = '';
+    this.searchForm.get('searchUsers').setValue('');
+  }
+  createChatroom(){}
 
 }
 
