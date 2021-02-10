@@ -60,6 +60,17 @@ export class MessagingService {
       getAllUsernames(){
         return this.allUsernames
       }
+      addNewChatMember(user: string){
+        if(!this.newChatroomMembers.includes(user)){
+          this.newChatroomMembers.push(user)
+        }
+      }
+      removeNewChatMember(user: string){
+        let index = this.newChatroomMembers.indexOf(user);
+        if(index >=0) {
+          this.newChatroomMembers.splice(index, 1);
+        }
+      }
 
 
     queryAllUsernames(){
@@ -67,7 +78,8 @@ export class MessagingService {
       return this.afs.collection('users').get().pipe(
         map(qs => {
            qs.docs.forEach(qds => {
-            this.allUsernames.includes(qds.get('profile.username')) ? console.log('im stupid') : this.allUsernames.push(qds.get('profile.username'))
+            if(!this.allUsernames.includes(qds.get('profile.username'))){
+              this.allUsernames.push(qds.get('profile.username'))} 
           })
         })
       )

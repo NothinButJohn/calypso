@@ -29,6 +29,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
   filteredUsernames$: Observable<any>;
   newChatMembers$: Observable<string[]> = new Observable();
 
+  @ViewChild('userInput') userInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   chatForm = new FormGroup({
     text: new FormControl('', Validators.required)
@@ -58,7 +60,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
       startWith(null),
       map((username: string | null) => username ? this.msg.filterAllUsernames(username) : this.msg.getAllUsernames().slice() )
     )
-
   }
 
   updateChatrooms(){
@@ -71,7 +72,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   openDialog() {
     let dialogRef = this.dialog.open(NewMessageDialog);
-
     dialogRef.afterClosed().subscribe(result => {
 
     })
@@ -81,7 +81,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
     let input = event.input;
     let value = event.value;
     if ((value || '').trim()) {
-      // this.newChatMembers.push(value.trim())
+      this.msg.addNewChatMember(value.trim())
     }
     if(input) {
       input.value = null;
@@ -89,19 +89,19 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   remove(user: string) {
-    // let index = this.newChatMembers.indexOf(user);
-    // if(index >=0) {
-      // this.newChatMembers.splice(index, 1);
-    // }
+    this.msg.removeNewChatMember(user)
   }
 
   selected(event: MatAutocompleteSelectedEvent) {
     console.log(event.option)
-    // this.newChatMembers.push(event.option.viewValue);
-    // this.userInput.nativeElement.value = '';
+    this.msg.addNewChatMember(event.option.viewValue)
+    this.userInput.nativeElement.value = '';
     this.searchForm.get('searchUsers').setValue('');
   }
-  createChatroom(){}
+
+  createChatroom(){
+
+  }
 
 }
 
