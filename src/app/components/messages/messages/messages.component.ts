@@ -27,7 +27,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   chatroomSubject: Subject<any> = new Subject<any>();
 
   filteredUsernames$: Observable<any>;
-  newChatMembers$: Observable<string[]> = new Observable();
+  newChatMembers$: Observable<string[]>;
 
   @ViewChild('userInput') userInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -60,6 +60,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
       startWith(null),
       map((username: string | null) => username ? this.msg.filterAllUsernames(username) : this.msg.getAllUsernames().slice() )
     )
+    this.newChatMembers$ = this.msg.getNewChatroomMembers()
   }
 
   updateChatrooms(){
@@ -72,6 +73,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   openDialog() {
     let dialogRef = this.dialog.open(NewMessageDialog);
+    
     dialogRef.afterClosed().subscribe(result => {
 
     })

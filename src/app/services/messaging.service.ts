@@ -57,6 +57,10 @@ export class MessagingService {
         return this.allUsernames.filter(un => un.toLowerCase().indexOf(filterValue) === 0)
       }
 
+      getNewChatroomMembers(): Observable<string[]>{
+        return of(this.newChatroomMembers)
+      }
+
       getAllUsernames(){
         return this.allUsernames
       }
