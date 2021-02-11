@@ -31,9 +31,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatChipsModule} from '@angular/material/chips';
-import { MessagingEffects } from './effects/messaging.effects';
+import { MessagingEffects } from './store/effects/messaging.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { messagingReducer } from './reducers/messaging.reducers';
+import { messagingReducer } from './store/reducers/messaging.reducers';
 
 @NgModule({
   declarations: [

@@ -23,27 +23,28 @@ export class MessagingService {
     private fa: FireAuthService
   )
     {
-      
 
     }
 
-    queryChatroomsOnce() {
-      return this.fa.authUserDoc.get().pipe(
-        map(x => {
-          console.log(x.get('profile.username'))
-          return x.get('profile.username')
-        }),
-        map(username => {
-          return this.afs.collection('messages', ref=> ref.where('members', 'array-contains', username)).get().pipe(
-            map(qs => {
-              // qs.docs.forEach(qds => {this.chatRooms.push(qds.ref)})
-              console.log(qs.docs)
-              return qs.docs
-            })
-          )
-        }),
-        concatAll()
-      )}
+    // queryChatroomsOnce() {
+    //   return this.fa.authUserDoc.get().pipe(
+    //     map(x => {
+    //       console.log(x.get('profile.username'))
+    //       return x.get('profile.username')
+    //     }),
+    //     map(username => {
+    //       return this.afs.collection('messages', ref=> ref.where('members', 'array-contains', username)).get().pipe(
+    //         map(qs => {
+    //           console.log(qs.docs)
+    //           return qs.docs
+    //         })
+    //       )
+    //     }),
+    //     concatAll()
+    //   )}
+    queryChatrooms(){
+
+    }
 
       filterAllUsernames(username: string){
         console.log('filter value: ', username, "allUsernames: ", this.allUsernames, "val")

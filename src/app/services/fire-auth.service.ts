@@ -9,20 +9,21 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FireAuthService {
-  user: Observable<firebase.User>
-  authUserDoc: AngularFirestoreDocument<any>;
 
+  constructor(
+    public auth: AngularFireAuth,
+    private afs: AngularFirestore) 
+    {
 
-  constructor(public auth: AngularFireAuth,
-    private afs: AngularFirestore) {
-    this.user = auth.authState;
-  }
+    }
 
   login(){
-    this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+    return this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
     .then((result)=> {
-      let currUserUID = result.user.uid;
-      this.authUserDoc = this.afs.doc<any>(`users/${currUserUID}`);
+      return result.user.uid
+    })
+    .catch((error) => {
+      console.log(error)
     })
   }
   logout(){

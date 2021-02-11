@@ -10,8 +10,8 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { Store } from '@ngrx/store';
-import { chatroomListSelector } from 'src/app/selectors/messaging.selectors';
-import { getChatrooms } from 'src/app/actions/messaging.actions';
+import { chatroomListSelector } from 'src/app/store/selectors/messaging.selectors';
+import { getChatrooms } from 'src/app/store/actions/messaging.actions';
 export interface Message{
   sender: string;
   createdAt;
