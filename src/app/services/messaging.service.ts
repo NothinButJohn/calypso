@@ -42,7 +42,7 @@ export class MessagingService {
     //     }),
     //     concatAll()
     //   )}
-    queryChatrooms(){
+    queryChatrooms(username: string){
 
     }
 

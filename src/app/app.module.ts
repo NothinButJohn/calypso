@@ -34,6 +34,8 @@ import {MatChipsModule} from '@angular/material/chips';
 import { MessagingEffects } from './store/effects/messaging.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { messagingReducer } from './store/reducers/messaging.reducers';
+import { AuthReducer } from './store/reducers/auth.reducers';
+import { ProfileReducer } from './store/reducers/profile.reducers';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,7 @@ import { messagingReducer } from './store/reducers/messaging.reducers';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     BrowserAnimationsModule,
-    StoreModule.forRoot({messenger: messagingReducer}),
+    StoreModule.forRoot({messenger: messagingReducer, auth: AuthReducer, profile: ProfileReducer}),
     StoreDevtoolsModule.instrument({name: 'john message app', maxAge: 25 }),
     LayoutModule,
     MatToolbarModule,
