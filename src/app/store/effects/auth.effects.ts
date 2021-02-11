@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { from, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { FireAuthService } from 'src/app/services/fire-auth.service';
 import { googleLogin, googleLoginSuccess, LoginFail } from '../actions/auth.actions';
 import { LoadUserProfile } from '../actions/profile.actions'
@@ -19,10 +19,12 @@ export class AuthEffects {
             ofType(googleLogin),
             switchMap(() => {
                 console.log("inside auth effecct")
-                return this.fireAuth.login().then((uid) => { 
-                    LoadUserProfile({uid})
-                    return googleLoginSuccess({uid})
-                })
+                return from(this.fireAuth.login()).pipe(
+                    map((uid) => {
+                        LoadUserProfile({uid})
+                        return googleLoginSuccess({uid})
+                    })
+                )
             }),
             catchError((error) => of(LoginFail({error})))
         )
