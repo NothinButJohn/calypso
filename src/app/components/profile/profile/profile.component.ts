@@ -24,11 +24,11 @@ export class ProfileComponent implements OnInit {
     private afs: AngularFirestore,
     private afa: AngularFireAuth) 
     {
-      this.userProfile$ = fireAuth.authUserDoc.get().pipe(
-        map(x => {
-          return x.data().profile
-        })
-      )
+      // this.userProfile$ = fireAuth.authUserDoc.get().pipe(
+      //   map(x => {
+      //     return x.data().profile
+      //   })
+      // )
 
     }
 

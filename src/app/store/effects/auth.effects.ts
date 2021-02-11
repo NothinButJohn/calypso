@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { FireAuthService } from 'src/app/services/fire-auth.service';
-import { LoginFail } from '../actions/auth.actions';
+import { googleLogin, googleLoginSuccess, LoginFail } from '../actions/auth.actions';
 import { LoadUserProfile } from '../actions/profile.actions'
 
 
@@ -16,9 +16,13 @@ export class AuthEffects {
 
     loadUserProfile$ = createEffect(() => {
         return this.actions$.pipe(
-            ofType('[Home] Login with Google'),
+            ofType(googleLogin),
             switchMap(() => {
-                return this.fireAuth.login().then((uid) => { return LoadUserProfile({uid}) })
+                console.log("inside auth effecct")
+                return this.fireAuth.login().then((uid) => { 
+                    LoadUserProfile({uid})
+                    return googleLoginSuccess({uid})
+                })
             }),
             catchError((error) => of(LoginFail({error})))
         )

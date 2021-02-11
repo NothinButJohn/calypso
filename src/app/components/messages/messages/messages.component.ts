@@ -67,10 +67,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
     // this.newChatMembers$ = this.msg.getNewChatroomMembers()
   }
 
-  updateChatrooms(){
-    this.chatroomSubject.next(this.msg.queryChatroomsOnce())
-  }
-
   ngOnDestroy(){
     this.chatroomSubject.unsubscribe()
   }

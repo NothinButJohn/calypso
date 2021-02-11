@@ -3,6 +3,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { FireAuthService } from 'src/app/services/fire-auth.service';
+import { Store } from '@ngrx/store';
+import { googleLogin } from 'src/app/store/actions/auth.actions';
 
 @Component({
   selector: 'app-material-nav',
@@ -17,10 +19,11 @@ export class MaterialNavComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private fireAuth: FireAuthService) {}
+  constructor(private breakpointObserver: BreakpointObserver, 
+    private store: Store) {}
 
   signIn(){
-    let log = this.fireAuth.login();
+    this.store.dispatch(googleLogin())
   }
 
 }

@@ -4,7 +4,7 @@ export const googleLogin = createAction(
     '[Home] Login with Google'
 )
 export const googleLoginSuccess = createAction(
-    '[Home] Login with Google',
+    '[Home] Login with Google Successful',
     props<{ uid }>()
 )
 
