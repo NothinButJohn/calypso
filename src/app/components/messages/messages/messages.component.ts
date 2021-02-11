@@ -9,6 +9,9 @@ import { MessagingService } from 'src/app/services/messaging.service';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { Store } from '@ngrx/store';
+import { chatroomListSelector } from 'src/app/selectors/messaging.selectors';
+import { getChatrooms } from 'src/app/actions/messaging.actions';
 export interface Message{
   sender: string;
   createdAt;
@@ -44,23 +47,24 @@ export class MessagesComponent implements OnInit, OnDestroy {
     private msg: MessagingService,
     private fa: FireAuthService,
     public dialog: MatDialog,
+    private store: Store
    ) 
     {
 
     }
 
   ngOnInit(): void {
-    this.chatroomSubject.subscribe({
-      next: (value) => this.chatroomList$ = value
-    })
-    this.updateChatrooms();
-    this.msg.queryAllUsernames().subscribe();
+    this.store.dispatch(getChatrooms());
+    this.chatroomList$ = this.store.select(chatroomListSelector)
 
-    this.filteredUsernames$ = this.searchForm.get('searchUsers').valueChanges.pipe(
-      startWith(null),
-      map((username: string | null) => username ? this.msg.filterAllUsernames(username) : this.msg.getAllUsernames().slice() )
-    )
-    this.newChatMembers$ = this.msg.getNewChatroomMembers()
+    // this.updateChatrooms();
+    // this.msg.queryAllUsernames().subscribe();
+
+    // this.filteredUsernames$ = this.searchForm.get('searchUsers').valueChanges.pipe(
+    //   startWith(null),
+    //   map((username: string | null) => username ? this.msg.filterAllUsernames(username) : this.msg.getAllUsernames().slice() )
+    // )
+    // this.newChatMembers$ = this.msg.getNewChatroomMembers()
   }
 
   updateChatrooms(){
@@ -102,8 +106,9 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   createChatroom(){
-    
+
   }
+  chatSelected(chat){}
 
 }
 

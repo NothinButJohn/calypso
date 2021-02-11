@@ -22,7 +22,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { ProfileComponent } from './components/profile/profile/profile.component';
 import { LandingComponent } from './components/landing/landing/landing.component';
-import { reducers, metaReducers } from './reducers/index'
 import { EffectsModule } from '@ngrx/effects';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { MessagesComponent, NewMessageDialog } from './components/messages/messages/messages.component';
@@ -32,6 +31,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatChipsModule} from '@angular/material/chips';
+import { MessagingEffects } from './effects/messaging.effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { messagingReducer } from './reducers/messaging.reducers';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import {MatChipsModule} from '@angular/material/chips';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     BrowserAnimationsModule,
-    StoreModule.forRoot(reducers, {metaReducers}),
+    StoreModule.forRoot({messenger: messagingReducer}),
+    StoreDevtoolsModule.instrument({name: 'john message app', maxAge: 25 }),
     LayoutModule,
     MatToolbarModule,
     MatButtonModule,
@@ -61,7 +64,7 @@ import {MatChipsModule} from '@angular/material/chips';
     MatCardModule,
     MatMenuModule,
     StoreModule,
-    EffectsModule,
+    EffectsModule.forRoot([MessagingEffects]),
     ReactiveFormsModule,
     MatIconModule,
     MatInputModule,

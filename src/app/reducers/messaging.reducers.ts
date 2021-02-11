@@ -19,3 +19,13 @@ export const initialMessengerState: MessengerState = {
     allUsernames: [],
     newChatroomMembers: []
 }
+
+export const messagingReducer = createReducer<MessengerState>(
+    initialMessengerState,
+    on(MessagingActions.getChatroomsSuccess, (state, action): MessengerState => {
+        return {
+            ...state,
+            chatrooms: action.qds,
+        }
+    }),
+);
