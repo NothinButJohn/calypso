@@ -11,15 +11,9 @@ import { concatAll, delay, map, switchMap, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class MessagingService {
-  private currAuthUser: string
+
   private allUsernames: string[] = [];
   private newChatroomMembers: string[] = [];
-  private filteredUsernames$: Observable<string[]>;
-
-  private messageSubject: Subject<QueryDocumentSnapshot<unknown>>;
-  // private chatroomSubject: Subject<QueryDocumentSnapshot<unknown>[]>;
-
-  private chatRooms: DocumentReference<DocumentData>[] = [];
 
   
 
@@ -89,14 +83,9 @@ export class MessagingService {
       )
     }
 
-    getChatrooms(){
-
+    createChatroom(){
+      if()
     }
-
-
-
-
-
 
 
 
