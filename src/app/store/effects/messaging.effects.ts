@@ -21,23 +21,35 @@ export class MessagingEffects {
         private store: Store
     ){}
 
+    // loadChatrooms$ = createEffect(() => {
+    //     return this.actions$.pipe(
+    //         ofType('[Messaging] get chatrooms'),
+    //         withLatestFrom(() => {
+    //             return this.store.select(usernameSelector).pipe(
+    //                  map((currentUserUsername: string) => {
+    //                     return this.msg.queryChatrooms(currentUserUsername).pipe(
+    //                         map((messengerChatrooms: messengerChatroom[])=>{
+    //                             console.log("within loadChatrooms$ effect, dispatching getChatroomsSuccess with:", messengerChatrooms)
+    //                             return MessagingActions.getChatroomsSuccess({ messengerChatrooms }) 
+    //                         })
+    //                     )
+    //                 })
+    //             )
+    //         })
+    //     )
+    // })
     loadChatrooms$ = createEffect(() => {
         return this.actions$.pipe(
             ofType('[Messaging] get chatrooms'),
-            withLatestFrom(() => {
-                return this.store.select(usernameSelector).pipe(
-                     map((currentUserUsername: string) => {
-                        return this.msg.queryChatrooms(currentUserUsername).pipe(
-                            map((messengerChatrooms: messengerChatroom[])=>{
-                                console.log("within loadChatrooms$ effect, dispatching getChatroomsSuccess with:", messengerChatrooms)
-                                return MessagingActions.getChatroomsSuccess({ messengerChatrooms }) 
-                            })
-                        )
-                    }),
-                    mergeAll()
+            withLatestFrom(this.store.select(usernameSelector)),
+            map(([,currentUserUsername]) => {
+                return this.msg.queryChatrooms(currentUserUsername).pipe(
+                    map((messengerChatrooms: messengerChatroom[])=>{
+                        console.log("within loadChatrooms$ effect, dispatching getChatroomsSuccess with:", messengerChatrooms)
+                        return MessagingActions.getChatroomsSuccess({ messengerChatrooms }) 
+                    })
                 )
-            }),
-            catchError((error) => of(MessagingActions.getChatroomsError({error}))) 
+            }),concatAll()
         )
     })
 }

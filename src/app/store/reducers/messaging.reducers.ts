@@ -23,9 +23,9 @@ export const initialMessengerState: MessengerState = {
 export const messagingReducer = createReducer<MessengerState>(
     initialMessengerState,
     on(MessagingActions.getChatroomsSuccess, (state, action): MessengerState => {
-        console.log('in reducer: ', action.docs)
+        console.log('in reducer: ', action.messengerChatrooms)
         return {
-            chatrooms: action.docs
+            chatrooms: action.messengerChatrooms
         }
     }),
 );
