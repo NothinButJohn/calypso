@@ -55,8 +55,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(getChatrooms());
-    this.chatroomList$ = this.store.select(chatroomListSelector)
-
+    // this.store.select(chatroomListSelector)
+    // this.msg.queryChatrooms('ghosty').get().subscribe((res) => {console.log(res.docs)})
     // this.updateChatrooms();
     // this.msg.queryAllUsernames().subscribe();
 

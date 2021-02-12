@@ -7,6 +7,6 @@ const messengerFeatureSelector = createFeatureSelector<MessengerState>('messenge
 export const chatroomListSelector = createSelector(
     messengerFeatureSelector,
     (state: MessengerState):any => {
-        return state?.chatrooms
+        return state?.chatrooms 
     }
 )

@@ -7,6 +7,8 @@ import { Message } from '../components/messages/messages/messages.component'
 import { Observable, Observer, of, Subject } from 'rxjs';
 import { concatAll, delay, map, switchMap, tap } from 'rxjs/operators';
 
+import * as MessagingActions from '../store/actions/messaging.actions'
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,24 +28,9 @@ export class MessagingService {
 
     }
 
-    // queryChatroomsOnce() {
-    //   return this.fa.authUserDoc.get().pipe(
-    //     map(x => {
-    //       console.log(x.get('profile.username'))
-    //       return x.get('profile.username')
-    //     }),
-    //     map(username => {
-    //       return this.afs.collection('messages', ref=> ref.where('members', 'array-contains', username)).get().pipe(
-    //         map(qs => {
-    //           console.log(qs.docs)
-    //           return qs.docs
-    //         })
-    //       )
-    //     }),
-    //     concatAll()
-    //   )}
     queryChatrooms(username: string){
-
+      console.log('username', username)
+      return this.afs.collection('messages', ref => ref.where('members', 'array-contains', username))
     }
 
       filterAllUsernames(username: string){
