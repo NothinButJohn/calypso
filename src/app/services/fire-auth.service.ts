@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
 import firebase from 'firebase/app';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { googleLoginSuccess } from '../store/actions/auth.actions';
 
 @Injectable({
@@ -30,6 +27,8 @@ export class FireAuthService {
       console.log(error)
     })
   }
+
+
   logout(){
     this.auth.signOut();
   }

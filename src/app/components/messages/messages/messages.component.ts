@@ -24,16 +24,6 @@ export interface Message{
   styleUrls: ['./messages.component.scss']
 })
 export class MessagesComponent implements OnInit, OnDestroy {
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-
-  chatroomList$: Observable<any> = new Observable();
-  chatroomSubject: Subject<any> = new Subject<any>();
-
-  filteredUsernames$: Observable<any>;
-  newChatMembers$: Observable<string[]>;
-
-  @ViewChild('userInput') userInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   chatForm = new FormGroup({
     text: new FormControl('', Validators.required)
@@ -55,61 +45,10 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(getChatrooms());
-    // this.store.select(chatroomListSelector)
-    // this.msg.queryChatrooms('ghosty').subscribe((res) => {console.log(res)})
-    // this.updateChatrooms();
-    // this.msg.queryAllUsernames().subscribe();
-
-    // this.filteredUsernames$ = this.searchForm.get('searchUsers').valueChanges.pipe(
-    //   startWith(null),
-    //   map((username: string | null) => username ? this.msg.filterAllUsernames(username) : this.msg.getAllUsernames().slice() )
-    // )
-    // this.newChatMembers$ = this.msg.getNewChatroomMembers()
-  }
-
-  ngOnDestroy(){
-    this.chatroomSubject.unsubscribe()
-  }
-
-  openDialog() {
-    let dialogRef = this.dialog.open(NewMessageDialog);
-    
-    dialogRef.afterClosed().subscribe(result => {
-
-    })
-  }
-
-  add(event: MatChipInputEvent) {
-    let input = event.input;
-    let value = event.value;
-    if ((value || '').trim()) {
-      this.msg.addNewChatMember(value.trim())
-    }
-    if(input) {
-      input.value = null;
-    }
-  }
-
-  remove(user: string) {
-    this.msg.removeNewChatMember(user)
-  }
-
-  selected(event: MatAutocompleteSelectedEvent) {
-    console.log(event.option)
-    this.msg.addNewChatMember(event.option.viewValue)
-    this.userInput.nativeElement.value = '';
-    this.searchForm.get('searchUsers').setValue('');
-  }
-
-  createChatroom(){
 
   }
-  chatSelected(chat){}
 
+  ngOnDestroy() {
+
+  }
 }
-
-@Component({
-  selector: 'new-message-dialog-content',
-  templateUrl: 'newchat-dialog.html'
-})
-export class NewMessageDialog extends MessagesComponent{}

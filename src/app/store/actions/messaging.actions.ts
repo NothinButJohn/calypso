@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { messengerChatroom } from 'src/app/services/messaging.service';
 
 export const getChatrooms = createAction(
     '[Messaging] get chatrooms',
@@ -6,7 +7,7 @@ export const getChatrooms = createAction(
 
 export const getChatroomsSuccess = createAction(
     '[Messaging] get chatrooms success',
-    props<{ docs }>()
+    props<{ messengerChatrooms: messengerChatroom[] }>()
 )
 
 export const getChatroomsError = createAction(
@@ -14,23 +15,3 @@ export const getChatroomsError = createAction(
     props<{ error }>()
 )
 
-
-
-// export const selectChatroom = createAction(
-//     '[Messaging] select chatroom',
-//     props<{ docRef }>()
-// )
-
-
-// export const openDialog = createAction(
-//     '[Messaging] open dialog',
-//     props<{}>()
-// )
-// export const createChatroom = createAction(
-//     '[Messaging] create chatroom',
-//     props<{}>()
-// )
-// export const closeDialog = createAction(
-//     '[Messaging] close dialog',
-//     props<{}>()
-// )

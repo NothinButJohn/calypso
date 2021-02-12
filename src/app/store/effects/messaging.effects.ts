@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { MessagingService } from '../../services/messaging.service'
+import { MessagingService, messengerChatroom } from '../../services/messaging.service'
 
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -24,14 +24,13 @@ export class MessagingEffects {
     loadChatrooms$ = createEffect(() => {
         return this.actions$.pipe(
             ofType('[Messaging] get chatrooms'),
-            switchMap(() => {
+            withLatestFrom(() => {
                 return this.store.select(usernameSelector).pipe(
-                     map((selectVal) => {
-                        console.log(selectVal)
-                        return this.msg.queryChatrooms(selectVal).pipe(
-                            map((messengerChatroomArray)=>{
-                                console.log(messengerChatroomArray)
-                                return MessagingActions.getChatroomsSuccess({docs: messengerChatroomArray}) 
+                     map((currentUserUsername: string) => {
+                        return this.msg.queryChatrooms(currentUserUsername).pipe(
+                            map((messengerChatrooms: messengerChatroom[])=>{
+                                console.log("within loadChatrooms$ effect, dispatching getChatroomsSuccess with:", messengerChatrooms)
+                                return MessagingActions.getChatroomsSuccess({ messengerChatrooms }) 
                             })
                         )
                     }),
@@ -41,6 +40,4 @@ export class MessagingEffects {
             catchError((error) => of(MessagingActions.getChatroomsError({error}))) 
         )
     })
-
-    // loadSelectedChatroom$ = createEffect(() => this.actions$.pipe())
 }

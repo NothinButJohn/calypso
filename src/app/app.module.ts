@@ -24,7 +24,7 @@ import { ProfileComponent } from './components/profile/profile/profile.component
 import { LandingComponent } from './components/landing/landing/landing.component';
 import { EffectsModule } from '@ngrx/effects';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { MessagesComponent, NewMessageDialog } from './components/messages/messages/messages.component';
+import { MessagesComponent } from './components/messages/messages/messages.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -49,7 +49,6 @@ import { ProfileEffects } from './store/effects/profile.effects';
     ProfileComponent,
     LandingComponent,
     MessagesComponent,
-    NewMessageDialog
   ],
   imports: [
     BrowserModule,

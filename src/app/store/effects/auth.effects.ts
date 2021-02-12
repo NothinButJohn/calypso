@@ -18,7 +18,6 @@ export class AuthEffects {
         return this.actions$.pipe(
             ofType(googleLogin),
             switchMap(() => {
-                console.log("inside auth effecct")
                 return from(this.fireAuth.login()).pipe(
                     map((uid) => {
                         return LoadUserProfile({uid})

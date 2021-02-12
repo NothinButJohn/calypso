@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, DocumentData, DocumentReference, QueryDocumentSnapshot, QueryFn, QuerySnapshot } from '@angular/fire/firestore';
-import { FireAuthService } from './fire-auth.service';
+import { AngularFirestore, QueryDocumentSnapshot, QuerySnapshot } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { map} from 'rxjs/operators';
 
-import { Message } from '../components/messages/messages/messages.component'
-import { Observable, Observer, of, Subject } from 'rxjs';
-import { concatAll, delay, map, switchMap, tap } from 'rxjs/operators';
-
-import * as MessagingActions from '../store/actions/messaging.actions'
+// temporary storing models
 
 export interface message{
   createdAt: string,
@@ -27,86 +23,38 @@ export interface messengerChatroom {
 })
 export class MessagingService {
 
-  private allUsernames: string[] = [];
-  private newChatroomMembers: string[] = [];
-
-
-
-
   constructor(
     private afs: AngularFirestore,
-    private fa: FireAuthService
   )
     {
 
     }
 
-    queryChatrooms(username: string){
-      console.log('username', username)
+    queryChatrooms(username: string): Observable<messengerChatroom[]> {
+      // query for collection of chatrooms @param: username: string is apart of
       return this.afs.collection('messages', ref => ref.where('members', 'array-contains', username)).get().pipe(
-        map((qds) => {
-          let chatrooms: messengerChatroom[] = [];
-          qds.docs.forEach((ele) => {
-            let cr = {
-              docId: ele.id,
-              title: ele.get('title'),
-              members: ele.get('members'),
+        map((querySnapshot: QuerySnapshot<unknown>) => {
+          let chatrooms: messengerChatroom[] = []; 
+          // extract querySnapshot into data model array
+          querySnapshot.docs.forEach((queryDocumentSnapshot: QueryDocumentSnapshot<unknown>) => {
+            let tempChatroom = {
+              docId: queryDocumentSnapshot.id,
+              title: queryDocumentSnapshot.get('title'),
+              members: queryDocumentSnapshot.get('members'),
               messageHistory: null
             }
-            chatrooms.push(cr)})
-            return chatrooms
+            chatrooms.push(tempChatroom)
+          })
+          return chatrooms
         }),
-        map((chatroomArray) => {
-          chatroomArray.forEach((cr) => {
-            cr.messageHistory = this.afs.collection(`messages/${cr}/messageHistory`).valueChanges()
+        map((chatrooms: messengerChatroom[]) => {
+          // query each chatroom using documentID to assign an Observable to listen to the messageHistory collection
+          chatrooms.forEach((chatroom: messengerChatroom) => {
+            chatroom.messageHistory = this.afs.collection(`messages/${chatroom.docId}/messageHistory`).valueChanges()
           })
-          return chatroomArray;
+          return chatrooms;
         })
       )
     }
-
-      filterAllUsernames(username: string){
-        console.log('filter value: ', username, "allUsernames: ", this.allUsernames, "val")
-        let filterValue = username.toLowerCase();
-        return this.allUsernames.filter(un => un.toLowerCase().indexOf(filterValue) === 0)
-      }
-
-      getNewChatroomMembers(): Observable<string[]>{
-        return of(this.newChatroomMembers)
-      }
-
-      getAllUsernames(){
-        return this.allUsernames
-      }
-      addNewChatMember(user: string){
-        if(!this.newChatroomMembers.includes(user)){
-          this.newChatroomMembers.push(user)
-        }
-      }
-      removeNewChatMember(user: string){
-        let index = this.newChatroomMembers.indexOf(user);
-        if(index >=0) {
-          this.newChatroomMembers.splice(index, 1);
-        }
-      }
-
-
-    queryAllUsernames(){
-      // console.log('query all usernames', this.allUsernames)
-      return this.afs.collection('users').get().pipe(
-        map(qs => {
-           qs.docs.forEach(qds => {
-            if(!this.allUsernames.includes(qds.get('profile.username'))){
-              this.allUsernames.push(qds.get('profile.username'))} 
-          })
-        })
-      )
-    }
-
-    createChatroom(){
-      // if()
-    }
-
-
 
 }
