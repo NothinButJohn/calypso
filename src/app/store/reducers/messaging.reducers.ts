@@ -1,11 +1,12 @@
 import { CollectionReference, DocumentReference, QueryDocumentSnapshot } from "@angular/fire/firestore";
 import { Action, createReducer, on } from '@ngrx/store';
+import { messengerChatroom } from "src/app/services/messaging.service";
 
 import * as MessagingActions from '../actions/messaging.actions';
 
 // defining the state shape
 export interface MessengerState {
-    chatrooms: any[],
+    chatrooms: messengerChatroom[],
     // selectedChatroom: DocumentReference<unknown>,
     // selectedChatroomMessageHistory: CollectionReference<unknown>
     // allUsernames: string[],

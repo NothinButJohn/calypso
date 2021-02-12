@@ -15,7 +15,7 @@ export interface messengerChatroom {
   docId: string,
   title: string[],
   members: string[],
-  messageHistory: Observable<unknown[]>
+  // messageHistory: Observable<unknown[]>
 }
 
 @Injectable({
@@ -47,13 +47,13 @@ export class MessagingService {
           })
           return chatrooms
         }),
-        map((chatrooms: messengerChatroom[]) => {
-          // query each chatroom using documentID to assign an Observable to listen to the messageHistory collection
-          chatrooms.forEach((chatroom: messengerChatroom) => {
-            chatroom.messageHistory = this.afs.collection(`messages/${chatroom.docId}/messageHistory`).valueChanges()
-          })
-          return chatrooms;
-        })
+        // map((chatrooms: messengerChatroom[]) => {
+        //   // query each chatroom using documentID to assign an Observable to listen to the messageHistory collection
+        //   chatrooms.forEach((chatroom: messengerChatroom) => {
+        //     chatroom.messageHistory = this.afs.collection(`messages/${chatroom.docId}/messageHistory`).valueChanges()
+        //   })
+        //   return chatrooms;
+        // })
       )
     }
 
