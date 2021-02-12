@@ -5,7 +5,7 @@ import * as MessagingActions from '../actions/messaging.actions';
 
 // defining the state shape
 export interface MessengerState {
-    chatrooms: QueryDocumentSnapshot<unknown>[],
+    chatrooms: any[],
     // selectedChatroom: DocumentReference<unknown>,
     // selectedChatroomMessageHistory: CollectionReference<unknown>
     // allUsernames: string[],
@@ -25,8 +25,8 @@ export const messagingReducer = createReducer<MessengerState>(
     on(MessagingActions.getChatroomsSuccess, (state, action): MessengerState => {
         console.log('in reducer: ', action.qds)
         return {
-            // ...state,
-            chatrooms: action.qds,
+            ...state,
+            // chatrooms: action.qds,
         }
     }),
 );
