@@ -21,8 +21,7 @@ export class AuthEffects {
                 console.log("inside auth effecct")
                 return from(this.fireAuth.login()).pipe(
                     map((uid) => {
-                        LoadUserProfile({uid})
-                        return googleLoginSuccess({uid})
+                        return LoadUserProfile({uid})
                     })
                 )
             }),
