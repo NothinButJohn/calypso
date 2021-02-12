@@ -25,8 +25,7 @@ export class MessagingService {
 
   constructor(
     private afs: AngularFirestore,
-  )
-    {
+  ) {
 
     }
 
