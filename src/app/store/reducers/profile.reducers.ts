@@ -22,7 +22,7 @@ export const ProfileReducer = createReducer<ProfileState>(
     InitialProfileState,
     on(ProfileActions.LoadUserProfileSuccess, (state,action): ProfileState  => {
         return {
-            ...action.profile
+            ...action.profile.profile
         }
     }),
 )
