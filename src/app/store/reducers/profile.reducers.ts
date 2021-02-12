@@ -14,7 +14,7 @@ export const InitialProfileState: ProfileState = {
     headerPicture: '',
     profilePicture: '',
     registration: '',
-    username: '',
+    username: 'ghosty',
     name: ''
 }
 

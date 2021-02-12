@@ -3,13 +3,13 @@ import { DocumentSnapshot, QueryDocumentSnapshot} from '@angular/fire/firestore'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { Observable, of, Subject, Subscription } from 'rxjs';
-import { map, startWith, tap, timestamp } from 'rxjs/operators';
+import { filter, map, startWith, tap, timestamp } from 'rxjs/operators';
 import { FireAuthService } from 'src/app/services/fire-auth.service';
 import { MessagingService, messengerChatroom } from 'src/app/services/messaging.service';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { chatroomsSelector } from 'src/app/store/selectors/messaging.selectors';
 import { getChatrooms } from 'src/app/store/actions/messaging.actions';
 export interface Message{
@@ -46,7 +46,9 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(getChatrooms());
-    this.chatrooms$ = this.store.select(chatroomsSelector)
+    this.chatrooms$ = this.store.select(chatroomsSelector).pipe(
+      tap((val) => console.log('val', val) )
+    )
     // this.store.select(chatroomsSelector).subscribe(x => console.log(x))
 
   }

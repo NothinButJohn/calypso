@@ -5,11 +5,11 @@
 <div class="flex-container">
     <div class="messages">
         container
-        <ng-container *ngIf="chatrooms$ | async as chatrooms">
+        <!-- <ng-container *ngIf="(chatrooms$ | async) as chatrooms">
             <ng-container *ngFor="chatroom of chatrooms">
                 {{chatroom.title}}
                 a chat
             </ng-container>
-        </ng-container>
+        </ng-container> -->
     </div>
 </div>
