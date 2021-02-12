@@ -46,17 +46,17 @@ export class MessagingService {
           })
           return chatrooms
         }),
-        map((chatrooms: messengerChatroom[]) => {
-          // query each chatroom using documentID to assign an Observable to listen to the messageHistory collection
-          chatrooms.forEach((chatroom: messengerChatroom) => {
-            chatroom.messageHistory = this.afs.collection(`messages/${chatroom.docId}/messageHistory`).valueChanges()
-          })
-          chatrooms.forEach((chatroom: messengerChatroom) => {
-            console.log("queryChatroomHistory", chatroom.messageHistory)
-          })
+        // map((chatrooms: messengerChatroom[]) => {
+        //   // query each chatroom using documentID to assign an Observable to listen to the messageHistory collection
+        //   chatrooms.forEach((chatroom: messengerChatroom) => {
+        //     chatroom.messageHistory = this.afs.collection(`messages/${chatroom.docId}/messageHistory`).valueChanges()
+        //   })
+        //   chatrooms.forEach((chatroom: messengerChatroom) => {
+        //     console.log("queryChatroomHistory", chatroom.messageHistory)
+        //   })
 
-          return chatrooms;
-        })
+        //   return chatrooms;
+        // })
       )
     }
 

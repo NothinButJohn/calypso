@@ -4,9 +4,9 @@ import { MessengerState } from '../reducers/messaging.reducers';
 
 const messengerFeatureSelector = createFeatureSelector<MessengerState>('messenger');
 
-export const chatroomListSelector = createSelector(
+export const chatroomsSelector = createSelector(
     messengerFeatureSelector,
     (state: MessengerState):any => {
-        return state?.chatrooms 
+        return state.chatrooms 
     }
 )

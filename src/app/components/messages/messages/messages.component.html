@@ -3,5 +3,13 @@
 
 
 <div class="flex-container">
-
+    <div class="messages">
+        container
+        <ng-template *ngIf="chatrooms$ | async as chatrooms">
+            <ng-template *ngFor="chatroom of chatrooms">
+                {{chatroom.title}}
+                a chat
+            </ng-template>
+        </ng-template>
+    </div>
 </div>

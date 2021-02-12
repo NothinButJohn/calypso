@@ -5,12 +5,12 @@ import { MatDialog} from '@angular/material/dialog';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { map, startWith, tap, timestamp } from 'rxjs/operators';
 import { FireAuthService } from 'src/app/services/fire-auth.service';
-import { MessagingService } from 'src/app/services/messaging.service';
+import { MessagingService, messengerChatroom } from 'src/app/services/messaging.service';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { Store } from '@ngrx/store';
-import { chatroomListSelector } from 'src/app/store/selectors/messaging.selectors';
+import { chatroomsSelector } from 'src/app/store/selectors/messaging.selectors';
 import { getChatrooms } from 'src/app/store/actions/messaging.actions';
 export interface Message{
   sender: string;
@@ -24,7 +24,9 @@ export interface Message{
   styleUrls: ['./messages.component.scss']
 })
 export class MessagesComponent implements OnInit, OnDestroy {
-
+  // observables
+  chatrooms$: Observable<messengerChatroom[]>
+  // form groups and controls
   chatForm = new FormGroup({
     text: new FormControl('', Validators.required)
   })
@@ -35,7 +37,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   constructor(
     private msg: MessagingService,
-    private fa: FireAuthService,
     public dialog: MatDialog,
     private store: Store
    ) 
@@ -44,8 +45,9 @@ export class MessagesComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit(): void {
-    // this.store.dispatch(getChatrooms());
-    this.msg.queryChatrooms('ghosty').subscribe();
+    this.store.dispatch(getChatrooms());
+    this.chatrooms$ = this.store.select(chatroomsSelector)
+    // this.msg.queryChatrooms('ghosty').subscribe();
 
   }
 
