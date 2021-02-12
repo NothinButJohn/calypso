@@ -6,7 +6,7 @@ export const getChatrooms = createAction(
 
 export const getChatroomsSuccess = createAction(
     '[Messaging] get chatrooms success',
-    props<{ qds }>()
+    props<{ docs }>()
 )
 
 export const getChatroomsError = createAction(

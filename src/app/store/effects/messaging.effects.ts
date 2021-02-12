@@ -4,7 +4,7 @@ import { MessagingService } from '../../services/messaging.service'
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY, of } from 'rxjs';
-import { map, mergeMap, catchError, switchMap, concatAll, withLatestFrom, concatMap, combineAll, mergeAll } from 'rxjs/operators';
+import { map, mergeMap, catchError, switchMap, concatAll, withLatestFrom, concatMap, combineAll, mergeAll, exhaustMap } from 'rxjs/operators';
 
 import * as MessagingActions from '../actions/messaging.actions'
 import { QueryDocumentSnapshot } from "@angular/fire/firestore";
@@ -28,10 +28,10 @@ export class MessagingEffects {
                 return this.store.select(usernameSelector).pipe(
                      map((selectVal) => {
                         console.log(selectVal)
-                        return this.msg.queryChatrooms(selectVal).get().pipe(
-                            map((qds)=>{
-                                console.log(qds.docs)
-                                return MessagingActions.getChatroomsSuccess({qds: qds.docs}) 
+                        return this.msg.queryChatrooms(selectVal).pipe(
+                            map((messengerChatroomArray)=>{
+                                console.log(messengerChatroomArray)
+                                return MessagingActions.getChatroomsSuccess({docs: messengerChatroomArray}) 
                             })
                         )
                     }),

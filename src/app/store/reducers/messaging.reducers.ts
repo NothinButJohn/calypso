@@ -13,7 +13,7 @@ export interface MessengerState {
 }
 
 export const initialMessengerState: MessengerState = {
-    chatrooms: Array(),
+    chatrooms: [],
     // selectedChatroom: null,
     // selectedChatroomMessageHistory: null,
     // allUsernames: Array(),
@@ -23,10 +23,9 @@ export const initialMessengerState: MessengerState = {
 export const messagingReducer = createReducer<MessengerState>(
     initialMessengerState,
     on(MessagingActions.getChatroomsSuccess, (state, action): MessengerState => {
-        console.log('in reducer: ', action.qds)
+        console.log('in reducer: ', action.docs)
         return {
-            ...state,
-            // chatrooms: action.qds,
+            chatrooms: action.docs
         }
     }),
 );

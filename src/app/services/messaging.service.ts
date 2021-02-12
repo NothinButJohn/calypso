@@ -9,6 +9,19 @@ import { concatAll, delay, map, switchMap, tap } from 'rxjs/operators';
 
 import * as MessagingActions from '../store/actions/messaging.actions'
 
+export interface message{
+  createdAt: string,
+  sender: string,
+  text: string,
+}
+
+export interface messengerChatroom {
+  docId: string,
+  title: string[],
+  members: string[],
+  messageHistory: Observable<unknown[]>
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,7 +30,7 @@ export class MessagingService {
   private allUsernames: string[] = [];
   private newChatroomMembers: string[] = [];
 
-  
+
 
 
   constructor(
@@ -30,7 +43,26 @@ export class MessagingService {
 
     queryChatrooms(username: string){
       console.log('username', username)
-      return this.afs.collection('messages', ref => ref.where('members', 'array-contains', username))
+      return this.afs.collection('messages', ref => ref.where('members', 'array-contains', username)).get().pipe(
+        map((qds) => {
+          let chatrooms: messengerChatroom[] = [];
+          qds.docs.forEach((ele) => {
+            let cr = {
+              docId: ele.id,
+              title: ele.get('title'),
+              members: ele.get('members'),
+              messageHistory: null
+            }
+            chatrooms.push(cr)})
+            return chatrooms
+        }),
+        map((chatroomArray) => {
+          chatroomArray.forEach((cr) => {
+            cr.messageHistory = this.afs.collection(`messages/${cr}/messageHistory`).valueChanges()
+          })
+          return chatroomArray;
+        })
+      )
     }
 
       filterAllUsernames(username: string){
