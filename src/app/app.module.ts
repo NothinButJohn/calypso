@@ -36,6 +36,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { messagingReducer } from './store/reducers/messaging.reducers';
 import { AuthReducer } from './store/reducers/auth.reducers';
 import { ProfileReducer } from './store/reducers/profile.reducers';
+import { AuthEffects } from './store/effects/auth.effects';
+import { ProfileEffects } from './store/effects/profile.effects';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,7 @@ import { ProfileReducer } from './store/reducers/profile.reducers';
     MatCardModule,
     MatMenuModule,
     StoreModule,
-    EffectsModule.forRoot([MessagingEffects]),
+    EffectsModule.forRoot([MessagingEffects, AuthEffects, ProfileEffects]),
     ReactiveFormsModule,
     MatIconModule,
     MatInputModule,
