@@ -10,6 +10,7 @@ import * as MessagingActions from '../actions/messaging.actions'
 import { QueryDocumentSnapshot } from "@angular/fire/firestore";
 import { Store } from "@ngrx/store";
 import { usernameSelector } from "../selectors/profile.selectors";
+import { Action } from "rxjs/internal/scheduler/Action";
 
 @Injectable({
     providedIn: 'root'
@@ -21,23 +22,6 @@ export class MessagingEffects {
         private store: Store
     ){}
 
-    // loadChatrooms$ = createEffect(() => {
-    //     return this.actions$.pipe(
-    //         ofType('[Messaging] get chatrooms'),
-    //         withLatestFrom(() => {
-    //             return this.store.select(usernameSelector).pipe(
-    //                  map((currentUserUsername: string) => {
-    //                     return this.msg.queryChatrooms(currentUserUsername).pipe(
-    //                         map((messengerChatrooms: messengerChatroom[])=>{
-    //                             console.log("within loadChatrooms$ effect, dispatching getChatroomsSuccess with:", messengerChatrooms)
-    //                             return MessagingActions.getChatroomsSuccess({ messengerChatrooms }) 
-    //                         })
-    //                     )
-    //                 })
-    //             )
-    //         })
-    //     )
-    // })
     loadChatrooms$ = createEffect(() => {
         return this.actions$.pipe(
             ofType('[Messaging] get chatrooms'),
@@ -50,6 +34,19 @@ export class MessagingEffects {
                     })
                 )
             }),concatAll()
+        )
+    })
+
+    loadChatroomHistory$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(MessagingActions.getChatroomHistory),
+            switchMap(action => {
+                return this.msg.queryChatroomHistory(action.docId).pipe(
+                    map((messageHistory) => {
+                        return MessagingActions.getChatroomHistorySuccess({result: messageHistory})
+                    })
+                )
+            })
         )
     })
 }

@@ -5,13 +5,13 @@ import { MatDialog} from '@angular/material/dialog';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, map, startWith, tap, timestamp } from 'rxjs/operators';
 import { FireAuthService } from 'src/app/services/fire-auth.service';
-import { MessagingService, messengerChatroom } from 'src/app/services/messaging.service';
+import { message, MessagingService, messengerChatroom } from 'src/app/services/messaging.service';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { select, Store } from '@ngrx/store';
-import { chatroomsSelector } from 'src/app/store/selectors/messaging.selectors';
-import { getChatrooms } from 'src/app/store/actions/messaging.actions';
+import { chatroomsSelector, selectedChatroomHistorySelector } from 'src/app/store/selectors/messaging.selectors';
+import { getChatroomHistory, getChatrooms } from 'src/app/store/actions/messaging.actions';
 export interface Message{
   sender: string;
   createdAt;
@@ -26,6 +26,7 @@ export interface Message{
 export class MessagesComponent implements OnInit, OnDestroy {
   // observables
   chatrooms$: Observable<messengerChatroom[]>
+  selectedChatroomHistory$: Observable<message[]>
   // form groups and controls
   chatForm = new FormGroup({
     text: new FormControl('', Validators.required)
@@ -49,11 +50,18 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.chatrooms$ = this.store.select(chatroomsSelector).pipe(
       tap((val) => console.log('val', val) )
     )
-    // this.store.select(chatroomsSelector).subscribe(x => console.log(x))
-
+    this.selectedChatroomHistory$ = this.store.select(selectedChatroomHistorySelector).pipe(
+      filter(d=>!!d),
+      tap((v) => console.log("sc", v))
+    )
   }
 
   ngOnDestroy() {
+
+  }
+
+  selectChatroom(docId: string) {
+    this.store.dispatch(getChatroomHistory({docId}))
 
   }
 }

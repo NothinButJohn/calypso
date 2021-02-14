@@ -1,6 +1,6 @@
 import { CollectionReference, DocumentReference, QueryDocumentSnapshot } from "@angular/fire/firestore";
 import { Action, createReducer, on } from '@ngrx/store';
-import { messengerChatroom } from "src/app/services/messaging.service";
+import { message, messengerChatroom } from "src/app/services/messaging.service";
 
 import * as MessagingActions from '../actions/messaging.actions';
 
@@ -8,7 +8,7 @@ import * as MessagingActions from '../actions/messaging.actions';
 export interface MessengerState {
     chatrooms: messengerChatroom[],
     // selectedChatroom: DocumentReference<unknown>,
-    // selectedChatroomMessageHistory: CollectionReference<unknown>
+    selectedChatroomMessageHistory: message[]
     // allUsernames: string[],
     // newChatroomMembers: string[]
 }
@@ -16,7 +16,7 @@ export interface MessengerState {
 export const initialMessengerState: MessengerState = {
     chatrooms: [],
     // selectedChatroom: null,
-    // selectedChatroomMessageHistory: null,
+    selectedChatroomMessageHistory: [],
     // allUsernames: Array(),
     // newChatroomMembers: Array()
 }
@@ -26,7 +26,14 @@ export const messagingReducer = createReducer<MessengerState>(
     on(MessagingActions.getChatroomsSuccess, (state, action): MessengerState => {
         console.log('in reducer: ', action.messengerChatrooms)
         return {
+            ...state,
             chatrooms: action.messengerChatrooms
+        }
+    }),
+    on(MessagingActions.getChatroomHistorySuccess, (state, action): MessengerState => {
+        return{
+            ...state,
+            selectedChatroomMessageHistory: action.result
         }
     }),
 );

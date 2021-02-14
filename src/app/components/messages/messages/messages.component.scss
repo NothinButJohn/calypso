@@ -1,3 +1,15 @@
+
+.flex-container {
+  display: flex;
+}
+.chatrooms__container{
+  flex-direction: row;
+}
+.chatroom__selection{
+  flex-direction: column;
+}
+
+
 .search {
   display: flex;
   flex-direction: column;
@@ -8,7 +20,8 @@
     flex-direction: column;
 }
 
-.chatRoom {
+
+.chatroom {
     display: flex;
 
     padding: 10px;
@@ -20,9 +33,7 @@
 
 }
 
-.flex-container {
-    display: flex;
-}
+
 
 .message {
   display: flex;
