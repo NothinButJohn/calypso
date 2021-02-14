@@ -20,7 +20,7 @@
             (matChipInputTokenEnd)="add($event)">
         </mat-chip-list>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-          <mat-option *ngFor="let fruit of filteredUsernames$ | async" [value]="username">
+          <mat-option *ngFor="let username of filteredUsernames$ | async" [value]="username">
             {{username}}
           </mat-option>
         </mat-autocomplete>
