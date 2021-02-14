@@ -9,7 +9,7 @@ import { select, Store } from '@ngrx/store';
 import { chatroomsSelector, selectedChatroomHistorySelector } from 'src/app/store/selectors/messaging.selectors';
 import { getChatroomHistory, getChatrooms, sendMessageToChatroom } from 'src/app/store/actions/messaging.actions';
 import { usernameSelector } from 'src/app/store/selectors/profile.selectors';
-import { MessagingEffects } from 'src/app/store/effects/messaging.effects';
+import { NewMessageDialogComponent } from './new-message-dialog/new-message-dialog.component'
 import * as firebase from 'firebase'
 @Component({
   selector: 'app-messages',
@@ -24,11 +24,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
   // form groups and controls
   chatroomForm = new FormGroup({
     textInput: new FormControl('', Validators.required)
-  })
-
-  searchForm = new FormGroup({
-    searchUsers: new FormControl('')
-  
   })
 
   constructor(
@@ -70,6 +65,13 @@ export class MessagesComponent implements OnInit, OnDestroy {
     }
     this.store.dispatch(sendMessageToChatroom({payload:newMessage}))
     this.chatroomForm.get('textInput').reset()
-    
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(NewMessageDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }

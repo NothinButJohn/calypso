@@ -1,0 +1,28 @@
+<mat-dialog-content>
+    <mat-form-field class="example-chip-list">
+        <mat-label>Favorite Fruits</mat-label>
+        <mat-chip-list #chipList aria-label="Fruit selection">
+          <mat-chip
+            *ngFor="let username of newChatmembers$"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="remove(username)">
+            {{username}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="New fruit..."
+            #newChatInput
+            [formControl]="newChatForm"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let fruit of filteredUsernames$ | async" [value]="username">
+            {{username}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+</mat-dialog-content>

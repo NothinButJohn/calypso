@@ -28,7 +28,7 @@ export class MessagingService {
     private afs: AngularFirestore,
     
   ) {
-    firebase.default.firestore.Timestamp.now()
+    
     }
 
     queryChatrooms(username: string): Observable<messengerChatroom[]> {
@@ -57,6 +57,16 @@ export class MessagingService {
   sendMessage(message: message, docId: string) {
     console.log('sent ', message, " in ", docId)
     this.afs.collection(`messages/${docId}/messageHistory`).add(message)
+  }
+
+  queryAllUsernames(): Observable<string[]> {
+    return this.afs.collection('users').get().pipe(
+      map((querySnapshot) => {
+        return querySnapshot.docs.map((user) => {
+          return user.get('profile.username')
+        })
+      })
+    )
   }
 
 }

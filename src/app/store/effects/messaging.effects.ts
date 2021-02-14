@@ -60,4 +60,17 @@ export class MessagingEffects {
             })
         ), { dispatch: false }
     )
+
+    loadAllUsernames$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(MessagingActions.getAllUsernames),
+            switchMap(() => {
+                return this.msg.queryAllUsernames().pipe(
+                    map((allUsers) => {
+                        return MessagingActions.getAllUsernamesSuccess({allUsers})
+                    })
+                )
+            })
+        )
+    })
 }

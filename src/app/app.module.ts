@@ -38,6 +38,7 @@ import { AuthReducer } from './store/reducers/auth.reducers';
 import { ProfileReducer } from './store/reducers/profile.reducers';
 import { AuthEffects } from './store/effects/auth.effects';
 import { ProfileEffects } from './store/effects/profile.effects';
+import {NewMessageDialogComponent} from './components/messages/messages/new-message-dialog/new-message-dialog.component'
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { ProfileEffects } from './store/effects/profile.effects';
     ProfileComponent,
     LandingComponent,
     MessagesComponent,
+    NewMessageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +77,8 @@ import { ProfileEffects } from './store/effects/profile.effects';
     MatAutocompleteModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatChipsModule
+    MatChipsModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

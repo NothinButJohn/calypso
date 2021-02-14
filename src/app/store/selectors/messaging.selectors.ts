@@ -24,3 +24,10 @@ export const selectedChatroomHistorySelector = createSelector(
         return state.selectedChatroomMessageHistory
     }
 )
+
+export const allUsersSelector = createSelector(
+    messengerFeatureSelector,
+    (state: MessengerState): any => {
+        return state.allUsernames
+    }
+)

@@ -9,7 +9,7 @@ export interface MessengerState {
     chatrooms: messengerChatroom[],
     selectedChatroom: string,
     selectedChatroomMessageHistory: message[]
-    // allUsernames: string[],
+    allUsernames: string[],
     // newChatroomMembers: string[]
 }
 
@@ -17,7 +17,7 @@ export const initialMessengerState: MessengerState = {
     chatrooms: [],
     selectedChatroom: '',
     selectedChatroomMessageHistory: [],
-    // allUsernames: Array(),
+    allUsernames: [],
     // newChatroomMembers: Array()
 }
 
@@ -37,4 +37,10 @@ export const messagingReducer = createReducer<MessengerState>(
             selectedChatroom: action.selectedDoc
         }
     }),
+    on(MessagingActions.getAllUsernamesSuccess, (state,action): MessengerState => {
+        return {
+            ...state,
+            allUsernames:action.allUsers
+        }
+    })
 );

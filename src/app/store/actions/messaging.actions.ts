@@ -1,6 +1,15 @@
 import { createAction, props } from '@ngrx/store';
 import { message, messengerChatroom } from 'src/app/services/messaging.service';
 
+export const getAllUsernames = createAction(
+    '[Messaging] get all usernames'
+)
+
+export const getAllUsernamesSuccess = createAction(
+    '[Messaging] get all usernames success',
+    props<{ allUsers: string[] }>()
+)
+
 export const getChatrooms = createAction(
     '[Messaging] get chatrooms',
 )
