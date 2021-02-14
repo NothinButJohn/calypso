@@ -39,7 +39,7 @@ import { allUsersSelector, newChatMembers } from "src/app/store/selectors/messag
 
         this.newChatMembers$.pipe(
             tap((v) => console.log('new mems',v))
-        )
+        ).subscribe()
 
         this.filteredUsernames$ = this.newChatForm.valueChanges.pipe(
             startWith(null),
@@ -50,14 +50,16 @@ import { allUsersSelector, newChatMembers } from "src/app/store/selectors/messag
         const input = event.input;
         const value = event.value;
 
-        this.store.dispatch(addMemberToNewChatroom({ user: value }))
+        // this.store.dispatch(addMemberToNewChatroom({ user: value }))
 
-        // this.newChatMembers$.pipe(
-        //     map(users => {
-        //         users.push(value.trim())
-        //         this.store.dispatch(addMemberToNewChatroom({ user: users }))
-        //     })
-        // )
+        this.newChatMembers$.pipe(
+            map(users => {
+                let th = []
+                users.forEach((v) => th.push(v))
+                th.push(value.trim())
+                this.store.dispatch(addMemberToNewChatroom({ user: th }))
+            })
+        ).subscribe()
     
         // *ngIf="( newChatMembers$ | async) as newChatMembers"
     
@@ -83,13 +85,15 @@ import { allUsersSelector, newChatMembers } from "src/app/store/selectors/messag
       }
     
       selected(event: MatAutocompleteSelectedEvent): void {
-        this.store.dispatch(addMemberToNewChatroom({ user: event.option.viewValue }))
-        // this.newChatMembers$.pipe(
-        //     map(users => {
-        //         users.push(event.option.viewValue)
-        //         this.store.dispatch(addMemberToNewChatroom({ user: users }))
-        //     })
-        // )
+        // this.store.dispatch(addMemberToNewChatroom({ user: event.option.viewValue }))
+        this.newChatMembers$.pipe(
+            map(users => {
+                let th = []
+                users.forEach((value) => th.push(value))
+                th.push(event.option.viewValue)
+                this.store.dispatch(addMemberToNewChatroom({ user: th }))
+            })
+        )
         this.newChatForm.reset();
       }
     

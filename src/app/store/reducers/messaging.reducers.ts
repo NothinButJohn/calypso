@@ -48,7 +48,7 @@ export const messagingReducer = createReducer<MessengerState>(
         
         return {
             ...state,
-            newChatroomMembers: state.newChatroomMembers.splice(state.newChatroomMembers.length, 0, action.user)
+            newChatroomMembers: action.user
         }
     })
 
