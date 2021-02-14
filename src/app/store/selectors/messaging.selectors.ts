@@ -11,6 +11,13 @@ export const chatroomsSelector = createSelector(
     }
 )
 
+export const selectedChatroomId = createSelector(
+    messengerFeatureSelector,
+    (state: MessengerState):any => {
+        return state.selectedChatroom
+    }
+)
+
 export const selectedChatroomHistorySelector = createSelector(
     messengerFeatureSelector,
     (state: MessengerState):any => {

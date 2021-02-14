@@ -7,7 +7,7 @@ import * as MessagingActions from '../actions/messaging.actions';
 // defining the state shape
 export interface MessengerState {
     chatrooms: messengerChatroom[],
-    // selectedChatroom: DocumentReference<unknown>,
+    selectedChatroom: string,
     selectedChatroomMessageHistory: message[]
     // allUsernames: string[],
     // newChatroomMembers: string[]
@@ -15,7 +15,7 @@ export interface MessengerState {
 
 export const initialMessengerState: MessengerState = {
     chatrooms: [],
-    // selectedChatroom: null,
+    selectedChatroom: '',
     selectedChatroomMessageHistory: [],
     // allUsernames: Array(),
     // newChatroomMembers: Array()
@@ -33,7 +33,8 @@ export const messagingReducer = createReducer<MessengerState>(
     on(MessagingActions.getChatroomHistorySuccess, (state, action): MessengerState => {
         return{
             ...state,
-            selectedChatroomMessageHistory: action.result
+            selectedChatroomMessageHistory: action.result,
+            selectedChatroom: action.selectedDoc
         }
     }),
 );

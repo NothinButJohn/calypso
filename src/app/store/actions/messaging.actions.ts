@@ -1,5 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { message, messengerChatroom } from 'src/app/services/messaging.service';
 
 export const getChatrooms = createAction(
@@ -23,6 +22,11 @@ export const getChatroomHistory = createAction(
 
 export const getChatroomHistorySuccess = createAction(
     '[Messaging] get chatroom history success',
-    props<{ result: message[] }>()
+    props<{ result: message[], selectedDoc: string }>()
+)
+
+export const sendMessageToChatroom = createAction(
+    '[Messaging] send message',
+    props<{ payload: message }>()
 )
 

@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, QueryDocumentSnapshot, QuerySnapshot } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map} from 'rxjs/operators';
+import * as firebase from 'firebase'
 
 // temporary storing models
 
 export interface message{
-  createdAt: string,
+  createdAt: firebase.default.firestore.Timestamp,
   sender: string,
   text: string,
 }
@@ -25,8 +26,9 @@ export class MessagingService {
 
   constructor(
     private afs: AngularFirestore,
+    
   ) {
-
+    firebase.default.firestore.Timestamp.now()
     }
 
     queryChatrooms(username: string): Observable<messengerChatroom[]> {
@@ -50,7 +52,11 @@ export class MessagingService {
     }
 
     queryChatroomHistory(docId: string) {
-      return this.afs.collection<message>(`messages/${docId}/messageHistory`).valueChanges()
+      return this.afs.collection<message>(`messages/${docId}/messageHistory`, ref => ref.orderBy('createdAt')).valueChanges()
     }
+  sendMessage(message: message, docId: string) {
+    console.log('sent ', message, " in ", docId)
+    this.afs.collection(`messages/${docId}/messageHistory`).add(message)
+  }
 
 }

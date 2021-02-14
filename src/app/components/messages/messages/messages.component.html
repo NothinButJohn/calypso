@@ -4,7 +4,7 @@
 
 <div class="flex-container">
         <ng-container *ngIf="(chatrooms$ | async) as chatrooms">
-            <div class="chatrooms__container" >
+            <div class="chatrooms__container">
                 <ng-container *ngFor="let chatroom of chatrooms">
                     <div class="chatroom__selection" (click)="selectChatroom(chatroom.docId)">
                         {{chatroom.title}}
@@ -13,16 +13,21 @@
             </div>
         </ng-container>
 
-    <div class="chatroom" *ngIf="selectedChatroomHistory$ | async as messages">
-        <ng-template *ngFor="let message of messages">
-            <div class="messsage">
-                {{message.text}}
-            </div>
-        </ng-template>
-
-        <div class="controls">
-            <input class="chat__input" />
-            <button class="send__button">Send</button>
-        </div>
-    </div>
+    <ng-container *ngIf="(selectedChatroomHistory$ | async) as messages">
+        <!-- <div class="chatroom__container"> -->
+            <!-- <form [formGroup]="chatroomForm" > -->
+                <div class="chatroom" *ngIf="currentUser$ | async as username" >
+                    <ng-container *ngFor="let message of messages">
+                        <div [ngClass]="message.sender == username ? 'sent message' : 'received message' ">
+                            <p>{{message.text}}</p>
+                        </div>
+                    </ng-container>
+                    <div class="controls" [formGroup]="chatroomForm">
+                        <input class="chat__input" formControlName="textInput" />
+                        <button class="send__button" (click)="sendMessage(username)">Send</button>
+                    </div>
+                </div>
+            <!-- </form> -->
+        <!-- </div> -->
+    </ng-container>
 </div>

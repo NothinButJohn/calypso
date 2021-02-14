@@ -11,6 +11,7 @@ import { QueryDocumentSnapshot } from "@angular/fire/firestore";
 import { Store } from "@ngrx/store";
 import { usernameSelector } from "../selectors/profile.selectors";
 import { Action } from "rxjs/internal/scheduler/Action";
+import { selectedChatroomId } from "../selectors/messaging.selectors";
 
 @Injectable({
     providedIn: 'root'
@@ -43,10 +44,20 @@ export class MessagingEffects {
             switchMap(action => {
                 return this.msg.queryChatroomHistory(action.docId).pipe(
                     map((messageHistory) => {
-                        return MessagingActions.getChatroomHistorySuccess({result: messageHistory})
+                        return MessagingActions.getChatroomHistorySuccess({result: messageHistory, selectedDoc: action.docId})
                     })
                 )
             })
         )
     })
+
+    sendMessage$ = createEffect(() => 
+        this.actions$.pipe(
+            ofType(MessagingActions.sendMessageToChatroom),
+            withLatestFrom(this.store.select(selectedChatroomId)),
+            map(([action, id]) => {
+                this.msg.sendMessage(action.payload, id)
+            })
+        ), { dispatch: false }
+    )
 }
