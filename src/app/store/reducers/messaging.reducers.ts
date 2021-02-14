@@ -3,6 +3,7 @@ import { Action, createReducer, on } from '@ngrx/store';
 import { message, messengerChatroom } from "src/app/services/messaging.service";
 
 import * as MessagingActions from '../actions/messaging.actions';
+import { newChatMembers } from "../selectors/messaging.selectors";
 
 // defining the state shape
 export interface MessengerState {
@@ -10,7 +11,7 @@ export interface MessengerState {
     selectedChatroom: string,
     selectedChatroomMessageHistory: message[]
     allUsernames: string[],
-    // newChatroomMembers: string[]
+    newChatroomMembers: string[]
 }
 
 export const initialMessengerState: MessengerState = {
@@ -18,7 +19,7 @@ export const initialMessengerState: MessengerState = {
     selectedChatroom: '',
     selectedChatroomMessageHistory: [],
     allUsernames: [],
-    // newChatroomMembers: Array()
+    newChatroomMembers: []
 }
 
 export const messagingReducer = createReducer<MessengerState>(
@@ -42,5 +43,13 @@ export const messagingReducer = createReducer<MessengerState>(
             ...state,
             allUsernames:action.allUsers
         }
+    }),
+    on(MessagingActions.addMemberToNewChatroom, (state,action): MessengerState => {
+        
+        return {
+            ...state,
+            newChatroomMembers: state.newChatroomMembers.splice(state.newChatroomMembers.length, 0, action.user)
+        }
     })
+
 );

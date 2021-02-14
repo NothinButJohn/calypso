@@ -6,7 +6,7 @@
         <ng-container *ngIf="(chatrooms$ | async) as chatrooms">
             <div class="chatrooms__container">
                 <div>
-                    <button (click)="openDialog()">NewMsg</button>
+                    <button (click)=openDialog()>NewMsg</button>
                 </div>
                 <ng-container *ngFor="let chatroom of chatrooms">
                     <div class="chatroom__selection" (click)="selectChatroom(chatroom.docId)">

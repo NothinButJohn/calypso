@@ -39,3 +39,12 @@ export const sendMessageToChatroom = createAction(
     props<{ payload: message }>()
 )
 
+export const addMemberToNewChatroom = createAction(
+    '[Messaging Dialog] add member to new chatroom',
+    props<{ user }>()
+)
+export const removeMemberFromNewChatroom = createAction(
+    '[Messaging Dialog] remove member from new chatroom',
+    props<{ user: string }>()
+)
+

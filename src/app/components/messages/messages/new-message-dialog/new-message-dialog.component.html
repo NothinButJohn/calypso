@@ -1,15 +1,18 @@
 <mat-dialog-content>
     <mat-form-field class="example-chip-list">
         <mat-label>Favorite Fruits</mat-label>
-        <mat-chip-list #chipList aria-label="Fruit selection">
-          <mat-chip
-            *ngFor="let username of newChatmembers$"
+        <mat-chip-list #chipList aria-label="Fruit selection" >
+          
+            <mat-chip
+            *ngFor="let username of newChatMembers$ | async"
             [selectable]="selectable"
             [removable]="removable"
             (removed)="remove(username)">
             {{username}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
+          
+
           <input
             placeholder="New fruit..."
             #newChatInput

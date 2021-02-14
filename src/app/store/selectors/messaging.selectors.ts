@@ -31,3 +31,10 @@ export const allUsersSelector = createSelector(
         return state.allUsernames
     }
 )
+
+export const newChatMembers = createSelector(
+    messengerFeatureSelector,
+    (state: MessengerState): any => {
+        return state.newChatroomMembers
+    }
+)
