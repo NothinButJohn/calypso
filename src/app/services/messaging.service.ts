@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, QueryDocumentSnapshot, QuerySnapshot } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map} from 'rxjs/operators';
 import * as firebase from 'firebase'
 
@@ -67,6 +67,15 @@ export class MessagingService {
         })
       })
     )
+  }
+
+  createNewChatroom(data, message): Promise<string>{
+    return this.afs.collection('messages').add(data).then(
+      (docRef)=>{
+        this.afs.collection(`messages/${docRef.id}/messageHistory`).add(message)
+        return docRef.id;
+      }
+      )
   }
 
 }

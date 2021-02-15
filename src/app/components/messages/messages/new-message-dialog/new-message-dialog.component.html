@@ -1,8 +1,8 @@
 <mat-dialog-content>
     <mat-form-field class="example-chip-list">
-        <mat-label>Favorite Fruits</mat-label>
-        <mat-chip-list #chipList aria-label="Fruit selection" >
-          
+        <mat-label>Create New Chat</mat-label>
+        <mat-chip-list #chipList aria-label="Chat member selection" >
+          <!-- <ng-container  *ngIf="( newChatMembers$ | async) as newChatMembers"> -->
             <mat-chip
             *ngFor="let username of newChatMembers$ | async"
             [selectable]="selectable"
@@ -11,10 +11,10 @@
             {{username}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
-          
+        <!-- </ng-container> -->
 
           <input
-            placeholder="New fruit..."
+            placeholder="Chatroom members..."
             #newChatInput
             [formControl]="newChatForm"
             [matAutocomplete]="auto"
@@ -27,5 +27,9 @@
             {{username}}
           </mat-option>
         </mat-autocomplete>
+        <mat-dialog-actions>
+            <button [mat-dialog-close]="true" [disabled]="creationDisabled" (click)="create()">Create</button>
+            <button [mat-dialog-close]="false">Cancel</button>
+        </mat-dialog-actions>
       </mat-form-field>
 </mat-dialog-content>

@@ -41,10 +41,23 @@ export const sendMessageToChatroom = createAction(
 
 export const addMemberToNewChatroom = createAction(
     '[Messaging Dialog] add member to new chatroom',
-    props<{ user }>()
+    props<{ member: string }>()
 )
 export const removeMemberFromNewChatroom = createAction(
     '[Messaging Dialog] remove member from new chatroom',
-    props<{ user: string }>()
+    props<{ member: string }>()
+)
+
+export const createNewChatroom = createAction(
+    '[Messaging Dialog] create new chatroom',
+    props<{ payload: message }>()
+)
+export const createNewChatroomTemp = createAction(
+    '[Messaging Dialog] create new chatroom temp'
+)
+
+export const firstMessageNewChatroom = createAction(
+    '[Messaging] persist new chatroom',
+    props<{ payload: message }>()
 )
 

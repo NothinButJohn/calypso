@@ -2,12 +2,12 @@ import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, El
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { Observable, } from 'rxjs';
-import { filter, tap} from 'rxjs/operators';
+import { filter, map, tap, withLatestFrom} from 'rxjs/operators';
 import { message, MessagingService, messengerChatroom } from 'src/app/services/messaging.service';
 
 import { select, Store } from '@ngrx/store';
-import { chatroomsSelector, selectedChatroomHistorySelector } from 'src/app/store/selectors/messaging.selectors';
-import { getChatroomHistory, getChatrooms, sendMessageToChatroom } from 'src/app/store/actions/messaging.actions';
+import { chatroomsSelector, newChatMembers, selectedChatroomHistorySelector } from 'src/app/store/selectors/messaging.selectors';
+import { addMemberToNewChatroom, createNewChatroom, firstMessageNewChatroom, getChatroomHistory, getChatrooms, sendMessageToChatroom } from 'src/app/store/actions/messaging.actions';
 import { usernameSelector } from 'src/app/store/selectors/profile.selectors';
 import { NewMessageDialogComponent } from './new-message-dialog/new-message-dialog.component'
 import * as firebase from 'firebase'
@@ -21,10 +21,14 @@ export class MessagesComponent implements OnInit, OnDestroy {
   chatrooms$: Observable<messengerChatroom[]>
   selectedChatroomHistory$: Observable<message[]>
   currentUser$: Observable<string>
+  newChatUsers$: Observable<string[]>
   // form groups and controls
   chatroomForm = new FormGroup({
     textInput: new FormControl('', Validators.required)
   })
+
+  newChatroom = false;
+  showControls = false;
 
   constructor(
     private msg: MessagingService,
@@ -45,6 +49,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
       filter(d=>!!d[0]),
       tap((v) => console.log("sc", v))
     )
+    this.newChatUsers$ = this.store.select(newChatMembers)
+    
 
 
   }
@@ -55,6 +61,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   selectChatroom(docId: string) {
     this.store.dispatch(getChatroomHistory({docId}))
+    this.newChatroom = false;
+    this.showControls = true;
   }
 
   sendMessage(username: string){
@@ -63,7 +71,13 @@ export class MessagesComponent implements OnInit, OnDestroy {
       sender: username,
       createdAt: firebase.default.firestore.Timestamp.now()
     }
-    this.store.dispatch(sendMessageToChatroom({payload:newMessage}))
+    if(this.newChatroom){
+      this.store.dispatch(createNewChatroom({payload: newMessage}))
+      this.newChatroom = false
+    }else{
+      this.store.dispatch(sendMessageToChatroom({payload:newMessage}))
+    }
+
     this.chatroomForm.get('textInput').reset()
   }
 
@@ -72,6 +86,30 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      if(result){
+        this.newChatroom = true;
+        this.chatrooms$.pipe(
+          withLatestFrom(this.store.select<string[]>(newChatMembers)),
+          map(([chatrooms, newChatUsernames]) => {
+            let matchCount=0;
+            chatrooms.forEach((chatroom) => {
+              newChatUsernames.forEach(newChatUsername => {
+                if(chatroom.members.includes(newChatUsername)){
+                  matchCount++;
+                }else{
+                  console.log('n')
+                }
+              })
+              if(chatroom.members.length == matchCount){
+                console.log(chatroom.docId)
+                this.selectChatroom(chatroom.docId)
+              }
+              matchCount = 0
+            })
+          })
+        ).subscribe()
+      }
     });
+
   }
 }

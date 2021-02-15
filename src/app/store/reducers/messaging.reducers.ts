@@ -45,10 +45,15 @@ export const messagingReducer = createReducer<MessengerState>(
         }
     }),
     on(MessagingActions.addMemberToNewChatroom, (state,action): MessengerState => {
-        
         return {
             ...state,
-            newChatroomMembers: action.user
+            newChatroomMembers: [...state.newChatroomMembers, action.member]
+        }
+    }),
+    on(MessagingActions.removeMemberFromNewChatroom, (state,action): MessengerState => {
+        return {
+            ...state,
+            newChatroomMembers: state.newChatroomMembers.filter((username) => username !== action.member)
         }
     })
 

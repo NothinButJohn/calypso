@@ -1,14 +1,15 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
 import { Component, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { AbstractControl, FormControl, ValidatorFn, Validators } from "@angular/forms";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { Store } from "@ngrx/store";
 import { Observable, of } from "rxjs";
-import { map, startWith, switchMap, tap } from "rxjs/operators";
-import { addMemberToNewChatroom, getAllUsernames } from "src/app/store/actions/messaging.actions";
+import { map, startWith, switchMap, tap, withLatestFrom } from "rxjs/operators";
+import { addMemberToNewChatroom, getAllUsernames, removeMemberFromNewChatroom } from "src/app/store/actions/messaging.actions";
 import { allUsersSelector, newChatMembers } from "src/app/store/selectors/messaging.selectors";
+import { usernameSelector } from 'src/app/store/selectors/profile.selectors';
 
 @Component({
     selector: 'new-message-dialog',
@@ -24,7 +25,7 @@ import { allUsersSelector, newChatMembers } from "src/app/store/selectors/messag
     allUsers$: Observable<string[]>
     newChatForm = new FormControl('')
     newChatMembers$: Observable<string[]>
-    // newChatMembers$: Observable<string[]> = of<string[]>([])
+    creationDisabled = true
 
     constructor(private store: Store) {
 
@@ -38,32 +39,28 @@ import { allUsersSelector, newChatMembers } from "src/app/store/selectors/messag
         this.newChatMembers$ = this.store.select(newChatMembers)
 
         this.newChatMembers$.pipe(
-            tap((v) => console.log('new mems',v))
+            tap((v) => console.log('newChatMembers: ',v)),
+            map((newChatMembers) => {
+                if(newChatMembers.length > 0){
+                    this.creationDisabled = false
+                    console.log('false', newChatMembers.length, this.creationDisabled)
+                } else {
+                    true
+                }
+            })
         ).subscribe()
 
         this.filteredUsernames$ = this.newChatForm.valueChanges.pipe(
             startWith(null),
-            switchMap((fruit) => fruit ? this._filter(fruit) : this.allUsers$.pipe(map((user) => user.slice()))))
+            switchMap((username) => username ? this._filter(username) : this.allUsers$.pipe(map((user) => user.slice()))))
       }
      
       add(event: MatChipInputEvent): void {
         const input = event.input;
         const value = event.value;
 
-        // this.store.dispatch(addMemberToNewChatroom({ user: value }))
+        this.store.dispatch(addMemberToNewChatroom({ member: value.trim() }))
 
-        this.newChatMembers$.pipe(
-            map(users => {
-                let th = []
-                users.forEach((v) => th.push(v))
-                th.push(value.trim())
-                this.store.dispatch(addMemberToNewChatroom({ user: th }))
-            })
-        ).subscribe()
-    
-        // *ngIf="( newChatMembers$ | async) as newChatMembers"
-    
-        // Reset the input value
         if (input) {
           input.value = '';
         }
@@ -72,28 +69,11 @@ import { allUsersSelector, newChatMembers } from "src/app/store/selectors/messag
       }
     
       remove(username: string): void {
-        this.newChatMembers$.pipe(
-            map(usernames => {
-                let index = usernames.indexOf(username)
-                if (index >= 0) {
-                    usernames.splice(index, 1);
-                  }
-            })
-        )
-    
-
+        this.store.dispatch(removeMemberFromNewChatroom({ member: username }))
       }
     
       selected(event: MatAutocompleteSelectedEvent): void {
-        // this.store.dispatch(addMemberToNewChatroom({ user: event.option.viewValue }))
-        this.newChatMembers$.pipe(
-            map(users => {
-                let th = []
-                users.forEach((value) => th.push(value))
-                th.push(event.option.viewValue)
-                this.store.dispatch(addMemberToNewChatroom({ user: th }))
-            })
-        )
+        this.store.dispatch(addMemberToNewChatroom({ member: event.option.viewValue }))
         this.newChatForm.reset();
       }
     
@@ -105,5 +85,17 @@ import { allUsersSelector, newChatMembers } from "src/app/store/selectors/messag
                 console.log(array); 
                 return array.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0)})
             )
+      }
+
+      create(){
+        this.newChatMembers$.pipe(
+          withLatestFrom(this.store.select(usernameSelector)),
+          map(([mem, user]) =>{
+            if(!mem.includes(user)){
+              this.store.dispatch(addMemberToNewChatroom({member: user}))
+            }
+           
+          })
+        ).subscribe()
       }
   }

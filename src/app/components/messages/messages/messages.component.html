@@ -2,7 +2,7 @@
 
 
 
-<div class="flex-container">
+<div class="flex-container" *ngIf="currentUser$ | async as username" >
         <ng-container *ngIf="(chatrooms$ | async) as chatrooms">
             <div class="chatrooms__container">
                 <div>
@@ -16,21 +16,26 @@
             </div>
         </ng-container>
 
-    <ng-container *ngIf="(selectedChatroomHistory$ | async) as messages">
+    <div *ngIf="newChatroom">
+        <div *ngFor="let user of newChatUsers$ | async" >{{user}}</div>
+    </div>
+        <ng-container *ngIf="!newChatroom">
         <!-- <div class="chatroom__container"> -->
             <!-- <form [formGroup]="chatroomForm" > -->
-                <div class="chatroom" *ngIf="currentUser$ | async as username" >
+                <div class="chatroom" *ngIf="(selectedChatroomHistory$ | async) as messages">
                     <ng-container *ngFor="let message of messages">
                         <div [ngClass]="message.sender == username ? 'sent message' : 'received message' ">
                             <p>{{message.text}}</p>
                         </div>
                     </ng-container>
-                    <div class="controls" [formGroup]="chatroomForm">
+                </div>
+        </ng-container>
+                    <div class="controls" [formGroup]="chatroomForm" *ngIf="newChatroom || showControls">
                         <input class="chat__input" formControlName="textInput" />
                         <button class="send__button" (click)="sendMessage(username)">Send</button>
                     </div>
-                </div>
+
             <!-- </form> -->
         <!-- </div> -->
-    </ng-container>
+    
 </div>
