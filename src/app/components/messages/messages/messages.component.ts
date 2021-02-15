@@ -50,9 +50,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
       tap((v) => console.log("sc", v))
     )
     this.newChatUsers$ = this.store.select(newChatMembers)
-    
-
-
   }
 
   ngOnDestroy() {

@@ -52,7 +52,16 @@ import { usernameSelector } from 'src/app/store/selectors/profile.selectors';
 
         this.filteredUsernames$ = this.newChatForm.valueChanges.pipe(
             startWith(null),
-            switchMap((username) => username ? this._filter(username) : this.allUsers$.pipe(map((user) => user.slice()))))
+            switchMap((username) => username ? this._filter(username) : this.allUsers$.pipe(map((user) => user.slice()))),
+            withLatestFrom(this.newChatMembers$),
+            map(([filtered, newChat]) => {
+              let newFilter = filtered
+              console.log('filter', filtered, newChat, newFilter)
+              newChat.forEach((newChatUser) => { newFilter = filtered.filter((fuser) => fuser !== newChatUser)})
+              return newFilter
+            })
+            
+            )
       }
      
       add(event: MatChipInputEvent): void {
@@ -88,14 +97,15 @@ import { usernameSelector } from 'src/app/store/selectors/profile.selectors';
       }
 
       create(){
-        this.newChatMembers$.pipe(
-          withLatestFrom(this.store.select(usernameSelector)),
-          map(([mem, user]) =>{
-            if(!mem.includes(user)){
-              this.store.dispatch(addMemberToNewChatroom({member: user}))
-            }
+        // this.newChatMembers$.pipe(
+        //   withLatestFrom(this.store.select(usernameSelector)),
+        //   map(([mem, user]) =>{
+        //     if(!mem.includes(user)){
+        //       this.store.dispatch(addMemberToNewChatroom({member: user}))
+        //     }
            
-          })
-        ).subscribe()
+        //   })
+        // ).subscribe()
+
       }
   }
