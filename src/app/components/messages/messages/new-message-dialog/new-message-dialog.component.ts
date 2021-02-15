@@ -55,10 +55,10 @@ import { usernameSelector } from 'src/app/store/selectors/profile.selectors';
             switchMap((username) => username ? this._filter(username) : this.allUsers$.pipe(map((user) => user.slice()))),
             withLatestFrom(this.newChatMembers$),
             map(([filtered, newChat]) => {
-              let newFilter = filtered
-              console.log('filter', filtered, newChat, newFilter)
-              newChat.forEach((newChatUser) => { newFilter = filtered.filter((fuser) => fuser !== newChatUser)})
-              return newFilter
+              // let newFilter = filtered
+              console.log('filter', filtered, newChat)
+              newChat.forEach((newChatUser) => { filtered = filtered.filter((fuser) => fuser !== newChatUser)})
+              return filtered
             })
             
             )
@@ -97,15 +97,15 @@ import { usernameSelector } from 'src/app/store/selectors/profile.selectors';
       }
 
       create(){
-        // this.newChatMembers$.pipe(
-        //   withLatestFrom(this.store.select(usernameSelector)),
-        //   map(([mem, user]) =>{
-        //     if(!mem.includes(user)){
-        //       this.store.dispatch(addMemberToNewChatroom({member: user}))
-        //     }
+        this.newChatMembers$.pipe(
+          withLatestFrom(this.store.select(usernameSelector)),
+          map(([mem, user]) =>{
+            if(!mem.includes(user)){
+              this.store.dispatch(addMemberToNewChatroom({member: user}))
+            }
            
-        //   })
-        // ).subscribe()
+          })
+        ).subscribe()
 
       }
   }

@@ -6,7 +6,7 @@ import { filter, map, tap, withLatestFrom} from 'rxjs/operators';
 import { message, MessagingService, messengerChatroom } from 'src/app/services/messaging.service';
 
 import { select, Store } from '@ngrx/store';
-import { chatroomsSelector, newChatMembers, selectedChatroomHistorySelector } from 'src/app/store/selectors/messaging.selectors';
+import { chatroomsSelector, newChatMembers, selectedChatroomHistorySelector, getChatroomSelector } from 'src/app/store/selectors/messaging.selectors';
 import { addMemberToNewChatroom, createNewChatroom, firstMessageNewChatroom, getChatroomHistory, getChatrooms, sendMessageToChatroom } from 'src/app/store/actions/messaging.actions';
 import { usernameSelector } from 'src/app/store/selectors/profile.selectors';
 import { NewMessageDialogComponent } from './new-message-dialog/new-message-dialog.component'
@@ -19,6 +19,7 @@ import * as firebase from 'firebase'
 export class MessagesComponent implements OnInit, OnDestroy {
   // observables
   chatrooms$: Observable<messengerChatroom[]>
+  selectedChatroom$: Observable<any>
   selectedChatroomHistory$: Observable<message[]>
   currentUser$: Observable<string>
   newChatUsers$: Observable<string[]>
@@ -50,6 +51,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
       tap((v) => console.log("sc", v))
     )
     this.newChatUsers$ = this.store.select(newChatMembers)
+
+    
   }
 
   ngOnDestroy() {
@@ -57,6 +60,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   selectChatroom(docId: string) {
+    this.selectedChatroom$ = this.store.select(getChatroomSelector, {docId})
     this.store.dispatch(getChatroomHistory({docId}))
     this.newChatroom = false;
     this.showControls = true;
@@ -71,10 +75,11 @@ export class MessagesComponent implements OnInit, OnDestroy {
     if(this.newChatroom){
       this.store.dispatch(createNewChatroom({payload: newMessage}))
       this.newChatroom = false
+      
     }else{
       this.store.dispatch(sendMessageToChatroom({payload:newMessage}))
     }
-
+    this.store.dispatch(getChatrooms());
     this.chatroomForm.get('textInput').reset()
   }
 

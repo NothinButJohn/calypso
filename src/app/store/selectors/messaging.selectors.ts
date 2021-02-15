@@ -38,3 +38,12 @@ export const newChatMembers = createSelector(
         return state.newChatroomMembers
     }
 )
+
+export const getChatroomSelector = createSelector(
+    messengerFeatureSelector,
+    (state: MessengerState, props): any => {
+        let index = state.chatrooms.findIndex((chatroom) => chatroom.docId == props.docId)
+        console.log('inside getchatroom selector; propid: ' ,props.docId, state[index], index)
+        return state.chatrooms[index]
+    }
+)

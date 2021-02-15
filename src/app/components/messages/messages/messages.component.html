@@ -16,12 +16,23 @@
             </div>
         </ng-container>
 
+
+
     <div *ngIf="newChatroom">
+        Creating a new chatroom with: 
         <div *ngFor="let user of newChatUsers$ | async" >{{user}}</div>
     </div>
         <ng-container *ngIf="!newChatroom">
-        <!-- <div class="chatroom__container"> -->
-            <!-- <form [formGroup]="chatroomForm" > -->
+            <ng-container *ngIf="(selectedChatroom$ | async) as chatroom">
+                <div class="chatroom__header" >
+                    <h2>{{chatroom.title}}</h2>
+                    <button mat-mini-fab color="primary" aria-label="Chatroom Options">
+                        <mat-icon>menu</mat-icon>
+                      </button>
+                </div>
+            </ng-container>
+
+
                 <div class="chatroom" *ngIf="(selectedChatroomHistory$ | async) as messages">
                     <ng-container *ngFor="let message of messages">
                         <div [ngClass]="message.sender == username ? 'sent message' : 'received message' ">
@@ -34,8 +45,5 @@
                         <input class="chat__input" formControlName="textInput" />
                         <button class="send__button" (click)="sendMessage(username)">Send</button>
                     </div>
-
-            <!-- </form> -->
-        <!-- </div> -->
     
 </div>
