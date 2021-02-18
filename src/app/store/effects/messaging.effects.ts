@@ -88,4 +88,15 @@ export class MessagingEffects {
         )
     })
 
+    changeChatroomTitle$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(MessagingActions.setChatroomTitle),
+            map((action) => {
+                this.msg.setChatroomTitle(action.docId, action.title)
+                return MessagingActions.getChatrooms()
+            })
+        )
+    })
+
 }
+

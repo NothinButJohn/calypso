@@ -7,7 +7,7 @@ import { message, MessagingService, messengerChatroom } from 'src/app/services/m
 
 import { select, Store } from '@ngrx/store';
 import { chatroomsSelector, newChatMembers, selectedChatroomHistorySelector, getChatroomSelector } from 'src/app/store/selectors/messaging.selectors';
-import { addMemberToNewChatroom, createNewChatroom, firstMessageNewChatroom, getChatroomHistory, getChatrooms, sendMessageToChatroom } from 'src/app/store/actions/messaging.actions';
+import { addMemberToNewChatroom, createNewChatroom, firstMessageNewChatroom, getChatroomHistory, getChatrooms, sendMessageToChatroom, setChatroomTitle } from 'src/app/store/actions/messaging.actions';
 import { usernameSelector } from 'src/app/store/selectors/profile.selectors';
 import { NewMessageDialogComponent } from './new-message-dialog/new-message-dialog.component'
 import * as firebase from 'firebase'
@@ -25,7 +25,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
   newChatUsers$: Observable<string[]>
   // form groups and controls
   chatroomForm = new FormGroup({
-    textInput: new FormControl('', Validators.required)
+    textInput: new FormControl('', Validators.required),
+    chatroomTitle: new FormControl('')
   })
 
   newChatroom = false;
@@ -63,11 +64,18 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.chatroomTitleEditing = true;
   }
 
+  setChatroomTitle(docId: string){
+    this.store.dispatch(setChatroomTitle({title: this.chatroomForm.get('chatroomTitle').value, docId}))
+    this.chatroomTitleEditing = false;
+    this.chatroomForm.get('chatroomTitle').reset()
+  }
+
   selectChatroom(docId: string) {
     this.selectedChatroom$ = this.store.select(getChatroomSelector, {docId})
     this.store.dispatch(getChatroomHistory({docId}))
     this.newChatroom = false;
     this.showControls = true;
+    this.chatroomTitleEditing = false;
   }
 
   sendMessage(username: string){

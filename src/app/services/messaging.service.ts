@@ -78,4 +78,8 @@ export class MessagingService {
       )
   }
 
+  setChatroomTitle(docId: string, newTitle: string){
+    return this.afs.doc(`messages/${docId}`).update({title: newTitle}).catch((error) => console.log("cannot update the chatroom title on docId: ", docId, error))
+  }
+
 }

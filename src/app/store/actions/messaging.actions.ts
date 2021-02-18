@@ -61,3 +61,12 @@ export const firstMessageNewChatroom = createAction(
     props<{ payload: message }>()
 )
 
+export const setChatroomTitle = createAction(
+    '[Messaging] set chatroom title',
+    props<{ title: string, docId: string }>()
+)
+// export const setChatroomTitleSuccess = createAction(
+//     '[Messaging] set chatroom title',
+//     props<{ title: string }>()
+// )
+

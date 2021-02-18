@@ -8,14 +8,13 @@
   max-width: 30%;
 }
 
-.chatroom__container {
-  flex-direction: column;
-  width: 100%;
-  max-width: 100%;
-}
-
-.new_chatroom_button{
+.chatroom__list__header{
   padding: 4px 4px 4px 4px;
+  display: flex;
+  justify-content: space-between;
+}
+.create_chatroom_btn{
+  display: flex;
 }
 
 .chatroom__selection{
@@ -24,34 +23,43 @@
   padding: 5px;
 }
 
-
-.chatroom__container{
+.chatroom__container {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+}
+
+
+
+.chatroom__header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  // align-items: center;
+
+  .chat__menu__button{
+    display: flex;
+    margin: 4px 2px 4px 2px;
+    padding-right: 5px;
+  }
+
+    h2{
+      text-align: center;
+      padding-left: 20%;
+    }
+
+  .chatroom__title_edit{
+    padding-left: 20%;
+  }
 }
 
 .newChatroom__header{
   display: flex;
   flex-direction: column;
+  padding-left: 20%;
 }
 
-.chatroom__header{
-  display: flex;
-  // margin: auto;
-  // // justify-content: space-between;
-  // align-items: center;
-  // flex-direction: row;
-  justify-content: space-between;
-
-  h2{
-    text-align: center;
-    padding-left: 30%;
-  }
-
-  .chat__menu__button{
-    margin: 4px 2px 4px 2px;
-  }
-}
 
 
 .chatroom {
