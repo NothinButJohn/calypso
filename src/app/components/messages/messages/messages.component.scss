@@ -19,6 +19,36 @@
   padding: 5px;
 }
 
+
+.chatroom__container{
+  display: flex;
+  flex-direction: column;
+}
+
+.newChatroom__header{
+  display: flex;
+  flex-direction: column;
+}
+
+.chatroom__header{
+  display: flex;
+  // margin: auto;
+  // // justify-content: space-between;
+  // align-items: center;
+  // flex-direction: row;
+  justify-content: space-between;
+
+  h2{
+    text-align: center;
+    padding-left: 30%;
+  }
+
+  .chat__menu__button{
+    margin: 4px 2px 4px 2px;
+  }
+}
+
+
 .chatroom {
     display: flex;
     padding: 10px;

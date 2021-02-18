@@ -6,7 +6,7 @@
         <ng-container *ngIf="(chatrooms$ | async) as chatrooms">
             <div class="chatrooms__container">
                 <div>
-                    <button (click)=openDialog()>NewMsg</button>
+                    <button mat-raised-button color="accent" (click)=openDialog()>NewMsg</button>
                 </div>
                 <ng-container *ngFor="let chatroom of chatrooms">
                     <div class="chatroom__selection" (click)="selectChatroom(chatroom.docId)">
@@ -17,47 +17,49 @@
         </ng-container>
 
 
-
-    <div *ngIf="newChatroom">
-        Creating a new chatroom with: 
-        <div *ngFor="let user of newChatUsers$ | async" >{{user}}</div>
-    </div>
+    <div class="chatroom__container">
+        <div class="newChatroom__header" *ngIf="newChatroom">
+            Creating a new chatroom with: 
+            <div *ngFor="let user of newChatUsers$ | async" >{{user}}</div>
+        </div>
         <ng-container *ngIf="!newChatroom">
             <ng-container *ngIf="(selectedChatroom$ | async) as chatroom">
                 <div class="chatroom__header" >
                     <h2>{{chatroom.title}}</h2>
-                    <button mat-mini-fab color="primary" aria-label="Chatroom Options" [matMenuTriggerFor]="menu">
-                        <mat-icon>menu</mat-icon>
-                      </button>
-                      <mat-menu #menu="matMenu">
-                        <button mat-menu-item>
-                          <mat-icon>dialpad</mat-icon>
-                          <span>Redial</span>
-                        </button>
-                        <button mat-menu-item disabled>
-                          <mat-icon>voicemail</mat-icon>
-                          <span>Check voice mail</span>
-                        </button>
-                        <button mat-menu-item>
-                          <mat-icon>notifications_off</mat-icon>
-                          <span>Disable alerts</span>
-                        </button>
-                      </mat-menu>
+                    <div class="chat__menu__button">
+                        <button mat-mini-fab color="primary"  aria-label="Chatroom Options" [matMenuTriggerFor]="menu">
+                            <mat-icon>menu</mat-icon>
+                          </button>
+                          <mat-menu #menu="matMenu">
+                            <button mat-menu-item>
+                              <mat-icon>mode_edit</mat-icon>
+                              <span>Edit chatroom name</span>
+                            </button>
+                            <button mat-menu-item disabled>
+                              <mat-icon>voicemail</mat-icon>
+                              <span>Check voice mail</span>
+                            </button>
+                            <button mat-menu-item>
+                              <mat-icon>notifications_off</mat-icon>
+                              <span>Disable alerts</span>
+                            </button>
+                          </mat-menu>
+                    </div>
+                    
                 </div>
             </ng-container>
 
-
-                <div class="chatroom" *ngIf="(selectedChatroomHistory$ | async) as messages">
-                    <ng-container *ngFor="let message of messages">
-                        <div [ngClass]="message.sender == username ? 'sent message' : 'received message' ">
-                            <p>{{message.text}}</p>
-                        </div>
-                    </ng-container>
-                </div>
-        </ng-container>
-                    <div class="controls" [formGroup]="chatroomForm" *ngIf="newChatroom || showControls">
-                        <input class="chat__input" formControlName="textInput" />
-                        <button class="send__button" (click)="sendMessage(username)">Send</button>
+            <div class="chatroom" *ngIf="(selectedChatroomHistory$ | async) as messages">
+                <ng-container *ngFor="let message of messages">
+                    <div [ngClass]="message.sender == username ? 'sent message' : 'received message' ">
+                        <p>{{message.text}}</p>
                     </div>
-    
+                </ng-container>
+            </div>
+        </ng-container>
+        <div class="controls" [formGroup]="chatroomForm" *ngIf="newChatroom || showControls">
+            <input class="chat__input" formControlName="textInput" />
+            <button class="send__button" (click)="sendMessage(username)">Send</button>
+        </div>
+    </div>
 </div>
