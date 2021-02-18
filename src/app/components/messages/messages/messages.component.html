@@ -5,8 +5,8 @@
 <div class="flex-container" *ngIf="currentUser$ | async as username" >
         <ng-container *ngIf="(chatrooms$ | async) as chatrooms">
             <div class="chatrooms__container">
-                <div>
-                    <button mat-raised-button color="accent" (click)=openDialog()>NewMsg</button>
+                <div class="new_chatroom_button">
+                    <button mat-mini-fab color="warm" (click)=openDialog()><mat-icon>add_comment</mat-icon></button>
                 </div>
                 <ng-container *ngFor="let chatroom of chatrooms">
                     <div class="chatroom__selection" (click)="selectChatroom(chatroom.docId)">
@@ -25,13 +25,16 @@
         <ng-container *ngIf="!newChatroom">
             <ng-container *ngIf="(selectedChatroom$ | async) as chatroom">
                 <div class="chatroom__header" >
-                    <h2>{{chatroom.title}}</h2>
+                    <div *ngIf="!chatroomTitleEditing; else chatroomTitleEdit"><h2>{{chatroom.title}}</h2></div>
+                    <ng-template #chatroomTitleEdit>
+                        <mat-card><input placeholder="{{chatroom.title}}" /></mat-card>
+                    </ng-template>
                     <div class="chat__menu__button">
                         <button mat-mini-fab color="primary"  aria-label="Chatroom Options" [matMenuTriggerFor]="menu">
                             <mat-icon>menu</mat-icon>
                           </button>
                           <mat-menu #menu="matMenu">
-                            <button mat-menu-item>
+                            <button mat-menu-item (click)="editChatroomTitle()">
                               <mat-icon>mode_edit</mat-icon>
                               <span>Edit chatroom name</span>
                             </button>

@@ -30,6 +30,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   newChatroom = false;
   showControls = false;
+  chatroomTitleEditing: boolean = false;
 
   constructor(
     private msg: MessagingService,
@@ -57,6 +58,9 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
 
+  }
+  editChatroomTitle(){
+    this.chatroomTitleEditing = true;
   }
 
   selectChatroom(docId: string) {
