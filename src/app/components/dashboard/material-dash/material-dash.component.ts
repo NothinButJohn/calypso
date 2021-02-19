@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { MessagingService } from 'src/app/services/messaging.service';
+import { AlphaVantageService } from 'src/app/services/alpha-vantage.service';
 
 @Component({
   selector: 'app-material-dash',
@@ -31,7 +32,7 @@ export class MaterialDashComponent implements OnInit {
   );
 
   constructor(private breakpointObserver: BreakpointObserver,
-    private msg: MessagingService) {
+    ) {
       
     }
 

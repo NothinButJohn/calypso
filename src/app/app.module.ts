@@ -39,6 +39,7 @@ import { ProfileReducer } from './store/reducers/profile.reducers';
 import { AuthEffects } from './store/effects/auth.effects';
 import { ProfileEffects } from './store/effects/profile.effects';
 import {NewMessageDialogComponent} from './components/messages/messages/new-message-dialog/new-message-dialog.component'
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import {NewMessageDialogComponent} from './components/messages/messages/new-mess
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     BrowserAnimationsModule,
     StoreModule.forRoot({messenger: messagingReducer, auth: AuthReducer, profile: ProfileReducer}),

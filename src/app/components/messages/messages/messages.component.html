@@ -29,7 +29,10 @@
             <ng-container *ngIf="(selectedChatroom$ | async) as chatroom">
                 <div class="chatroom__header" >
                     <!-- <div class="chatroom__title" *ngIf="!chatroomTitleEditing; else chatroomTitleEdit"> -->
-                        <h2 *ngIf="!chatroomTitleEditing; else chatroomTitleEdit">{{chatroom.title}}</h2>
+                        <ng-container *ngIf="!chatroomTitleEditing; else chatroomTitleEdit">
+                            <h2>{{chatroom.title}}</h2>
+                        </ng-container>
+                        
                     <!-- </div> -->
                     <ng-template #chatroomTitleEdit>
                         <div class="chatroom__title_edit">

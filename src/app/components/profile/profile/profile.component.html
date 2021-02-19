@@ -1,19 +1,3 @@
 
 
-
-<div class="profile__container">
-    <ng-container *ngIf="userProfile$ | async as profile">
-        <div class="profile__header">
-            <img class="profile__header__img" src="{{profile.headerPicture}}">
-        </div>
-        <div class="profile__bio">
-            <div class="profile__pic">
-                <img class="profile__pic__img" src="{{profile.profilePicture}}">
-            </div>
-            {{profile.name}}
-            {{profile.username}}
-            <button mat-button class="profile__edit__button">Edit Profile</button>
-        </div>
-    </ng-container>
-
-</div>
+<button (click)="getData()">click me</button>
