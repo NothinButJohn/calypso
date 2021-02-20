@@ -16,7 +16,7 @@ export class CandlestickComponent implements OnInit {
     this.getData()
   }
   getData(){
-    this.intradaySeriesData$ = this.alphaVantage.getIntradayTimeSeriesData('TSLA', '1min').pipe(
+    this.intradaySeriesData$ = this.alphaVantage.getIntradayTimeSeriesData('TSLA', '5min').pipe(
       tap((res) => {
         console.log('listening: ', res.series.data)
       })

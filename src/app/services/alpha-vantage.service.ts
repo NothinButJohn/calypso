@@ -10,7 +10,8 @@ import {
   ApexXAxis,
   ApexYAxis,
   ApexTitleSubtitle,
-  ApexTooltip
+  ApexTooltip,
+  ApexTheme
 } from "ng-apexcharts";
 
 export type CandlestickChartOptions = {
@@ -19,43 +20,9 @@ export type CandlestickChartOptions = {
   xaxis: ApexXAxis;
   yaxis: ApexYAxis;
   title: ApexTitleSubtitle;
-  tooltip: ApexTooltip
+  tooltip: ApexTooltip;
+  theme: ApexTheme
 };
-
-// export interface IntradayData {
-//   metaData: {
-//     symbol: string,
-//     interval: string
-//   },
-//   timeseries?: 
-//     {
-//       'time': string,
-//       'open': number,
-//       'high': number,
-//       'low': number,
-//       'close': number,
-//       'volume': number
-//     }[]
-// }
-
-// The xy format accepts [{ x: date, y: [O,H,L,C] }].
-// You can also pass timestamp in the x property instead of a date String
-export interface IntradayData {
-  series: [
-    // name: string,
-    data?: {
-      x: Date,
-      y: [o: number, h: number, l: number, c: number]
-    }[]
-  ]
-}
-
-export class intradata implements IntradayData {
-  series
-  constructor(){
-    this.series = []
-  }
-}
 
 @Injectable({
   providedIn: 'root'
@@ -88,52 +55,9 @@ export class AlphaVantageService {
     thirty: '30min',
     sixty: '60min',
   }
-  // INTERVAL = {
-  //   one: '&interval=1min',
-  //   five: '&interval=5min',
-  //   fifteen: '&interval=15min',
-  //   thirty: '&interval=30min',
-  //   sixty: '&interval=60min',
-  // }
-
   
   constructor(private http: HttpClient) { }
 
-  getTimeSeriesData(function_option, symbol, interval?){
-    this.http.get(this.URL+function_option+'&symbol='+symbol+'&apikey='+this.alphaKey).pipe(
-      map(res => {
-        
-      })
-    )
-  }
-  // getIntradayTimeSeriesData(symbol: string, interval: string){
-  //   return this.http.get(this.URL+this.FUNCTIONS.TIME_SERIES.INTRADAY+'&symbol='+symbol+'&interval='+interval+'&apikey='+this.alphaKey).pipe(
-  //     map(res => {
-  //       let timeseriesResponse = res[`Time Series (${interval})`]
-  //       // console.log(timeseriesResponse)
-  //       let data: IntradayData;
-  //       data = {
-  //         "metaData": {
-  //         symbol,
-  //         interval
-  //       }
-  //     }
-  //       data.timeseries = Object.keys(timeseriesResponse).filter((key) => {
-  //         return timeseriesResponse[key]
-  //       }).map((key) => {
-  //         return {
-  //           'time': key,
-  //           'open': parseInt(timeseriesResponse[key]["1. open"]),
-  //           'high': parseInt(timeseriesResponse[key]["2. high"]),
-  //           'low': parseInt(timeseriesResponse[key]["3. low"]),
-  //           'close': parseInt(timeseriesResponse[key]["4. close"]),
-  //           'volume': parseInt(timeseriesResponse[key]["5. volume"])
-  //         }
-  //       })
-  //       return data;
-  //     })
-  //   )
-  // }
   getIntradayTimeSeriesData(symbol: string, interval: string){
     return this.http.get(this.URL+this.FUNCTIONS.TIME_SERIES.INTRADAY+'&symbol='+symbol+'&interval='+interval+'&apikey='+this.alphaKey).pipe(
       map(res => {
@@ -146,42 +70,23 @@ export class AlphaVantageService {
           },
           series: [],  
           title: {
-            text: "CandleStick Chart",
+            text: symbol +' '+interval,
             align: "left"
           },
           xaxis: {
             type: "datetime"
           },
           yaxis: {
-            // tooltip: {
-            //   enabled: true,
-              
-            // }
+            tooltip: {
+              enabled: true,
+            }
           },
           tooltip: {
             enabled: true,
-            custom: function({ seriesIndex, dataPointIndex, w }) {
-              const o = w.globals.seriesCandleO[seriesIndex][dataPointIndex]
-              const h = w.globals.seriesCandleH[seriesIndex][dataPointIndex]
-              const l = w.globals.seriesCandleL[seriesIndex][dataPointIndex]
-              const c = w.globals.seriesCandleC[seriesIndex][dataPointIndex]
-              return (
-                '<div class="apexcharts-tooltip-candlestick">' +
-                '<div>Open: <span class="value">' +
-                o +
-                '</span></div>' +
-                '<div>High: <span class="value">' +
-                h +
-                '</span></div>' +
-                '<div>Low: <span class="value">' +
-                l +
-                '</span></div>' +
-                '<div>Close: <span class="value">' +
-                c +
-                '</span></div>' +
-                '</div>'
-              )
-            }
+            theme: 'dark',
+          },
+          theme: {
+            mode: 'dark'
           }
         }
 
