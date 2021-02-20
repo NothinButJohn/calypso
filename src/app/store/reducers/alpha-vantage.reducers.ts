@@ -1,14 +1,47 @@
 import { Action, createReducer, on } from '@ngrx/store';
+import { CandlestickChartOptions } from 'src/app/services/alpha-vantage.service';
 import * as AlphaActions from '../actions/alpha-vantage.actions'
 
 
 export interface StocksState {
     searchResults: [],
-    selectedStock?: string,
-    selectedInterval?: string
+    selectedStock?: any,
+    selectedInterval?: string,
+    chartOptions?: CandlestickChartOptions
 }
 export const initialStocksState: StocksState = {
-    searchResults: []
+    searchResults: [],
+    selectedStock: {},
+    selectedInterval: '1min',
+    chartOptions: {
+        chart: {
+          type: "candlestick",
+          height: 350
+        },
+        series: [],  
+        title: {
+          text: '',
+          align: "left"
+        },
+        xaxis: {
+          type: "datetime"
+        },
+        yaxis: {
+          tooltip: {
+            enabled: true,
+          }
+        },
+        tooltip: {
+          enabled: true,
+          theme: 'dark',
+        },
+        theme: {
+          mode: 'dark'
+        },
+        noData: {
+            text: 'Search for an Equity'
+        }
+      }
 }
 
 export const stocksReducer = createReducer<StocksState>(
@@ -17,6 +50,12 @@ export const stocksReducer = createReducer<StocksState>(
         return {
             ...state,
             searchResults: action.results
+        }
+    }),
+    on(AlphaActions.selectStock, (state, action): StocksState => {
+        return {
+            ...state,
+            selectedStock: action.selectedStock
         }
     })
 )

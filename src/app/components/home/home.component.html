@@ -6,9 +6,9 @@
        matInput
        formControlName="stockSearchInput"
        [matAutocomplete]="auto">
-    <mat-autocomplete #auto="matAutocomplete">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="stockAutoSelection($event)">
         <mat-option *ngFor="let option of (stockSearch$ | async)" [value]="option">
-          {{option.name}}
+          {{option.symbol}} {{option.name}}
         </mat-option>
       </mat-autocomplete>
     <button>send</button>

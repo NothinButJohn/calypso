@@ -10,3 +10,9 @@ export const stocksSearchResultsSelector = createSelector(
         return state.searchResults
     }
 )
+export const candlestickChartOptionsSelector = createSelector(
+    stocksFeatureSelector,
+    (state: StocksState): any => {
+        return state.chartOptions
+    }
+)

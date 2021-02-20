@@ -11,7 +11,8 @@ import {
   ApexYAxis,
   ApexTitleSubtitle,
   ApexTooltip,
-  ApexTheme
+  ApexTheme,
+  ApexNoData
 } from "ng-apexcharts";
 
 export type CandlestickChartOptions = {
@@ -21,7 +22,8 @@ export type CandlestickChartOptions = {
   yaxis: ApexYAxis;
   title: ApexTitleSubtitle;
   tooltip: ApexTooltip;
-  theme: ApexTheme
+  theme: ApexTheme;
+  noData: ApexNoData;
 };
 
 @Injectable({
@@ -105,6 +107,9 @@ export class AlphaVantageService {
           },
           theme: {
             mode: 'dark'
+          },
+          noData: {
+              text: 'Search for an Equity'
           }
         }
 

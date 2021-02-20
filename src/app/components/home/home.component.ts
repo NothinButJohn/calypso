@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map, startWith } from 'rxjs/operators';
 import { AlphaVantageService } from 'src/app/services/alpha-vantage.service';
 import { searchForStock } from 'src/app/store/actions/alpha-vantage.actions';
 import { stocksSearchResultsSelector } from 'src/app/store/selectors/alpha-vantage.selectors';
@@ -14,7 +15,10 @@ import { stocksSearchResultsSelector } from 'src/app/store/selectors/alpha-vanta
 })
 export class HomeComponent implements OnInit, OnDestroy {
   stockSearch$: Observable<any>
+  stockSelected$: Observable<any>
   stockSearchSubscription: Subscription
+
+
 
   stockSearch = new FormGroup({
     stockSearchInput: new FormControl('')
@@ -26,11 +30,18 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.stockSearchSubscription = this.stockSearch.get('stockSearchInput').valueChanges.pipe(
+      filter(x => x !== ''),
       map((stockSearchQuery: string) => {
         this.store.dispatch(searchForStock({query: stockSearchQuery}))
       })
     ).subscribe()
     this.stockSearch$ = this.store.select(stocksSearchResultsSelector)
+  }
+
+  stockAutoSelection(event: MatAutocompleteSelectedEvent){
+    let selection = event.option.value;
+    
+
   }
 
   ngOnDestroy(): void {
