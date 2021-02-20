@@ -1,7 +1,7 @@
 <div *ngIf="(intradaySeriesData$ | async) as data">
     <div style="text-align:center" >
         <apx-chart 
-          [series]="[{'data': data.series.data}]"
+          [series]="data.series"
           [chart]="data.chart"
           [xaxis]="data.xaxis"
           [yaxis]="data.yaxis"
