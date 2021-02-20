@@ -40,6 +40,8 @@ import { AuthEffects } from './store/effects/auth.effects';
 import { ProfileEffects } from './store/effects/profile.effects';
 import {NewMessageDialogComponent} from './components/messages/messages/new-message-dialog/new-message-dialog.component'
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { CandlestickComponent } from './components/charts/candlestick/candlestick.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     ProfileComponent,
     LandingComponent,
     MessagesComponent,
-    NewMessageDialogComponent
+    NewMessageDialogComponent,
+    CandlestickComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +83,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     MatDialogModule,
     MatFormFieldModule,
     MatChipsModule,
+    NgApexchartsModule,
     
   ],
   providers: [],

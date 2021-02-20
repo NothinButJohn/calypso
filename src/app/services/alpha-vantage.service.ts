@@ -3,20 +3,58 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { pathToFileURL, Url } from 'url';
 
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexYAxis,
+  ApexTitleSubtitle,
+  ApexTooltip
+} from "ng-apexcharts";
+
+export type CandlestickChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis;
+  title: ApexTitleSubtitle;
+  tooltip: ApexTooltip
+};
+
+// export interface IntradayData {
+//   metaData: {
+//     symbol: string,
+//     interval: string
+//   },
+//   timeseries?: 
+//     {
+//       'time': string,
+//       'open': number,
+//       'high': number,
+//       'low': number,
+//       'close': number,
+//       'volume': number
+//     }[]
+// }
+
+// The xy format accepts [{ x: date, y: [O,H,L,C] }].
+// You can also pass timestamp in the x property instead of a date String
 export interface IntradayData {
-  metaData: {
-    symbol: string,
-    interval: string
-  },
-  timeseries?: 
-    {
-      'time': string,
-      'open': number,
-      'high': number,
-      'low': number,
-      'close': number,
-      'volume': number
+  series: [
+    // name: string,
+    data?: {
+      x: Date,
+      y: [o: number, h: number, l: number, c: number]
     }[]
+  ]
+}
+
+export class intradata implements IntradayData {
+  series
+  constructor(){
+    this.series = []
+  }
 }
 
 @Injectable({
@@ -68,31 +106,101 @@ export class AlphaVantageService {
       })
     )
   }
+  // getIntradayTimeSeriesData(symbol: string, interval: string){
+  //   return this.http.get(this.URL+this.FUNCTIONS.TIME_SERIES.INTRADAY+'&symbol='+symbol+'&interval='+interval+'&apikey='+this.alphaKey).pipe(
+  //     map(res => {
+  //       let timeseriesResponse = res[`Time Series (${interval})`]
+  //       // console.log(timeseriesResponse)
+  //       let data: IntradayData;
+  //       data = {
+  //         "metaData": {
+  //         symbol,
+  //         interval
+  //       }
+  //     }
+  //       data.timeseries = Object.keys(timeseriesResponse).filter((key) => {
+  //         return timeseriesResponse[key]
+  //       }).map((key) => {
+  //         return {
+  //           'time': key,
+  //           'open': parseInt(timeseriesResponse[key]["1. open"]),
+  //           'high': parseInt(timeseriesResponse[key]["2. high"]),
+  //           'low': parseInt(timeseriesResponse[key]["3. low"]),
+  //           'close': parseInt(timeseriesResponse[key]["4. close"]),
+  //           'volume': parseInt(timeseriesResponse[key]["5. volume"])
+  //         }
+  //       })
+  //       return data;
+  //     })
+  //   )
+  // }
   getIntradayTimeSeriesData(symbol: string, interval: string){
     return this.http.get(this.URL+this.FUNCTIONS.TIME_SERIES.INTRADAY+'&symbol='+symbol+'&interval='+interval+'&apikey='+this.alphaKey).pipe(
       map(res => {
         let timeseriesResponse = res[`Time Series (${interval})`]
-        // console.log(timeseriesResponse)
-        let data: IntradayData;
-        data = {
-          "metaData": {
-          symbol,
-          interval
+
+        let chartOptions: CandlestickChartOptions = {
+          chart: {
+            type: "candlestick",
+            height: 350
+          },
+          series: [],  
+          title: {
+            text: "CandleStick Chart",
+            align: "left"
+          },
+          xaxis: {
+            type: "datetime"
+          },
+          yaxis: {
+            // tooltip: {
+            //   enabled: true,
+              
+            // }
+          },
+          tooltip: {
+            enabled: true,
+            custom: function({ seriesIndex, dataPointIndex, w }) {
+              const o = w.globals.seriesCandleO[seriesIndex][dataPointIndex]
+              const h = w.globals.seriesCandleH[seriesIndex][dataPointIndex]
+              const l = w.globals.seriesCandleL[seriesIndex][dataPointIndex]
+              const c = w.globals.seriesCandleC[seriesIndex][dataPointIndex]
+              return (
+                '<div class="apexcharts-tooltip-candlestick">' +
+                '<div>Open: <span class="value">' +
+                o +
+                '</span></div>' +
+                '<div>High: <span class="value">' +
+                h +
+                '</span></div>' +
+                '<div>Low: <span class="value">' +
+                l +
+                '</span></div>' +
+                '<div>Close: <span class="value">' +
+                c +
+                '</span></div>' +
+                '</div>'
+              )
+            }
+          }
         }
-      }
-        data.timeseries = Object.keys(timeseriesResponse).filter((key) => {
+
+        chartOptions.series['data'] = Object.keys(timeseriesResponse).filter((key) => {
           return timeseriesResponse[key]
         }).map((key) => {
           return {
-            'time': key,
-            'open': parseInt(timeseriesResponse[key]["1. open"]),
-            'high': parseInt(timeseriesResponse[key]["2. high"]),
-            'low': parseInt(timeseriesResponse[key]["3. low"]),
-            'close': parseInt(timeseriesResponse[key]["4. close"]),
-            'volume': parseInt(timeseriesResponse[key]["5. volume"])
+            x: new Date( Date.parse(key) ) ,
+            y: [
+              parseFloat(timeseriesResponse[key]["1. open"]),
+              parseFloat(timeseriesResponse[key]["2. high"]),
+              parseFloat(timeseriesResponse[key]["3. low"]),
+              parseFloat(timeseriesResponse[key]["4. close"]),
+            ]
+
           }
         })
-        return data;
+        console.log("chart options:", chartOptions)
+        return chartOptions;
       })
     )
   }
