@@ -42,6 +42,8 @@ import {NewMessageDialogComponent} from './components/messages/messages/new-mess
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { CandlestickComponent } from './components/charts/candlestick/candlestick.component';
+import { stocksReducer } from './store/reducers/alpha-vantage.reducers';
+import { AlphaVantageEffects } from './store/effects/alpha-vantage.effects';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,7 @@ import { CandlestickComponent } from './components/charts/candlestick/candlestic
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     BrowserAnimationsModule,
-    StoreModule.forRoot({messenger: messagingReducer, auth: AuthReducer, profile: ProfileReducer}),
+    StoreModule.forRoot({messenger: messagingReducer, auth: AuthReducer, profile: ProfileReducer, stocks: stocksReducer}),
     StoreDevtoolsModule.instrument({name: 'john message app', maxAge: 25 }),
     LayoutModule,
     MatToolbarModule,
@@ -74,7 +76,7 @@ import { CandlestickComponent } from './components/charts/candlestick/candlestic
     MatCardModule,
     MatMenuModule,
     StoreModule,
-    EffectsModule.forRoot([MessagingEffects, AuthEffects, ProfileEffects]),
+    EffectsModule.forRoot([MessagingEffects, AuthEffects, ProfileEffects, AlphaVantageEffects]),
     ReactiveFormsModule,
     MatIconModule,
     MatInputModule,

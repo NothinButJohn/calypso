@@ -61,12 +61,17 @@ export class AlphaVantageService {
   getStockSearch(query: string){
     return this.http.get(this.URL + 'function=SYMBOL_SEARCH'+'&keywords='+query+'&apikey='+this.alphaKey).pipe(
       map((response) => {
-        let bestMatches = response["bestMatches"]
-        Object.keys(bestMatches).filter((key) => {
+        let results;
+        let bestMatches = response["bestMatches"] 
+        results = Object.keys(bestMatches).filter((key) => {
           return bestMatches[key]
         }).map((key) => {
-          console.log(key, bestMatches[key])
+          return {
+            symbol:  bestMatches[key]["1. symbol"],
+            name: bestMatches[key]["2. name"]
+          }
         })
+        return results
       })
     )
   }

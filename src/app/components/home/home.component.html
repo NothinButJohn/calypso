@@ -1,6 +1,16 @@
 
 <form [formGroup]="stockSearch">
-    <input type="text" formControlName="stockSearchInput" />
+    <input type="text"
+       placeholder="Pick one"
+       aria-label="Number"
+       matInput
+       formControlName="stockSearchInput"
+       [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of (stockSearch$ | async)" [value]="option">
+          {{option.name}}
+        </mat-option>
+      </mat-autocomplete>
     <button>send</button>
 </form>
 
