@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 import { AlphaVantageService } from 'src/app/services/alpha-vantage.service';
-import { searchForStock } from 'src/app/store/actions/alpha-vantage.actions';
+import { searchForStock, selectStock } from 'src/app/store/actions/alpha-vantage.actions';
 import { stocksSearchResultsSelector } from 'src/app/store/selectors/alpha-vantage.selectors';
 
 @Component({
@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   stockAutoSelection(event: MatAutocompleteSelectedEvent){
     let selection = event.option.value;
-    
+    this.store.dispatch(selectStock({selectedStock: selection}))
 
   }
 

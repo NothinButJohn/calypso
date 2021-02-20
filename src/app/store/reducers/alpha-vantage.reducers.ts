@@ -42,7 +42,7 @@ export const initialStocksState: StocksState = {
     searchResults: [],
     selectedStock: {},
     selectedInterval: '1min',
-    chartOptions: initChartOptions
+    
 }
 
 
@@ -58,6 +58,12 @@ export const stocksReducer = createReducer<StocksState>(
         return {
             ...state,
             selectedStock: action.selectedStock
+        }
+    }),
+    on(AlphaActions.loadIntradayCandlestickSuccess, (state,action): StocksState => {
+        return{ 
+            ...state,
+            chartOptions: action.chartOptions
         }
     })
 )

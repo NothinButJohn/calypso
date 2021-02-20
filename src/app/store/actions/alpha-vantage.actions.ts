@@ -16,3 +16,7 @@ export const loadIntradayCandlestick = createAction(
     '[Home] load intraday candlestick chart options',
     props<{ selectedStock, selectedInterval }>()
 )
+export const loadIntradayCandlestickSuccess = createAction(
+    '[Home] load intraday candlestick chart options success',
+    props<{ chartOptions }>()
+)

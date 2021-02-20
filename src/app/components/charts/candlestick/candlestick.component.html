@@ -1,14 +1,20 @@
+
+
+
 <div *ngIf="(intradaySeriesData$ | async) as data">
+  <div *ngIf="data.series.data !== null">
     <div style="text-align:center" >
-        <apx-chart 
-          [series]="data.series"
-          [chart]="data.chart"
-          [xaxis]="data.xaxis"
-          [yaxis]="data.yaxis"
-          [title]="data.title"
-          [tooltip]="data.tooltip"
-          [theme]="data.theme"
-          [noData]="data.noData"
-        ></apx-chart>
-      </div>
+      <apx-chart 
+        [series]="[{data: data.series.data}]"
+        [chart]="data.chart"
+        [xaxis]="data.xaxis"
+        [yaxis]="data.yaxis"
+        [title]="data.title"
+        [tooltip]="data.tooltip"
+        [theme]="data.theme"
+        [noData]="data.noData"
+      ></apx-chart>
+    </div>
+  </div>
+
   </div>
