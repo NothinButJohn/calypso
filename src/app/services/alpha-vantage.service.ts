@@ -58,6 +58,19 @@ export class AlphaVantageService {
   
   constructor(private http: HttpClient) { }
 
+  getStockSearch(query: string){
+    return this.http.get(this.URL + 'function=SYMBOL_SEARCH'+'&keywords='+query+'&apikey='+this.alphaKey).pipe(
+      map((response) => {
+        let bestMatches = response["bestMatches"]
+        Object.keys(bestMatches).filter((key) => {
+          return bestMatches[key]
+        }).map((key) => {
+          console.log(key, bestMatches[key])
+        })
+      })
+    )
+  }
+
   getIntradayTimeSeriesData(symbol: string, interval: string){
     return this.http.get(this.URL+this.FUNCTIONS.TIME_SERIES.INTRADAY+'&symbol='+symbol+'&interval='+interval+'&apikey='+this.alphaKey).pipe(
       map(res => {
