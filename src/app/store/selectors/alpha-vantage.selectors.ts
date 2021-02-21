@@ -22,3 +22,9 @@ export const selectedIntervalSelector = createSelector(
         return state.selectedInterval
     }
 )
+export const selectedStockSelector = createSelector(
+    stocksFeatureSelector,
+    (state: StocksState): any => {
+        return state.selectedStock
+    }
+)

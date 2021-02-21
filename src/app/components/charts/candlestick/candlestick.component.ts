@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { AlphaVantageService, CandlestickChartOptions } from 'src/app/services/alpha-vantage.service';
 import { candlestickChartOptionsSelector } from 'src/app/store/selectors/alpha-vantage.selectors';
 
@@ -50,9 +50,12 @@ export class CandlestickComponent implements OnInit {
   ngOnInit(): void {
     // this.intradaySeriesData$ = of(this.options)
     
-    this.intradaySeriesData$ = this.store.select(candlestickChartOptionsSelector).pipe(
-      tap(x => console.log(x))
-    )
+    this.store.select(candlestickChartOptionsSelector).pipe(
+      tap(x => { 
+      let t = JSON.parse(JSON.stringify(x))
+      console.log('tap in chart component init', x, t)
+    })
+    ).subscribe()
     // this.getData()
   }
   getData(){

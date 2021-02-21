@@ -13,10 +13,13 @@ export const selectStock = createAction(
     props<{ selectedStock }>()
 )
 export const loadIntradayCandlestick = createAction(
-    '[Home] load intraday candlestick chart options',
-    props<{ selectedStock, selectedInterval }>()
+    '[Home] load intraday candlestick chart options'
 )
 export const loadIntradayCandlestickSuccess = createAction(
     '[Home] load intraday candlestick chart options success',
     props<{ chartOptions }>()
+)
+export const loadIntradayCandlestickFail = createAction(
+    '[Home] load intraday candlestick chart options failed',
+    props<{ error }>()
 )

@@ -37,11 +37,14 @@ export interface StocksState {
     selectedStock?: any,
     selectedInterval?: string,
     chartOptions?: CandlestickChartOptions
+    error?: string
 }
 export const initialStocksState: StocksState = {
     searchResults: [],
     selectedStock: {},
     selectedInterval: '1min',
+    chartOptions: initChartOptions,
+    error: ''
     
 }
 
@@ -64,6 +67,12 @@ export const stocksReducer = createReducer<StocksState>(
         return{ 
             ...state,
             chartOptions: action.chartOptions
+        }
+    }),
+    on(AlphaActions.loadIntradayCandlestickFail, (state, action): StocksState => {
+        return {
+            ...state,
+            error: action.error
         }
     })
 )

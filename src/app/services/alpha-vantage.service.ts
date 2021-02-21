@@ -14,6 +14,7 @@ import {
   ApexTheme,
   ApexNoData
 } from "ng-apexcharts";
+import { throwError } from 'rxjs';
 
 export type CandlestickChartOptions = {
   series: ApexAxisChartSeries;
@@ -81,6 +82,9 @@ export class AlphaVantageService {
   getIntradayTimeSeriesData(symbol: string, interval: string){
     return this.http.get(this.URL+this.FUNCTIONS.TIME_SERIES.INTRADAY+'&symbol='+symbol+'&interval='+interval+'&apikey='+this.alphaKey).pipe(
       map(res => {
+        if(res == undefined){
+          throwError(new Error('Error in getIntradayTimeSeriesData()! response was undefined.'+res['Note']))
+        }
         let timeseriesResponse = res[`Time Series (${interval})`]
 
         let chartOptions: CandlestickChartOptions = {
@@ -112,7 +116,7 @@ export class AlphaVantageService {
               text: 'Search for an Equity'
           }
         }
-
+        console.log('api call, input:', symbol, interval, timeseriesResponse, res)
         chartOptions.series['data'] = Object.keys(timeseriesResponse).filter((key) => {
           return timeseriesResponse[key]
         }).map((key) => {

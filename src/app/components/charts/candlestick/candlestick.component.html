@@ -2,7 +2,7 @@
 
 
 <div *ngIf="(intradaySeriesData$ | async) as data">
-  <div *ngIf="data.series.data !== null">
+
     <div style="text-align:center" >
       <apx-chart 
         [series]="[{data: data.series.data}]"
@@ -15,6 +15,6 @@
         [noData]="data.noData"
       ></apx-chart>
     </div>
-  </div>
+
 
   </div>

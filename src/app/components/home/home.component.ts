@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 import { AlphaVantageService } from 'src/app/services/alpha-vantage.service';
-import { searchForStock, selectStock } from 'src/app/store/actions/alpha-vantage.actions';
+import { loadIntradayCandlestick, searchForStock, selectStock } from 'src/app/store/actions/alpha-vantage.actions';
 import { stocksSearchResultsSelector } from 'src/app/store/selectors/alpha-vantage.selectors';
 
 @Component({
@@ -15,6 +15,7 @@ import { stocksSearchResultsSelector } from 'src/app/store/selectors/alpha-vanta
 })
 export class HomeComponent implements OnInit, OnDestroy {
   stockSearch$: Observable<any>
+  filteredOptions: Observable<any>
   stockSelected$: Observable<any>
   stockSearchSubscription: Subscription
 
@@ -30,9 +31,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.stockSearchSubscription = this.stockSearch.get('stockSearchInput').valueChanges.pipe(
-      filter(x => x !== ''),
       map((stockSearchQuery: string) => {
-        this.store.dispatch(searchForStock({query: stockSearchQuery}))
+        console.log("search is empty", stockSearchQuery == '')
+        if(stockSearchQuery == ''){
+          
+        }else{
+          this.store.dispatch(searchForStock({query: stockSearchQuery}))
+        }
+        
       })
     ).subscribe()
     this.stockSearch$ = this.store.select(stocksSearchResultsSelector)
@@ -41,11 +47,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   stockAutoSelection(event: MatAutocompleteSelectedEvent){
     let selection = event.option.value;
     this.store.dispatch(selectStock({selectedStock: selection}))
+    this.store.dispatch(loadIntradayCandlestick())
 
   }
 
   ngOnDestroy(): void {
-    this.stockSearchSubscription.unsubscribe()
+    // this.stockSearchSubscription.unsubscribe()
   }
   
 
