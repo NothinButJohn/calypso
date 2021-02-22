@@ -18,7 +18,8 @@ export class CandlestickComponent implements OnInit {
   options: CandlestickChartOptions = {
     chart: {
       type: "candlestick",
-      height: 350
+      // height: '100%',
+      // width: '100%'
     },
     series: [],  
     title: {

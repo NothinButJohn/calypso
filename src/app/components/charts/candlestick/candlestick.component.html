@@ -1,36 +1,25 @@
 
 
-<!-- 
-<div *ngIf="(intradaySeriesData$ | async) as data">
 
-    <div style="text-align:center" >
-      <apx-chart 
-      [series]="[{data: data.series['data']}]"
-        [chart]="data.op.chart"
-        [xaxis]="data.op.xaxis"
-        [yaxis]="data.op.yaxis"
-        [title]="data.op.title"
-        [tooltip]="data.op.tooltip"
-        [theme]="data.op.theme"
-        [noData]="data.op.noData"
-      ></apx-chart>
-    </div>
+<div style="text-align:center" *ngIf="(intradaySeriesData$ | async) as isd">
+  <mat-card class="intradayCard">
+    <mat-card-content>
+      <!-- <div style="text-align:center" *ngIf="(intradaySeriesData$ | async) as isd"> -->
+        <apx-chart 
+          [series]="[{data: isd.series.data}]"
+          [chart]="options.chart"
+          [xaxis]="options.xaxis"
+          [yaxis]="options.yaxis"
+          [title]="options.title"
+          [tooltip]="options.tooltip"
+          [theme]="options.theme"
+
+        ></apx-chart>
+      <!-- </div> -->
+    </mat-card-content>
+  </mat-card>
 
 
-  </div> -->
-<!-- <div *ngIf="chartDataLoaded">
-  <div *ngIf="(seriesData$ | async) as series"> -->
-    <div style="text-align:center" *ngIf="(intradaySeriesData$ | async) as isd">
-      <apx-chart 
-      [series]="[{data: isd.series.data}]"
-        [chart]="options.chart"
-        [xaxis]="options.xaxis"
-        [yaxis]="options.yaxis"
-        [title]="options.title"
-        [tooltip]="options.tooltip"
-        [theme]="options.theme"
-        [noData]="options.noData"
-      ></apx-chart>
-    </div>
-  <!-- </div>
-</div> -->
+
+
+</div>

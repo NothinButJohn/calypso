@@ -88,9 +88,9 @@ export class AlphaVantageService {
   }
 
   getIntradayTimeSeriesData(symbol: string, interval: string){
-    return this.http.get(this.URL+this.FUNCTIONS.TIME_SERIES.INTRADAY+'&symbol='+symbol+'&interval='+interval+'&apikey='+this.alphaKey).pipe(
+    // return this.http.get(this.URL+this.FUNCTIONS.TIME_SERIES.INTRADAY+'&symbol='+symbol+'&interval='+interval+'&apikey='+this.alphaKey).pipe(
 
-    // return this.apiResponse.pipe(
+    return this.apiResponse.pipe(
       map((res) => {
         if(res === undefined){
           throwError(new Error('Error in getIntradayTimeSeriesData()! response was undefined.'+res['Note']))

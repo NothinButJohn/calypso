@@ -1,30 +1,39 @@
 
-<mat-form-field [formGroup]="stockSearch">
-    <input type="text"
-       placeholder="Pick one"
-       aria-label="Number"
-       matInput
-       formControlName="stockSearchInput"
-       [matAutocomplete]="auto">
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="stockAutoSelection($event)">
-        <mat-option *ngFor="let option of (stockSearch$ | async)" [value]="option">
-          {{option.symbol}} {{option.name}}
-        </mat-option>
-      </mat-autocomplete>
-</mat-form-field>
 
-<div *ngIf="(selectedInterval$ | async) as selectedInterval">
-    <mat-label>Select an Interval</mat-label>
-    <form [formGroup]="stockSearch">
-    <mat-form-field appearance="fill">
-      <mat-select formControlName="intradayIntervalSelection" (selectionChange)="intervalSelected()" placeholder="{{selectedInterval}}">
-        <mat-option *ngFor="let interval of (intradayIntervals$ | async)" [value]="interval">
-          {{interval}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </form>
+<div class="candlestick__controls__container">
+  <div class="candlestick__search__input">
+    <mat-form-field [formGroup]="stockSearch">
+      <input type="text"
+         placeholder="Search for a Stock"
+         aria-label="Number"
+         matInput
+         formControlName="stockSearchInput"
+         [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="stockAutoSelection($event)">
+          <mat-option *ngFor="let option of (stockSearch$ | async)" [value]="option" class="stocksearch__option">
+            {{option.symbol}} {{option.name}}
+          </mat-option>
+        </mat-autocomplete>
+  </mat-form-field>
+  </div>
+  
+  
+  <div *ngIf="(selectedInterval$ | async) as selectedInterval" class="candlestick__interval__selection">
+      <mat-label>Select an Interval</mat-label>
+      <form [formGroup]="stockSearch">
+      <mat-form-field appearance="fill">
+        <mat-select formControlName="intradayIntervalSelection" (selectionChange)="intervalSelected()" placeholder="{{selectedInterval}}">
+          <mat-option *ngFor="let interval of (intradayIntervals$ | async)" [value]="interval">
+            {{interval}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
 </div>
+
+
+
 
 
 
