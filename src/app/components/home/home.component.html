@@ -1,5 +1,5 @@
 
-<form [formGroup]="stockSearch">
+<mat-form-field [formGroup]="stockSearch">
     <input type="text"
        placeholder="Pick one"
        aria-label="Number"
@@ -11,7 +11,22 @@
           {{option.symbol}} {{option.name}}
         </mat-option>
       </mat-autocomplete>
-    <!-- <button>send</button> -->
-</form>
+</mat-form-field>
+
+<div *ngIf="(selectedInterval$ | async) as selectedInterval">
+    <mat-label>Select an Interval</mat-label>
+    <form [formGroup]="stockSearch">
+    <mat-form-field appearance="fill">
+      <mat-select formControlName="intradayIntervalSelection" (selectionChange)="intervalSelected()" placeholder="{{selectedInterval}}">
+        <mat-option *ngFor="let interval of (intradayIntervals$ | async)" [value]="interval">
+          {{interval}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+
+
+
 
 <app-candlestick></app-candlestick>

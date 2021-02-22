@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatSelectionListChange } from '@angular/material/list';
+import { MatSelectChange } from '@angular/material/select';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 import { AlphaVantageService } from 'src/app/services/alpha-vantage.service';
-import { loadIntradayCandlestick, searchForStock, selectStock } from 'src/app/store/actions/alpha-vantage.actions';
-import { stocksSearchResultsSelector } from 'src/app/store/selectors/alpha-vantage.selectors';
+import { loadIntradayCandlestick, searchForStock, selectInterval, selectStock } from 'src/app/store/actions/alpha-vantage.actions';
+import { intradayIntervalsSelector, selectedIntervalSelector, stocksSearchResultsSelector } from 'src/app/store/selectors/alpha-vantage.selectors';
 
 @Component({
   selector: 'app-home',
@@ -19,10 +21,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   stockSelected$: Observable<any>
   stockSearchSubscription: Subscription
 
+  selectedInterval$: Observable<string>
+  intradayIntervals$: Observable<string[]>
+
 
 
   stockSearch = new FormGroup({
-    stockSearchInput: new FormControl('')
+    stockSearchInput: new FormControl(''),
+    intradayIntervalSelection: new FormControl('')
   })
   
 
@@ -34,7 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       map((stockSearchQuery: string) => {
         console.log("search is empty", stockSearchQuery == '')
         if(stockSearchQuery == ''){
-          
+
         }else{
           this.store.dispatch(searchForStock({query: stockSearchQuery}))
         }
@@ -42,13 +48,22 @@ export class HomeComponent implements OnInit, OnDestroy {
       })
     ).subscribe()
     this.stockSearch$ = this.store.select(stocksSearchResultsSelector)
+    this.selectedInterval$ = this.store.select(selectedIntervalSelector)
+    this.intradayIntervals$ = this.store.select(intradayIntervalsSelector)
+
+    // this.selectedInterval$.subscribe(x => console.log(x))
   }
 
   stockAutoSelection(event: MatAutocompleteSelectedEvent){
     let selection = event.option.value;
     this.store.dispatch(selectStock({selectedStock: selection}))
     this.store.dispatch(loadIntradayCandlestick())
+    this.stockSearch.get('stockSearchInput').setValue('')
 
+  }
+
+  intervalSelected(){
+    this.store.dispatch(selectInterval({ selectedInterval: this.stockSearch.get('intradayIntervalSelection').value }))
   }
 
   ngOnDestroy(): void {

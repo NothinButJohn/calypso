@@ -31,6 +31,9 @@ export class AlphaVantageEffects {
                     })
                 )
             })
+            // , catchError((error)=> 
+            // of( AlphaActions.searchForStockFail({error}))
+            // )
         )
     })
 
@@ -44,21 +47,36 @@ export class AlphaVantageEffects {
     //     )
     // })
 
-    loadIntradayCandlestickOptions = createEffect(() => {
+    loadIntradayCandlestickSeriesData$ = createEffect(() => {
         return this.actions$.pipe(
-            ofType(AlphaActions.loadIntradayCandlestick),
+            ofType(AlphaActions.selectStock),
             withLatestFrom(this.store.select(selectedIntervalSelector)),
-            withLatestFrom(this.store.select(selectedStockSelector)),
-            switchMap(([[action, interval], stock]) => {
-                return this.alphaVantage.getIntradayTimeSeriesData(stock.symbol, interval).pipe(
+            switchMap(([action, interval]) => {
+                return this.alphaVantage.getIntradayTimeSeriesData(action.selectedStock.symbol, interval).pipe(
                     map((chartOptions) => {
                         return AlphaActions.loadIntradayCandlestickSuccess({chartOptions})
                     })
                 )
-            }), catchError((error)=> 
-                of( AlphaActions.loadIntradayCandlestickFail({error}))
+            })
+            // , catchError((error)=> 
+            //     of( AlphaActions.loadIntradayCandlestickFail({error}))
                 
-            )
+            // )
+        )
+    })
+
+    loadIntradayCandlestickDataWithNewInterval$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(AlphaActions.selectInterval),
+            withLatestFrom(this.store.select(selectedStockSelector)),
+            switchMap(([action, stock]) => {
+                return this.alphaVantage.getIntradayTimeSeriesData(stock.symbol, action.selectedInterval).pipe(
+                    map((chartOptions) => {
+                        return AlphaActions.loadIntradayCandlestickSuccess({chartOptions})
+                    })
+                )
+            })
+
         )
     })
 }

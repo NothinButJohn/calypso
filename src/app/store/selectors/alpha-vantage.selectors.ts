@@ -16,6 +16,12 @@ export const candlestickChartOptionsSelector = createSelector(
         return state.chartOptions
     }
 )
+export const candlestickSeriesDataSelector = createSelector(
+    stocksFeatureSelector,
+    (state: StocksState): any => {
+        return state.series
+    }
+)
 export const selectedIntervalSelector = createSelector(
     stocksFeatureSelector,
     (state: StocksState): any => {
@@ -26,5 +32,11 @@ export const selectedStockSelector = createSelector(
     stocksFeatureSelector,
     (state: StocksState): any => {
         return state.selectedStock
+    }
+)
+export const intradayIntervalsSelector = createSelector(
+    stocksFeatureSelector,
+    (state: StocksState): any => {
+        return state.intradayIntervals
     }
 )

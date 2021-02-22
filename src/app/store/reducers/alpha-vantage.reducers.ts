@@ -2,7 +2,7 @@ import { Action, createReducer, on } from '@ngrx/store';
 import { CandlestickChartOptions } from 'src/app/services/alpha-vantage.service';
 import * as AlphaActions from '../actions/alpha-vantage.actions'
 
-export const initChartOptions:CandlestickChartOptions = {
+export const initChartOptions: CandlestickChartOptions = {
     chart: {
       type: "candlestick",
       height: 350
@@ -36,15 +36,25 @@ export interface StocksState {
     searchResults: [],
     selectedStock?: any,
     selectedInterval?: string,
-    chartOptions?: CandlestickChartOptions
-    error?: string
+    chartOptions?: CandlestickChartOptions,
+    error?: string,
+    series?: any,
+    intradayIntervals: string[]
 }
 export const initialStocksState: StocksState = {
     searchResults: [],
     selectedStock: {},
-    selectedInterval: '1min',
+    selectedInterval: '5min',
     chartOptions: initChartOptions,
-    error: ''
+    error: '',
+    series: [],
+    intradayIntervals: [
+        '1min',
+        '5min',
+        '15min',
+        '30min',
+        '60min'
+      ]
     
 }
 
@@ -66,13 +76,26 @@ export const stocksReducer = createReducer<StocksState>(
     on(AlphaActions.loadIntradayCandlestickSuccess, (state,action): StocksState => {
         return{ 
             ...state,
-            chartOptions: action.chartOptions
+            chartOptions: action.chartOptions,
+            series: [{data: action.chartOptions.series.data}]
         }
     }),
     on(AlphaActions.loadIntradayCandlestickFail, (state, action): StocksState => {
         return {
             ...state,
             error: action.error
+        }
+    }),
+    on(AlphaActions.searchForStockFail, (state, action): StocksState => {
+        return {
+            ...state,
+            error: action.error
+        }
+    }),
+    on(AlphaActions.selectInterval, (state, action): StocksState => {
+        return {
+            ...state,
+            selectedInterval: action.selectedInterval
         }
     })
 )

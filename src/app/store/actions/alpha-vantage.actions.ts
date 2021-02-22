@@ -8,9 +8,17 @@ export const searchForStockSuccess = createAction(
     '[Home] stock search input success',
     props<{ results }>()
 )
+export const searchForStockFail = createAction(
+    '[Home] stock search input failed',
+    props<{ error }>()
+)
 export const selectStock = createAction(
     '[Home] selected stock from search',
     props<{ selectedStock }>()
+)
+export const selectInterval = createAction(
+    '[Home] selected interval',
+    props<{ selectedInterval }>()
 )
 export const loadIntradayCandlestick = createAction(
     '[Home] load intraday candlestick chart options'
