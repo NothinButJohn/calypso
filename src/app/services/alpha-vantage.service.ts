@@ -15,7 +15,7 @@ import {
   ApexNoData
 } from "ng-apexcharts";
 import { Observable, of, throwError } from 'rxjs';
-import { COMPANY_OVERVIEW, DAILY_ADJUSTED, INTRADAY, MONTHLY_ADJUSTED, WEEKLY_ADJUSTED } from './mock-data/alphavantage.mock';
+import { COMPANY_OVERVIEW, DAILY_ADJUSTED, INTRADAY, MONTHLY_ADJUSTED, SMA, WEEKLY_ADJUSTED } from './mock-data/alphavantage.mock';
 
 export type CandlestickChartOptions = {
   series: ApexAxisChartSeries;
@@ -68,6 +68,8 @@ export class AlphaVantageService {
   weeklyAdjustedTimeSeries: Observable<any> = of(WEEKLY_ADJUSTED)
   dailyAdjustedTimeSeries: Observable<any> = of(DAILY_ADJUSTED)
   companyOverview: Observable<any> = of(COMPANY_OVERVIEW)
+
+  simpleMovingAverage: Observable<any> = of(SMA)
   
   constructor(private http: HttpClient) { }
 
@@ -269,6 +271,35 @@ export class AlphaVantageService {
       return this.companyOverview.pipe(
           map((res) => {
               return res;
+          })
+      )
+  }
+  getTechnicalIndicatorData(technicalIndicator: string, symbol: string, interval: string){
+      return this.simpleMovingAverage.pipe(
+          map((res) => {
+            let technicalAnalysisResponse = res[`Technical Analysis: ${technicalIndicator}`]
+            let technicalAnalysisData = 
+            {
+                series: [
+                    {
+                        name: `${technicalIndicator}`,
+                        type: 'line',
+                        data: []
+                    }]
+            }
+
+            console.log('alpha-vantage api call::getMonthlyAdjustedSeriesData() symbol: ', symbol, 'response: ',res, 'timeseries: ', technicalAnalysisResponse)
+            technicalAnalysisData.series[0]['data'] = Object.keys(technicalAnalysisResponse).filter((key) => {
+              return technicalAnalysisResponse[key]
+            }).map((key) => {
+              return {
+                x: new Date( Date.parse(key) ) ,
+                y: parseFloat(technicalAnalysisResponse[key][`${technicalIndicator}`])
+              }
+            })
+
+            console.log("Formatted getMonthlyAdjustedSeriesData() series data: open,high,low,close", technicalAnalysisData)
+            return technicalAnalysisData;
           })
       )
   }

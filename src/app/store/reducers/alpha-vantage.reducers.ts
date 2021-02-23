@@ -39,6 +39,7 @@ export interface StocksState {
     chartOptions?: any,
     error?: string,
     series?: any,
+    technicalIndicators: string[],
     intradayIntervals: string[],
     companyOverview?: any
 }
@@ -52,9 +53,12 @@ export const initialStocksState: StocksState = {
         type: 'candlestick'
       }
     },
-    // chartOptions: initChartOptions,
     error: '',
-    // series: {series: []},
+    technicalIndicators: [
+      'SMA',
+      'EMA',
+      'MACD'
+    ],
     intradayIntervals: [
         '1min',
         '5min',
@@ -109,6 +113,17 @@ export const stocksReducer = createReducer<StocksState>(
       return {
         ...state,
         companyOverview: action.companyOverview
+      }
+    }),
+    on(AlphaActions.loadTechnicalIndicatorSuccess, (state, action): StocksState => {
+      return {
+        ...state,
+        chartOptions: {
+          series: [...state.chartOptions.series, action.technicalIndicatorData.series[0]],
+          chart: {
+            type: 'line'
+          }
+        }
       }
     })
 )

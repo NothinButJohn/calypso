@@ -10,12 +10,7 @@ export const stocksSearchResultsSelector = createSelector(
         return state.searchResults
     }
 )
-// export const candlestickChartOptionsSelector = createSelector(
-//     stocksFeatureSelector,
-//     (state: StocksState): any => {
-//         return state.chartOptions
-//     }
-// )
+
 export const candlestickSeriesDataSelector = createSelector(
     stocksFeatureSelector,
     (state: StocksState): any => {
@@ -44,5 +39,11 @@ export const companyOverviewSelector = createSelector(
     stocksFeatureSelector,
     (state: StocksState): any => {
         return state.companyOverview
+    }
+)
+export const technicalIndicatorsSelector = createSelector(
+    stocksFeatureSelector,
+    (state: StocksState): any => {
+        return state.technicalIndicators
     }
 )

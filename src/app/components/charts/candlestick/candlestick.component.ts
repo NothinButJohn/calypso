@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AlphaVantageService, CandlestickChartOptions } from 'src/app/services/alpha-vantage.service';
-import {  candlestickSeriesDataSelector } from 'src/app/store/selectors/alpha-vantage.selectors';
+import { loadTechnicalIndicator } from 'src/app/store/actions/alpha-vantage.actions';
+import {  candlestickSeriesDataSelector, technicalIndicatorsSelector } from 'src/app/store/selectors/alpha-vantage.selectors';
 
 @Component({
   selector: 'app-candlestick',
@@ -13,6 +15,11 @@ import {  candlestickSeriesDataSelector } from 'src/app/store/selectors/alpha-va
 export class CandlestickComponent implements OnInit {
   intradaySeriesData$: Observable<any>
   seriesData$: Observable<any>
+  technicalIndicators$: Observable<string[]>
+
+  technicalIndicatorForm = new FormGroup({
+    technicalIndicatorOne: new FormControl('')
+  })
 
   
   options: CandlestickChartOptions = {
@@ -325,9 +332,15 @@ export class CandlestickComponent implements OnInit {
         this.seriesData$ = of(JSON.parse(JSON.stringify(options)))
       })
       ).subscribe()
+    this.technicalIndicators$ = this.store.select(technicalIndicatorsSelector)
     // this.seriesData$ = this.store.select(candlestickSeriesDataSelector).pipe(
     //   tap(x => console.log('seriesData: ', x))
     //   )
+  }
+
+  addTechnicalIndicator(){
+    let technicalIndicator = this.technicalIndicatorForm.get('technicalIndicatorOne').value
+    this.store.dispatch(loadTechnicalIndicator({technicalIndicator}))
   }
   // getData(){
   //   this.intradaySeriesData$ = this.alphaVantage.getIntradayTimeSeriesData('TSLA', '5min').pipe(

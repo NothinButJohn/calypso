@@ -18,7 +18,21 @@
       <!-- </div> -->
     </mat-card-content>
   </mat-card>
-
+</div>
+<div class="technical__indicators" *ngIf="(technicalIndicators$ | async) as technicalIndicators">
+  <mat-card>
+    <mat-content>
+      <form [formGroup]="technicalIndicatorForm">
+        <mat-form-field>
+          <mat-select placeholder="none - select indicator" (selectionChange)="addTechnicalIndicator()" formControlName="technicalIndicatorOne">
+            <mat-option *ngFor="let option of technicalIndicators" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </mat-content>
+  </mat-card>
 </div>
 
 <!-- [series]="[{

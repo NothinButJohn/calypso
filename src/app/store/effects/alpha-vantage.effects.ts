@@ -82,4 +82,19 @@ export class AlphaVantageEffects {
 
         )
     })
+
+    loadTechnicalIndicator$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(AlphaActions.loadTechnicalIndicator),
+            withLatestFrom(this.store.select(selectedIntervalSelector)),
+            withLatestFrom(this.store.select(selectedStockSelector)),
+            switchMap( ([[action, interval], stock])=> {
+                return this.alphaVantage.getTechnicalIndicatorData(action.technicalIndicator, stock.symbol, interval).pipe(
+                    map((technicalIndicatorData) => {
+                        return AlphaActions.loadTechnicalIndicatorSuccess({technicalIndicatorData})
+                    })
+                )
+            })
+        )
+    })
 }

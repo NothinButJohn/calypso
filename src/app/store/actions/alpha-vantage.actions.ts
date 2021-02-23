@@ -40,3 +40,12 @@ export const loadCompanyOverviewFail = createAction(
     '[Home] load company overview failed',
     props<{ error }>()
 )
+export const loadTechnicalIndicator = createAction(
+    '[Candlestick] load technical indicator',
+    props<{ technicalIndicator }>()
+)
+
+export const loadTechnicalIndicatorSuccess = createAction(
+    '[Candlestick] load technical indicator success',
+    props<{ technicalIndicatorData }>()
+)
