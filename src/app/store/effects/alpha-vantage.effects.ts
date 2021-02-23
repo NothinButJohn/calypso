@@ -56,8 +56,8 @@ export class AlphaVantageEffects {
             withLatestFrom(this.store.select(selectedIntervalSelector)),
             switchMap(([action, interval]) => {
                 return this.alphaVantage.getIntradayTimeSeriesData(action.selectedStock.symbol, interval).pipe(
-                    map((chartOptions) => {
-                        return AlphaActions.loadIntradayCandlestickSuccess({chartOptions})
+                    map((seriesData) => {
+                        return AlphaActions.loadIntradayCandlestickSuccess({seriesData})
                     })
                 )
             })
@@ -74,8 +74,8 @@ export class AlphaVantageEffects {
             withLatestFrom(this.store.select(selectedStockSelector)),
             switchMap(([action, stock]) => {
                 return this.alphaVantage.getIntradayTimeSeriesData(stock.symbol, action.selectedInterval).pipe(
-                    map((chartOptions) => {
-                        return AlphaActions.loadIntradayCandlestickSuccess({chartOptions})
+                    map((seriesData) => {
+                        return AlphaActions.loadIntradayCandlestickSuccess({seriesData})
                     })
                 )
             })

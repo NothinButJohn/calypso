@@ -25,7 +25,7 @@ export const loadIntradayCandlestick = createAction(
 )
 export const loadIntradayCandlestickSuccess = createAction(
     '[Home] load intraday candlestick chart options success',
-    props<{ chartOptions }>()
+    props<{ seriesData }>()
 )
 export const loadIntradayCandlestickFail = createAction(
     '[Home] load intraday candlestick chart options failed',

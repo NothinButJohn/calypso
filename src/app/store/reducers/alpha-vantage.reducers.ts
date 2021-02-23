@@ -36,7 +36,7 @@ export interface StocksState {
     searchResults: [],
     selectedStock?: any,
     selectedInterval?: string,
-    chartOptions?: CandlestickChartOptions,
+    chartOptions?: any,
     error?: string,
     series?: any,
     intradayIntervals: string[],
@@ -46,9 +46,15 @@ export const initialStocksState: StocksState = {
     searchResults: [],
     selectedStock: {},
     selectedInterval: '5min',
-    chartOptions: initChartOptions,
+    chartOptions: {
+      series: [],
+      chart: {
+        type: 'candlestick'
+      }
+    },
+    // chartOptions: initChartOptions,
     error: '',
-    series: [],
+    // series: {series: []},
     intradayIntervals: [
         '1min',
         '5min',
@@ -78,8 +84,7 @@ export const stocksReducer = createReducer<StocksState>(
     on(AlphaActions.loadIntradayCandlestickSuccess, (state,action): StocksState => {
         return{ 
             ...state,
-            chartOptions: action.chartOptions,
-            series: [{data: action.chartOptions.series.data}]
+            chartOptions: {series: action.seriesData.series, chart: state.chartOptions.chart}
         }
     }),
     on(AlphaActions.loadIntradayCandlestickFail, (state, action): StocksState => {

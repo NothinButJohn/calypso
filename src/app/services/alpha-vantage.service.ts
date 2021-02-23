@@ -105,9 +105,17 @@ export class AlphaVantageService {
           throwError(new Error('Error in getIntradayTimeSeriesData()! response[`Time Series (${interval})`] was undefined.'+ res))
         }
 
-        let seriesData = {series: [{data: []}]}
+        let seriesData = 
+        {
+            series: [
+                {
+                    name: 'candle',
+                    type: 'candlestick',
+                    data: []
+                }]
+        }
         console.log('api call, input:', symbol, interval, timeseriesResponse, res)
-        seriesData.series['data'] = Object.keys(timeseriesResponse).filter((key) => {
+        seriesData.series[0]["data"] = Object.keys(timeseriesResponse).filter((key) => {
           return timeseriesResponse[key]
         }).map((key) => {
           return {
@@ -118,10 +126,33 @@ export class AlphaVantageService {
               parseFloat(timeseriesResponse[key]["3. low"]),
               parseFloat(timeseriesResponse[key]["4. close"]),
             ]
-
           }
         })
-        console.log("series data:", seriesData)
+
+        
+        // seriesData.series.push(     {
+        //     name: "line",
+        //     type: "line",
+        //     data: [
+        //       {
+        //         x: new Date("02/19/2021 18:00:0000"),
+        //         y: 788
+        //       },
+        //       {
+        //         x: new Date("02/19/2021 19:30:0000"),
+        //         y: 780
+        //       },
+        //       {
+        //         x: new Date("02/19/2021 21:30:0000"),
+        //         y: 782
+        //       },
+        //       {
+        //         x: new Date("02/20/2021 01:00:0000"),
+        //         y: 781
+        //       }
+        //     ]
+        //   })
+        console.log("getIntradayTimeSeriesData() api call, series data:", seriesData)
         return seriesData;
       })
     )
@@ -205,7 +236,11 @@ export class AlphaVantageService {
               throwError(new Error('Error in getMonthlyAdjustedSeriesData()! response[`Time Series (Monthly)`] was undefined.'+ res))
             }
     
-            let seriesData = {series: [{data: []}]}
+            let seriesData = {series: [{
+                name: 'candle',
+                type: 'candlestick',
+                data: []}]
+            }
             console.log('alpha-vantage api call::getMonthlyAdjustedSeriesData() symbol: ', symbol, 'response: ',res, 'timeseries: ', timeseriesResponse)
             seriesData.series['data'] = Object.keys(timeseriesResponse).filter((key) => {
               return timeseriesResponse[key]
@@ -221,6 +256,9 @@ export class AlphaVantageService {
     
               }
             })
+
+
+
             console.log("Formatted getMonthlyAdjustedSeriesData() series data: open,high,low,close", seriesData)
             return seriesData;
           })

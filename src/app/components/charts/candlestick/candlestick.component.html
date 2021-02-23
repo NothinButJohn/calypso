@@ -1,13 +1,13 @@
 
 
 
-<div style="text-align:center" *ngIf="(intradaySeriesData$ | async) as isd">
+<div style="text-align:center" *ngIf="(seriesData$ | async) as isd">
   <mat-card class="intradayCard">
     <mat-card-content>
       <!-- <div style="text-align:center" *ngIf="(intradaySeriesData$ | async) as isd"> -->
         <apx-chart 
-          [series]="[{data: isd.series.data}]"
-          [chart]="options.chart"
+          [series]="isd.series"
+          [chart]="isd.chart"
           [xaxis]="options.xaxis"
           [yaxis]="options.yaxis"
           [title]="options.title"
@@ -19,7 +19,10 @@
     </mat-card-content>
   </mat-card>
 
-
-
-
 </div>
+
+<!-- [series]="[{
+  name: 'tslaCandle',
+  type: 'candlestick',
+  data: isd.series.data}
+  ]" -->
