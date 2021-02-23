@@ -319,6 +319,9 @@ export class CandlestickComponent implements OnInit {
     },
     noData: {
         text: 'Search for an Equity'
+    },
+    stroke: {
+      curve:'smooth'
     }
   }
   

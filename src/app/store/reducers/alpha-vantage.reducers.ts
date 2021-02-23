@@ -29,6 +29,9 @@ export const initChartOptions: CandlestickChartOptions = {
     },
     noData: {
         text: 'Search for an Equity'
+    },
+    stroke: {
+      curve: 'smooth'
     }
   }
 

@@ -12,7 +12,8 @@ import {
   ApexTitleSubtitle,
   ApexTooltip,
   ApexTheme,
-  ApexNoData
+  ApexNoData,
+  ApexStroke
 } from "ng-apexcharts";
 import { Observable, of, throwError } from 'rxjs';
 import { COMPANY_OVERVIEW, DAILY_ADJUSTED, INTRADAY, MONTHLY_ADJUSTED, SMA, WEEKLY_ADJUSTED } from './mock-data/alphavantage.mock';
@@ -26,6 +27,7 @@ export type CandlestickChartOptions = {
   tooltip: ApexTooltip;
   theme: ApexTheme;
   noData: ApexNoData;
+  stroke: ApexStroke;
 };
 
 
@@ -298,6 +300,12 @@ export class AlphaVantageService {
               }
             })
 
+            let index = technicalAnalysisData.series[0]['data'].findIndex((value) => {
+                console.log('x', value.x)
+                let v = new Date(Date.parse("2021-02-19 17:00"))
+                return value.x.getTime() == v.getTime() })
+                console.log(index)
+                technicalAnalysisData.series[0]['data'] = technicalAnalysisData.series[0]['data'].slice(index-18,index)
             console.log("Formatted getMonthlyAdjustedSeriesData() series data: open,high,low,close", technicalAnalysisData)
             return technicalAnalysisData;
           })
