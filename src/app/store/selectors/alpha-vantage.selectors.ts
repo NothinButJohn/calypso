@@ -40,3 +40,9 @@ export const intradayIntervalsSelector = createSelector(
         return state.intradayIntervals
     }
 )
+export const companyOverviewSelector = createSelector(
+    stocksFeatureSelector,
+    (state: StocksState): any => {
+        return state.companyOverview
+    }
+)

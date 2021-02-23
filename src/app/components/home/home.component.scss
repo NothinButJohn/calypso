@@ -1,14 +1,50 @@
-.candlestick__controls__container{
+
+.flex_container{
+    // display: flex;
     display: flex;
-    .candlestick__search__input{
-        margin-left: 5%;
+    flex-direction: row;
+
+    .chart__container{
+        display: flex;
+        flex-direction: column;
+        flex-grow: 2;
+        // flex-wrap: wrap;
+        .candlestick__controls__container{
+            display: flex;
+            flex-direction: row;
+            .candlestick__search__input{
+                margin-left: 5%;
+            }
+        
+            .candlestick__interval__selection{
+                margin-left: 5%;
+            }
+        }
+
+        .candlestick__chart{
+            // display: flex;
+            // height: max-content;
+            // width: max-content;
+        }
+    
+        .stocksearch__option{
+            font-size: x-small;
+        }
     }
 
-    .candlestick__interval__selection{
-        margin-left: 5%;
+    .company__card__container{
+        // display: flex;
+        // flex-direction: column;
+        margin-top: 2%;
+        margin-right: 5%;
+        max-width: fit-content;
     }
+
+
+
 }
 
-.stocksearch__option{
-    font-size: x-small;
-}
+
+
+
+

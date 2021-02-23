@@ -37,15 +37,18 @@ export class AlphaVantageEffects {
         )
     })
 
-    // selectStock = createEffect(() => {
-    //     return this.actions$.pipe(
-    //         ofType(AlphaActions.selectStock),
-    //         withLatestFrom(this.store.select(selectedIntervalSelector)),
-    //         map( ([action, interval]) => {
-    //             return AlphaActions.loadIntradayCandlestick({selectedStock: action.selectedStock, selectedInterval: interval})
-    //         })
-    //     )
-    // })
+    loadCompanyOverview$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(AlphaActions.selectStock),
+            switchMap(action => {
+                return this.alphaVantage.getCompanyOverview(action.selectedStock.symbol).pipe(
+                    map((companyOverview) => {
+                        return AlphaActions.loadCompanyOverviewSuccess({ companyOverview })
+                    })
+                )
+            })
+        )
+    })
 
     loadIntradayCandlestickSeriesData$ = createEffect(() => {
         return this.actions$.pipe(

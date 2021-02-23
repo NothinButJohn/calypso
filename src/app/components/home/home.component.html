@@ -1,41 +1,83 @@
 
 
-<div class="candlestick__controls__container">
-  <div class="candlestick__search__input">
-    <mat-form-field [formGroup]="stockSearch">
-      <input type="text"
-         placeholder="Search for a Stock"
-         aria-label="Number"
-         matInput
-         formControlName="stockSearchInput"
-         [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="stockAutoSelection($event)">
-          <mat-option *ngFor="let option of (stockSearch$ | async)" [value]="option" class="stocksearch__option">
-            {{option.symbol}} {{option.name}}
-          </mat-option>
-        </mat-autocomplete>
-  </mat-form-field>
-  </div>
-  
-  
-  <div *ngIf="(selectedInterval$ | async) as selectedInterval" class="candlestick__interval__selection">
-      <mat-label>Select an Interval</mat-label>
-      <form [formGroup]="stockSearch">
-      <mat-form-field appearance="fill">
-        <mat-select formControlName="intradayIntervalSelection" (selectionChange)="intervalSelected()" placeholder="{{selectedInterval}}">
-          <mat-option *ngFor="let interval of (intradayIntervals$ | async)" [value]="interval">
-            {{interval}}
-          </mat-option>
-        </mat-select>
+<div class="flex_container">
+  <div class="chart__container">
+
+
+
+    <div class="candlestick__controls__container">
+      <div class="candlestick__search__input">
+        <mat-form-field [formGroup]="stockSearch">
+          <input type="text"
+            placeholder="Search for a Stock"
+            aria-label="Number"
+            matInput
+            formControlName="stockSearchInput"
+            [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="stockAutoSelection($event)">
+              <mat-option *ngFor="let option of (stockSearch$ | async)" [value]="option" class="stocksearch__option">
+                {{option.symbol}} {{option.name}}
+              </mat-option>
+            </mat-autocomplete>
       </mat-form-field>
-    </form>
+      </div>
+      
+      
+      <div *ngIf="(selectedInterval$ | async) as selectedInterval" class="candlestick__interval__selection">
+          <mat-label>Select an Interval</mat-label>
+          <form [formGroup]="stockSearch">
+          <mat-form-field appearance="fill">
+            <mat-select formControlName="intradayIntervalSelection" (selectionChange)="intervalSelected()" placeholder="{{selectedInterval}}">
+              <mat-option *ngFor="let interval of (intradayIntervals$ | async)" [value]="interval">
+                {{interval}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form>
+      </div>
+    </div>
+    <div class="candlestick__chart">
+      <app-candlestick></app-candlestick>
+    </div>
+    
+
   </div>
+
+  <div *ngIf="(companyOverview$ | async) as companyInformation" class="company__card__container">
+    <mat-card >
+      <mat-card-content>
+        <mat-tab-group>
+          <mat-tab label="Company Overview">
+            {{ companyInformation.Name }} [{{companyInformation.Symbol}}] <br>
+            Industry: {{companyInformation.Industry}} <br>
+            EBITDA: {{companyInformation.EBITDA}} <br>
+            Price-to-Earnings: {{companyInformation.PERatio}} <br>
+            P:E / E[GrowthEarnings' ]: {{companyInformation.PEGRatio}} <br>
+            Book Value: {{companyInformation.BookValue}} <br>
+            EPS: {{companyInformation.EPS}} <br>
+            Return on Assets, Equity (TTM): {{companyInformation.ReturnOnAssetsTTM}}, {{companyInformation.ReturnOnEquityTTM}} <br>
+            Gross Profit (TTM): {{companyInformation.GrossProfitTTM}} <br>
+            Quarterly Earnings Growth (YOY): {{companyInformation.QuarterlyEarningsGrowthYOY}} <br>
+            Quarterly Revenue Growth (YOY):{{companyInformation.QuarterlyRevenueGrowthYOY}} <br>
+            EV:Revenue: {{companyInformation.EVToRevenue}} <br>
+            EV:EBITDA: {{companyInformation.EVToEBITDA}} <br>
+            Beta: {{companyInformation.Beta}} <br>
+            <hr>
+            52 Wk High: {{companyInformation["52WeekHigh"]}}
+            52 Wk Low: {{companyInformation["52WeekLow"]}}
+            Shares Outstanding: {{companyInformation.SharesOutstanding}} <br>
+            Shares Float: {{companyInformation.SharesFloat}} <br>
+            Shares Short: {{companyInformation.SharesShort}} <br>
+            Short Ratio: {{companyInformation.ShortRatio}} <br>
+            Short Percent Outstanding: {{companyInformation.ShortPercentOutstanding}} <br>
+            Short Percent Float: {{companyInformation.ShortPercentFloat}} <br>
+            Percent Insiders: {{companyInformation.PercentInsiders}} <br>
+            Percent Institutions: {{companyInformation.PercentInstitutions}} <br>
+            Last Split Factor & Date: {{companyInformation.LastSplitFactor}} on {{companyInformation.LastSplitDate}} <br>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
 </div>
-
-
-
-
-
-
-
-<app-candlestick></app-candlestick>

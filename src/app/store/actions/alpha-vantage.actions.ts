@@ -31,3 +31,12 @@ export const loadIntradayCandlestickFail = createAction(
     '[Home] load intraday candlestick chart options failed',
     props<{ error }>()
 )
+
+export const loadCompanyOverviewSuccess = createAction(
+    '[Home] load company overview success',
+    props<{ companyOverview }>()
+)
+export const loadCompanyOverviewFail = createAction(
+    '[Home] load company overview failed',
+    props<{ error }>()
+)

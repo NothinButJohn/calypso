@@ -8,7 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 import { AlphaVantageService } from 'src/app/services/alpha-vantage.service';
 import { loadIntradayCandlestick, searchForStock, selectInterval, selectStock } from 'src/app/store/actions/alpha-vantage.actions';
-import { intradayIntervalsSelector, selectedIntervalSelector, stocksSearchResultsSelector } from 'src/app/store/selectors/alpha-vantage.selectors';
+import { companyOverviewSelector, intradayIntervalsSelector, selectedIntervalSelector, stocksSearchResultsSelector } from 'src/app/store/selectors/alpha-vantage.selectors';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   selectedInterval$: Observable<string>
   intradayIntervals$: Observable<string[]>
+  companyOverview$: Observable<any>
 
 
 
@@ -50,7 +51,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.stockSearch$ = this.store.select(stocksSearchResultsSelector)
     this.selectedInterval$ = this.store.select(selectedIntervalSelector)
     this.intradayIntervals$ = this.store.select(intradayIntervalsSelector)
-
+    this.companyOverview$ = this.store.select(companyOverviewSelector)
     // this.selectedInterval$.subscribe(x => console.log(x))
   }
 

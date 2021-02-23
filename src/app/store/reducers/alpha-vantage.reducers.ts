@@ -39,7 +39,8 @@ export interface StocksState {
     chartOptions?: CandlestickChartOptions,
     error?: string,
     series?: any,
-    intradayIntervals: string[]
+    intradayIntervals: string[],
+    companyOverview?: any
 }
 export const initialStocksState: StocksState = {
     searchResults: [],
@@ -54,7 +55,8 @@ export const initialStocksState: StocksState = {
         '15min',
         '30min',
         '60min'
-      ]
+      ],
+    companyOverview: {}
     
 }
 
@@ -97,5 +99,11 @@ export const stocksReducer = createReducer<StocksState>(
             ...state,
             selectedInterval: action.selectedInterval
         }
+    }),
+    on(AlphaActions.loadCompanyOverviewSuccess, (state, action): StocksState=> {
+      return {
+        ...state,
+        companyOverview: action.companyOverview
+      }
     })
 )

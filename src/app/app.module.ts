@@ -46,6 +46,8 @@ import { stocksReducer } from './store/reducers/alpha-vantage.reducers';
 import { AlphaVantageEffects } from './store/effects/alpha-vantage.effects';
 import {MatSelectModule} from '@angular/material/select';
 
+import {MatTabsModule} from '@angular/material/tabs';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -87,7 +89,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatFormFieldModule,
     MatChipsModule,
     NgApexchartsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
