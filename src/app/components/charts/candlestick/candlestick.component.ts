@@ -313,6 +313,31 @@ export class CandlestickComponent implements OnInit {
     tooltip: {
       enabled: true,
       theme: 'dark',
+      // shared: true,
+      // custom: [function({seriesIndex, dataPointIndex, w}) {
+      //   return w.globals.series[seriesIndex][dataPointIndex]
+      // }, function({ seriesIndex, dataPointIndex, w }) {
+      //   const o = w.globals.seriesCandleO[seriesIndex][dataPointIndex];
+      //   const h = w.globals.seriesCandleH[seriesIndex][dataPointIndex];
+      //   const l = w.globals.seriesCandleL[seriesIndex][dataPointIndex];
+      //   const c = w.globals.seriesCandleC[seriesIndex][dataPointIndex];
+      //   return (
+      //     '<div class="apexcharts-tooltip-candlestick">' +
+      //     '<div>Open: <span class="value">' +
+      //     o +
+      //     "</span></div>" +
+      //     '<div>High: <span class="value">' +
+      //     h +
+      //     "</span></div>" +
+      //     '<div>Low: <span class="value">' +
+      //     l +
+      //     "</span></div>" +
+      //     '<div>Close: <span class="value">' +
+      //     c +
+      //     "</span></div>" +
+      //     "</div>"
+      //   );
+      // }]
     },
     theme: {
       mode: 'dark'
@@ -321,7 +346,8 @@ export class CandlestickComponent implements OnInit {
         text: 'Search for an Equity'
     },
     stroke: {
-      curve:'smooth'
+      curve:'smooth',
+      width: [1, 3]
     }
   }
   

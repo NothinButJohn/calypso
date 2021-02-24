@@ -89,9 +89,10 @@ export const stocksReducer = createReducer<StocksState>(
         }
     }),
     on(AlphaActions.loadIntradayCandlestickSuccess, (state,action): StocksState => {
+      console.log('before reducer save: ', action.seriesData.series )
         return{ 
             ...state,
-            chartOptions: {series: action.seriesData.series, chart: state.chartOptions.chart}
+            chartOptions: {series: action.seriesData.series, chart: {type: "candlestick"}}
         }
     }),
     on(AlphaActions.loadIntradayCandlestickFail, (state, action): StocksState => {

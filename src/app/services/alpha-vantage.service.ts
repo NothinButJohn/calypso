@@ -132,31 +132,8 @@ export class AlphaVantageService {
             ]
           }
         })
-
-        
-        // seriesData.series.push(     {
-        //     name: "line",
-        //     type: "line",
-        //     data: [
-        //       {
-        //         x: new Date("02/19/2021 18:00:0000"),
-        //         y: 788
-        //       },
-        //       {
-        //         x: new Date("02/19/2021 19:30:0000"),
-        //         y: 780
-        //       },
-        //       {
-        //         x: new Date("02/19/2021 21:30:0000"),
-        //         y: 782
-        //       },
-        //       {
-        //         x: new Date("02/20/2021 01:00:0000"),
-        //         y: 781
-        //       }
-        //     ]
-        //   })
-        console.log("getIntradayTimeSeriesData() api call, series data:", seriesData)
+        let lastIndex = seriesData.series[0]["data"].length-1
+        console.log("getIntradayTimeSeriesData() api call, series data:", seriesData, 'range', seriesData.series[0]["data"][0].x, seriesData.series[0]["data"][lastIndex].x)
         return seriesData;
       })
     )
