@@ -15,8 +15,8 @@ import {
   ApexNoData,
   ApexStroke
 } from "ng-apexcharts";
-import { Observable, of, throwError } from 'rxjs';
-import { COMPANY_OVERVIEW, DAILY_ADJUSTED, INTRADAY, MONTHLY_ADJUSTED, SMA, WEEKLY_ADJUSTED } from './mock-data/alphavantage.mock';
+import { Observable, of, range, throwError } from 'rxjs';
+import { COMPANY_OVERVIEW, DAILY_ADJUSTED, EMA, INTRADAY, MONTHLY_ADJUSTED, SMA, WEEKLY_ADJUSTED } from './mock-data/alphavantage.mock';
 
 export type CandlestickChartOptions = {
   series: ApexAxisChartSeries;
@@ -72,6 +72,7 @@ export class AlphaVantageService {
   companyOverview: Observable<any> = of(COMPANY_OVERVIEW)
 
   simpleMovingAverage: Observable<any> = of(SMA)
+  exponentialMovingAverage: Observable<any> = of(EMA)
   
   constructor(private http: HttpClient) { }
 
@@ -97,9 +98,9 @@ export class AlphaVantageService {
   }
 
   getIntradayTimeSeriesData(symbol: string, interval: string){
-    // return this.http.get(this.URL+this.FUNCTIONS.TIME_SERIES.INTRADAY+'&symbol='+symbol+'&interval='+interval+'&apikey='+this.alphaKey).pipe(
+    return this.http.get(this.URL+this.FUNCTIONS.TIME_SERIES.INTRADAY+'&symbol='+symbol+'&interval='+interval+'&apikey='+this.alphaKey).pipe(
 
-    return this.intradayTimeSeries.pipe(
+    // return this.intradayTimeSeries.pipe(
       map((res) => {
         if(res === undefined){
           throwError(new Error('Error in getIntradayTimeSeriesData()! response was undefined.'+res['Note']))
@@ -116,14 +117,15 @@ export class AlphaVantageService {
                     name: 'candle',
                     type: 'candlestick',
                     data: []
-                }]
+                }],
+                range: {}
         }
         console.log('api call, input:', symbol, interval, timeseriesResponse, res)
         seriesData.series[0]["data"] = Object.keys(timeseriesResponse).filter((key) => {
           return timeseriesResponse[key]
         }).map((key) => {
           return {
-            x: new Date( Date.parse(key) ) ,
+            x: new Date( Date.parse(key) ).toUTCString() ,
             y: [
               parseFloat(timeseriesResponse[key]["1. open"]),
               parseFloat(timeseriesResponse[key]["2. high"]),
@@ -133,11 +135,14 @@ export class AlphaVantageService {
           }
         })
         let lastIndex = seriesData.series[0]["data"].length-1
+        seriesData.range = {end: seriesData.series[0]["data"][0].x, start: seriesData.series[0]["data"][lastIndex].x}
         console.log("getIntradayTimeSeriesData() api call, series data:", seriesData, 'range', seriesData.series[0]["data"][0].x, seriesData.series[0]["data"][lastIndex].x)
         return seriesData;
       })
     )
   }
+
+  
 
   getDailyAdjustedSeriesData(symbol: string){
     // return this.http.get(this.URL+this.FUNCTIONS.TIME_SERIES.ADJUSTED+'&symbol='+symbol+'&apikey='+this.alphaKey).pipe(
@@ -247,16 +252,32 @@ export class AlphaVantageService {
   }
 
   getCompanyOverview(symbol: string){
-      return this.companyOverview.pipe(
+    return this.http.get(this.URL+'function=OVERVIEW'+'&symbol='+symbol+'&apikey='+this.alphaKey).pipe(
+      // return this.companyOverview.pipe(
           map((res) => {
               return res;
           })
       )
   }
-  getTechnicalIndicatorData(technicalIndicator: string, symbol: string, interval: string){
-      return this.simpleMovingAverage.pipe(
+  getTechnicalIndicatorData(technicalIndicator: string, symbol: string, interval: string, range){
+    return this.http.get(this.URL+'function='+technicalIndicator+'&symbol='+symbol+'&interval='+interval+'&time_period=10&series_type=open'+'&apikey='+this.alphaKey).pipe(
+      // let selectedIndicator: Observable<any>;
+      // if (technicalIndicator == 'SMA') {
+      //     selectedIndicator = this.simpleMovingAverage;
+      // } else if (technicalIndicator == 'EMA') {
+      //     selectedIndicator = this.exponentialMovingAverage;
+      // }else{
+      //   selectedIndicator = this.simpleMovingAverage
+      // }
+      // return selectedIndicator.pipe(
           map((res) => {
             let technicalAnalysisResponse = res[`Technical Analysis: ${technicalIndicator}`]
+            if(res === undefined){
+              throwError(new Error('Error in getTechnicalIndicatorData()! response was undefined.'+res['Note']))
+            }
+            if(technicalAnalysisResponse === undefined){
+              throwError(new Error('Error in getTechnicalIndicatorData()! res[`Technical Analysis: ${technicalIndicator}`] was undefined.'+ res))
+            }
             let technicalAnalysisData = 
             {
                 series: [
@@ -267,7 +288,7 @@ export class AlphaVantageService {
                     }]
             }
 
-            console.log('alpha-vantage api call::getMonthlyAdjustedSeriesData() symbol: ', symbol, 'response: ',res, 'timeseries: ', technicalAnalysisResponse)
+            console.log('alpha-vantage api call::getTechnicalIndicatorData() symbol: ', symbol, 'response: ',res, 'timeseries: ', technicalAnalysisResponse)
             technicalAnalysisData.series[0]['data'] = Object.keys(technicalAnalysisResponse).filter((key) => {
               return technicalAnalysisResponse[key]
             }).map((key) => {
@@ -277,12 +298,18 @@ export class AlphaVantageService {
               }
             })
 
-            let index = technicalAnalysisData.series[0]['data'].findIndex((value) => {
-                console.log('x', value.x)
-                let v = new Date(Date.parse("2021-02-19 17:00"))
-                return value.x.getTime() == v.getTime() })
-                console.log(index)
-                technicalAnalysisData.series[0]['data'] = technicalAnalysisData.series[0]['data'].slice(index-18,index)
+            let endIndex = technicalAnalysisData.series[0]['data'].findIndex((value) => {
+                console.log('endIndex comparison', value.x, range.end)
+                let endTime = new Date(Date.parse(range.end))
+                return value.x.getTime() == endTime.getTime() })
+            let startIndex = technicalAnalysisData.series[0]['data'].findIndex((value) => {
+                console.log('startIndex comparison', value.x, range.start)
+                let startTime = new Date(Date.parse(range.start))
+                return value.x.getTime() == startTime.getTime() })
+
+
+                console.log("endIndex match", endIndex, 'startIndex match', startIndex)
+                technicalAnalysisData.series[0]['data'] = technicalAnalysisData.series[0]['data'].slice(endIndex, startIndex)
             console.log("Formatted getMonthlyAdjustedSeriesData() series data: open,high,low,close", technicalAnalysisData)
             return technicalAnalysisData;
           })

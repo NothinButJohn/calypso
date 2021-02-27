@@ -11,11 +11,11 @@ export interface ProfileState {
 }
 
 export const InitialProfileState: ProfileState = {
-    headerPicture: '',
-    profilePicture: '',
+    headerPicture: 'https://pbs.twimg.com/profile_banners/998174888832757760/1612320112/1080x360',
+    profilePicture: 'https://i.pinimg.com/736x/9d/5f/be/9d5fbe153339d1feb7cc9af8acf14ac5.jpg',
     registration: '',
     username: 'ghosty',
-    name: ''
+    name: 'Asuna Sakura'
 }
 
 export const ProfileReducer = createReducer<ProfileState>(

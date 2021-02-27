@@ -1,35 +1,16 @@
+<div class="headerPicture__container" *ngIf="(headerPicture$ | async) as headerPicture">
+  <img class="headerPicture" src="{{headerPicture}}">
+</div>
 
-
-<!-- <button (click)="getData()">click me</button> -->
-
-<!-- <div style="text-align:center">
-    <apx-chart
-      [series]="chartOptions.series"
-      [chart]="chartOptions.chart"
-      [xaxis]="chartOptions.xaxis"
-      [title]="chartOptions.title"
-      [series]="[{'data': data.series.data}]"
-    ></apx-chart>
-  </div> -->
-  <!-- <div id="chart" >
-    <apx-chart
-      [series]="chartOptions.series"
-      [chart]="chartOptions.chart"
-      [xaxis]="chartOptions.xaxis"
-      [yaxis]="chartOptions.yaxis"
-      [title]="chartOptions.title"
-      [tooltip]="chartOptions.tooltip"
-    ></apx-chart>
-  </div>
-
-  <div *ngIf="(intradaySeriesData$ | async) as data">
-    <div style="text-align:center" >
-        <apx-chart 
-          [series]="[{'data': data.series.data}]"
-          [chart]="data.chart"
-          [xaxis]="data.xaxis"
-          [yaxis]="data.yaxis"
-          [title]="data.title"
-        ></apx-chart>
-      </div>
-  </div> -->
+<div class="profile__pic" *ngIf="(profilePicture$ | async) as profilePicture">
+  <mat-card>
+    <mat-card-title>
+      <img class="profilePicture" src="{{profilePicture}}">
+    </mat-card-title>
+    <mat-card-content>
+      <ng-container *ngIf="(username$ | async) as username">
+        @{{username}}
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
+</div>

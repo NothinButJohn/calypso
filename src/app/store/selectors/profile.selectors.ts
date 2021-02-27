@@ -10,4 +10,22 @@ export const usernameSelector = createSelector(
         return state?.username
     }
 )
+export const headerPictureSelector = createSelector(
+    profileFeatureSelector,
+    (state: ProfileState):any => {
+        return state?.headerPicture
+    }
+)
+export const profilePictureSelector = createSelector(
+    profileFeatureSelector,
+    (state: ProfileState):any => {
+        return state?.profilePicture
+    }
+)
+export const registeredNameSelector = createSelector(
+    profileFeatureSelector,
+    (state: ProfileState):any => {
+        return state?.name
+    }
+)
 

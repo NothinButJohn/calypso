@@ -47,3 +47,9 @@ export const technicalIndicatorsSelector = createSelector(
         return state.technicalIndicators
     }
 )
+export const seriesRangeSelector = createSelector(
+    stocksFeatureSelector,
+    (state: StocksState): any => {
+        return state.seriesRange
+    }
+)

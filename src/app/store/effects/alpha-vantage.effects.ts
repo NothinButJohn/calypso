@@ -6,7 +6,7 @@ import { catchError, map, switchMap, withLatestFrom } from "rxjs/operators";
 import { AlphaVantageService } from "src/app/services/alpha-vantage.service";
 
 import * as AlphaActions from '../actions/alpha-vantage.actions'
-import { selectedIntervalSelector, selectedStockSelector } from "../selectors/alpha-vantage.selectors";
+import { selectedIntervalSelector, selectedStockSelector, seriesRangeSelector } from "../selectors/alpha-vantage.selectors";
 
 
 
@@ -88,8 +88,9 @@ export class AlphaVantageEffects {
             ofType(AlphaActions.loadTechnicalIndicator),
             withLatestFrom(this.store.select(selectedIntervalSelector)),
             withLatestFrom(this.store.select(selectedStockSelector)),
-            switchMap( ([[action, interval], stock])=> {
-                return this.alphaVantage.getTechnicalIndicatorData(action.technicalIndicator, stock.symbol, interval).pipe(
+            withLatestFrom(this.store.select(seriesRangeSelector)),
+            switchMap( ([[[action, interval], stock], range])=> {
+                return this.alphaVantage.getTechnicalIndicatorData(action.technicalIndicator, stock.symbol, interval, range).pipe(
                     map((technicalIndicatorData) => {
                         return AlphaActions.loadTechnicalIndicatorSuccess({technicalIndicatorData})
                     })

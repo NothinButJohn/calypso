@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         console.log("search is empty", stockSearchQuery == '')
         if(stockSearchQuery == ''){
 
-        }else{
+        }else if(stockSearchQuery.length >= 4){
           this.store.dispatch(searchForStock({query: stockSearchQuery}))
         }
         

@@ -1,3 +1,13 @@
+.headerPicture__container{
+    position: relative;
+    flex-direction: column;
+    top: auto;
+    display: grid;
+}
+
+.headerPicture{
+    border-radius: 9999px;
+}
 
 .profile__container{
     display: grid;
@@ -25,9 +35,11 @@
     display: grid;
     position: absolute;
     flex-direction: column;
+    margin-left: 5%;
+    margin-top: 5%;
 }
 
-.profile__pic__img{
+.profilePicture{
     width: 25%;
     height: auto;
     border-radius: 9999px;
