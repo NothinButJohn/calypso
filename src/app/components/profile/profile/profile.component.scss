@@ -3,6 +3,7 @@
     flex-direction: column;
     top: auto;
     display: grid;
+    grid-area: 1 / 1 / 4 / 4;
 }
 
 .headerPicture{
@@ -39,12 +40,15 @@
     margin-top: 5%;
 }
 
-.profilePicture{
-    width: 15%;
-    height: auto;
-    border-radius: 9999px;
-    border: 1px;
+
+.profile__card {
+    // width: fit-content;
+    margin: 1%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
 }
+
+
 
 .profile__edit__button{
     right: auto;
@@ -52,16 +56,34 @@
 
 .profilePicture__container{
     display: grid;
-    // grid-template-columns: 250px 1fr;
-    // grid-template-rows: 150px 1fr;
+    // grid-area: 1/ 1;
+    grid-area: 4/ 1 / 4 / 3;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: minmax(3, auto);
+    .profilePictureInput{
+        display: none;
+         
+    }
+
+    .updateProfilePicture{
+        grid-area: 1 / 2 / 2 / 1;
+        cursor: pointer;
+
+    }
+
+    .profilePicture__imageContainer{
+        grid-area: 1 / 1 / 2 / 4;
+    }
+}
+.profilePicture{
+    // display: grid;
+    width: 15%;
+    height: auto;
+    border-radius: 9999px;
+    border: 1px;
+    // grid-auto-flow: column;
 }
 
-.profilePictureInput{
-    display: none;
-    // cursor: pointer; 
-}
-.updateProfilePicture{
-    display: inline;
-    // cursor: pointer;
-    // grid-area: 1 / 1 / 1 / 1;
+.profile__username{
+    grid-area: 5/2/5/2;
 }

@@ -1,24 +1,30 @@
-<div class="headerPicture__container" *ngIf="(headerPicture$ | async) as headerPicture">
-  <img class="headerPicture" src="{{headerPicture}}">
-</div>
 
-<div>
-  <mat-card>
-    <mat-card-title>
-      <div class="profilePicture__container" *ngIf="(profilePicture$ | async) as profilePicture">
+
+<div >
+  <mat-card class="profile__card">
+    <div class="headerPicture__container" *ngIf="(headerPicture$ | async) as headerPicture">
+      <img class="headerPicture" src="{{headerPicture}}">
+    </div>
+    <div class="profilePicture__container" *ngIf="(profilePicture$ | async) as profilePicture">
+      <div class="profilePicture__imageContainer">
         <img class="profilePicture" src="{{profilePicture}}">
-        <div class="updateProfilePicture" role="button">
-          <label for="file-input">
-            <mat-icon>camera_enhanced</mat-icon>
-          </label>
-          <input class="profilePictureInput" type="file" id="file-input" />
-        </div>
       </div>
-    </mat-card-title>
-    <mat-card-content>
-      <ng-container *ngIf="(username$ | async) as username">
+
+      <div class="updateProfilePicture" role="button">
+        <label class="updateProfilePicture" for="file-input">
+          <mat-icon>camera_enhanced</mat-icon>
+        </label>
+        <input class="profilePictureInput" type="file" id="file-input" />
+      </div>
+    </div>
+    <mat-card-title class="profile__username">
+
+      <ng-container  *ngIf="(username$ | async) as username">
         @{{username}}
       </ng-container>
+    </mat-card-title>
+    <mat-card-content>
+
     </mat-card-content>
   </mat-card>
 </div>
