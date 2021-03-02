@@ -15,7 +15,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/fire:deploy",
           "options": {
             "outputPath": "dist/calypso",
             "index": "src/index.html",
@@ -125,6 +125,10 @@
               "devServerTarget": "calypso:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }

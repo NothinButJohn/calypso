@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "buddha-sasana"
+  },
+  "targets": {
+    "buddha-sasana": {
+      "hosting": {
+        "calypso": [
+          "buddha-sasana"
+        ]
+      }
+    }
   }
 }
