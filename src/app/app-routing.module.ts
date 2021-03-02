@@ -11,6 +11,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { MessagesComponent } from './components/messages/messages/messages.component';
 import { MaterialDashComponent } from './components/dashboard/material-dash/material-dash.component';
 import { HomeComponent } from './components/home/home.component';
+import { GroupsComponent } from './components/groups/groups.component';
 
 const userDashboard = () => map;
 
@@ -18,7 +19,8 @@ const userDashboard = () => map;
 const routes: Routes = [
   { path: '', pathMatch: 'full' , component: HomeComponent },
   { path: 'user/:username', component: ProfileComponent },
-  { path: 'messages', component: MessagesComponent }
+  { path: 'messages', component: MessagesComponent },
+  { path: 'groups', component: GroupsComponent },
 ];
 
 @NgModule({

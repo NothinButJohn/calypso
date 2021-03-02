@@ -2,10 +2,18 @@
   <img class="headerPicture" src="{{headerPicture}}">
 </div>
 
-<div class="profile__pic" *ngIf="(profilePicture$ | async) as profilePicture">
+<div>
   <mat-card>
     <mat-card-title>
-      <img class="profilePicture" src="{{profilePicture}}">
+      <div class="profilePicture__container" *ngIf="(profilePicture$ | async) as profilePicture">
+        <img class="profilePicture" src="{{profilePicture}}">
+        <div class="updateProfilePicture" role="button">
+          <label for="file-input">
+            <mat-icon>camera_enhanced</mat-icon>
+          </label>
+          <input class="profilePictureInput" type="file" id="file-input" />
+        </div>
+      </div>
     </mat-card-title>
     <mat-card-content>
       <ng-container *ngIf="(username$ | async) as username">

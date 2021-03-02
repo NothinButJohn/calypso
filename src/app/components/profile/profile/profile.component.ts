@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit {
       })
     )
     this.profilePicture$ = this.store.select(profilePictureSelector)
-    this.username$ = this.store.select(usernameSelector)
+    this.username$ = this.store.select(usernameSelector )
   }
 
 

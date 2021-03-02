@@ -47,6 +47,8 @@ import { AlphaVantageEffects } from './store/effects/alpha-vantage.effects';
 import {MatSelectModule} from '@angular/material/select';
 
 import {MatTabsModule} from '@angular/material/tabs';
+import { GroupsComponent } from './components/groups/groups.component';
+import { NewGroupDialogComponent } from './components/groups/new-group-dialog/new-group-dialog.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     LandingComponent,
     MessagesComponent,
     NewMessageDialogComponent,
-    CandlestickComponent
+    CandlestickComponent,
+    GroupsComponent,
+    NewGroupDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -90,7 +94,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatChipsModule,
     NgApexchartsModule,
     MatSelectModule,
-    MatTabsModule
+    MatTabsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

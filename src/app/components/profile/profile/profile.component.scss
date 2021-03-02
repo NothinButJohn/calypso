@@ -40,7 +40,7 @@
 }
 
 .profilePicture{
-    width: 25%;
+    width: 15%;
     height: auto;
     border-radius: 9999px;
     border: 1px;
@@ -48,4 +48,20 @@
 
 .profile__edit__button{
     right: auto;
+}
+
+.profilePicture__container{
+    display: grid;
+    // grid-template-columns: 250px 1fr;
+    // grid-template-rows: 150px 1fr;
+}
+
+.profilePictureInput{
+    display: none;
+    // cursor: pointer; 
+}
+.updateProfilePicture{
+    display: inline;
+    // cursor: pointer;
+    // grid-area: 1 / 1 / 1 / 1;
 }
