@@ -3,11 +3,12 @@
     flex-direction: column;
     top: auto;
     display: grid;
-    grid-area: 1 / 1 / 4 / 4;
+    grid-area: 2 / 2 / 2 / 7;
 }
 
 .headerPicture{
     border-radius: 9999px;
+    width: 100%;
 }
 
 .profile__container{
@@ -42,10 +43,11 @@
 
 
 .profile__card {
-    // width: fit-content;
+    width: 70%;
     margin: 1%;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: auto;
 }
 
 
@@ -57,9 +59,9 @@
 .profilePicture__container{
     display: grid;
     // grid-area: 1/ 1;
-    grid-area: 4/ 1 / 4 / 3;
+    grid-area: 4 / 2  / 5 / 7;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: minmax(3, auto);
+    grid-template-rows: auto;
     .profilePictureInput{
         display: none;
          
@@ -85,5 +87,6 @@
 }
 
 .profile__username{
-    grid-area: 5/2/5/2;
+    grid-area: 4/3/4/3;
+    align-items: center;
 }
