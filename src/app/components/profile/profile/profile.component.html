@@ -23,8 +23,10 @@
         @{{username}}
       </ng-container>
     </mat-card-title>
-    <mat-card-content>
-
+    <mat-card-content class="card__content">
+      <ng-container *ngIf="(bio$ | async) as bio">
+        {{ bio }}
+      </ng-container>
     </mat-card-content>
   </mat-card>
 </div>

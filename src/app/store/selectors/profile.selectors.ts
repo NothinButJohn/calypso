@@ -28,4 +28,10 @@ export const registeredNameSelector = createSelector(
         return state?.name
     }
 )
+export const bioSelector = createSelector(
+    profileFeatureSelector,
+    (state: ProfileState):any => {
+        return state?.bio
+    }
+)
 

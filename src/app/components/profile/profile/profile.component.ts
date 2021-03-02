@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { headerPictureSelector, profilePictureSelector, usernameSelector } from 'src/app/store/selectors/profile.selectors';
+import { bioSelector, headerPictureSelector, profilePictureSelector, usernameSelector } from 'src/app/store/selectors/profile.selectors';
 
 @Component({
   selector: 'app-profile',
@@ -13,6 +13,7 @@ export class ProfileComponent implements OnInit {
   profilePicture$: Observable<string>;
   headerPicture$: Observable<string>;
   username$: Observable<string>;
+  bio$: Observable<string>;
 
   constructor(private store: Store) 
     {
@@ -27,7 +28,8 @@ export class ProfileComponent implements OnInit {
       })
     )
     this.profilePicture$ = this.store.select(profilePictureSelector)
-    this.username$ = this.store.select(usernameSelector )
+    this.username$ = this.store.select(usernameSelector)
+    this.bio$ = this.store.select(bioSelector)
   }
 
 
