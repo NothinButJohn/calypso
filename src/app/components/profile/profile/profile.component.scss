@@ -9,6 +9,9 @@
 .headerPicture{
     border-radius: 9999px;
     width: 100%;
+    border: solid black;
+    border-width: 5px;
+    box-sizing: border-box;
 }
 
 .profile__container{
@@ -83,6 +86,11 @@
     height: auto;
     border-radius: 9999px;
     border: 1px;
+    margin-left: 3%;
+    min-width: 58px;
+    border: solid black;
+    border-width: 5px;
+    box-sizing: border-box;
     // grid-auto-flow: column;
 }
 
@@ -91,5 +99,5 @@
     align-self: center;
 }
 .card__content{
-    grid-area: 4/ 4/ 4/ 4
+    grid-area: 5/ 3/ 7/ 7
 }
