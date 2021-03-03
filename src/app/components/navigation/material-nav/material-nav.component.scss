@@ -15,3 +15,54 @@
   top: 0;
   z-index: 1;
 }
+
+.core__lotus{
+display: flex;
+  .logo{
+    max-width: 100%;
+    overflow: visible;
+    display: flex;
+    align-content: center;
+    .creed__insignia__image{
+      max-height: 100%;
+      max-width: 50%;
+      align-content: center;
+      align-items: center;
+      justify-content: center;
+      
+    }
+    .penrose__octagon__image{
+      max-width: 100%;
+      max-height: 100%;
+      align-content: center;
+      align-items: center;
+      justify-content: center;
+    }
+    .penrose__octagon__image__container{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      // margin: 1%;
+    }
+    .creed__insignia__image__container{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.header__primary{
+  display: flex;
+  flex-direction: row;
+
+  .signIn__temp{
+    display: flex;
+    flex-direction: row;
+    right: 0%;
+    position: fixed;
+  }
+}
+
+

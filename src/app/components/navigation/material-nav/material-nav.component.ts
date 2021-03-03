@@ -13,6 +13,8 @@ import { googleLogin } from 'src/app/store/actions/auth.actions';
 })
 export class MaterialNavComponent {
 
+  // svg = new SVGElement()
+
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
