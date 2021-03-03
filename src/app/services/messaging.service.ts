@@ -37,6 +37,7 @@ export class MessagingService {
         map((querySnapshot: QuerySnapshot<unknown>) => {
           let chatrooms: messengerChatroom[] = []; 
           // extract querySnapshot into data model array
+          console.log('service::queryChatrooms', chatrooms,'username', username, querySnapshot.docs)
           querySnapshot.docs.forEach((queryDocumentSnapshot: QueryDocumentSnapshot<unknown>) => {
             let tempChatroom = {
               docId: queryDocumentSnapshot.id,

@@ -34,4 +34,10 @@ export const bioSelector = createSelector(
         return state?.bio
     }
 )
+export const metaThoughtsSelector = createSelector(
+    profileFeatureSelector,
+    (state: ProfileState): any => {
+        return state.metathoughts
+    }
+)
 

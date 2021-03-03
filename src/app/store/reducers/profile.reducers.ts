@@ -8,24 +8,32 @@ export interface ProfileState {
     profilePicture: string,
     registration: string,
     username: string,
-    bio: string
+    bio: string,
+    metathoughts?: any
 }
 
 export const InitialProfileState: ProfileState = {
-    headerPicture: 'https://pbs.twimg.com/profile_banners/998174888832757760/1612320112/1080x360',
-    profilePicture: 'https://i.pinimg.com/736x/9d/5f/be/9d5fbe153339d1feb7cc9af8acf14ac5.jpg',
+    headerPicture: '',
+    profilePicture: '',
     registration: '',
-    username: 'ghosty',
-    name: 'Asuna Sakura',
-    bio: "Yo what the fuck is up. My ambition is only make right decisions on my mission. Everything I said I'd do, I did.Don’t sell your soul for money son" 
-    + "Means nothing when your dead. All I kept thinking about, over and over, was You can't live forever; you can't live forever. "
+    username: '',
+    name: '',
+    bio: "",
+    metathoughts: []
 }
 
 export const ProfileReducer = createReducer<ProfileState>(
     InitialProfileState,
     on(ProfileActions.LoadUserProfileSuccess, (state,action): ProfileState  => {
         return {
+            ...state,
             ...action.profile.profile
         }
     }),
+    on(ProfileActions.LoadCurrentUserMetaThoughtsSuccess, (state, action): ProfileState => {
+        return {
+            ...state,
+            metathoughts: action.metaThoughtDocs
+        }
+    })
 )
