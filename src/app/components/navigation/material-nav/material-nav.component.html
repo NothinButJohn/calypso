@@ -19,6 +19,9 @@
       <a mat-list-item routerLinkActive="active" routerLink='/messages'>Messages</a>
       <a mat-list-item routerLinkActive="active" routerLink='/groups'>Groups</a>
     </mat-nav-list>
+    <div class="meta__button">
+      <button mat-raised-button color="primary" (click)="createNewThought()"><mat-icon>mediation</mat-icon>'meta'</button>
+    </div>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
@@ -33,7 +36,7 @@
       <div class="header__primary">
         <span>calypso</span>
         <div class="signIn__temp">
-          <button mat-raised-button color="primary" (click)="signIn()">Sign In</button>
+          <button mat-flat-button color="basic" (click)="signIn()">Sign In</button>
         </div>
       </div>
 

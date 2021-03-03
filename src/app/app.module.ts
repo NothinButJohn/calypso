@@ -49,6 +49,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatTabsModule} from '@angular/material/tabs';
 import { GroupsComponent } from './components/groups/groups.component';
 import { NewGroupDialogComponent } from './components/groups/new-group-dialog/new-group-dialog.component';
+import { ThoughtComponent } from './components/meta-creation/thought/thought.component';
+import { NewThoughtDialogComponent } from './components/meta-creation/thought/new-meta-thought-dialog/new-thought-dialog';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { NewGroupDialogComponent } from './components/groups/new-group-dialog/ne
     NewMessageDialogComponent,
     CandlestickComponent,
     GroupsComponent,
-    NewGroupDialogComponent
+    NewGroupDialogComponent,
+    ThoughtComponent,
+    NewThoughtDialogComponent
   ],
   imports: [
     BrowserModule,

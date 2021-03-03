@@ -5,6 +5,8 @@ import { map, shareReplay } from 'rxjs/operators';
 import { FireAuthService } from 'src/app/services/fire-auth.service';
 import { Store } from '@ngrx/store';
 import { googleLogin } from 'src/app/store/actions/auth.actions';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { NewThoughtDialogComponent } from '../../meta-creation/thought/new-meta-thought-dialog/new-thought-dialog';
 
 @Component({
   selector: 'app-material-nav',
@@ -22,10 +24,17 @@ export class MaterialNavComponent {
     );
 
   constructor(private breakpointObserver: BreakpointObserver, 
-    private store: Store) {}
+    private store: Store, private dialog: MatDialog) {}
 
   signIn(){
     this.store.dispatch(googleLogin())
+  }
+
+  createNewThought(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.minHeight = '200px'
+    dialogConfig.minWidth = '200px'
+    let newThoughtDialog = this.dialog.open(NewThoughtDialogComponent, dialogConfig)
   }
 
 }

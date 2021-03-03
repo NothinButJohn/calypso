@@ -1,0 +1,59 @@
+
+
+
+.dialog__container{
+    display: grid;
+    grid-template-columns: 100px repeat(2, 1fr);
+    grid-template-rows: 50px, repeat(2, 1fr), 50px;
+}
+
+.dialog__header{
+    grid-area: 1 / 1 / 1 / 4;
+    display: grid;
+    .cancelThoughtButton{
+        grid-area: 1/1;
+    }
+    h3{
+        grid-area: 1/2/1/4;
+    }
+}
+.dialog__footer{
+    grid-area: 4 / 1 / 4 / 4;
+    display: grid;
+}
+
+.profile__picture__container{
+    grid-area: 2/1/4/1;
+    width: 30%;
+    // height: 100%;
+}
+.profile__picture__image{
+    width: 100%;
+    height: auto;
+    border-radius: 9999px;
+    border: 1px;
+    margin-left: 3%;
+    min-width: 58px;
+    border: solid black;
+    border-width: 5px;
+    box-sizing: border-box;
+}
+
+.dialog__textarea__formfield{
+    grid-area: 2/2/3/3;
+    width: 200%;
+}
+
+// .dialog__textarea{
+//     width: 200%;
+//     grid-area: 2/2/3/3;
+// }
+.createThoughtButton{
+    grid-area: 1/4;
+}
+
+.thought__options__container{
+    grid-area: 1/2;
+    display: flex;
+    flex-direction: row;
+}
