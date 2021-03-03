@@ -1,1 +1,14 @@
 
+<div *ngIf="(metaThoughts$ | async) as thoughts">
+    <div *ngFor="let thought of thoughts">
+        <mat-card>
+            <div class="profile__picture__container">
+                <img class="profile__picture__image" src="thought.authorProfile.profilePicture">
+            </div>
+            <div *ngIf="thought.text">
+                {{thought.text}}
+            </div>
+
+        </mat-card>
+    </div>
+</div>
