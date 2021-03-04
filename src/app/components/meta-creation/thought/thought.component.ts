@@ -20,6 +20,7 @@ export class ThoughtComponent implements OnInit {
   ngOnInit(): void {
     this.metaThoughts$ = this.store.select(metaThoughtsSelector)
     // this.haha.get
+    
   }
 
 }

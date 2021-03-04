@@ -18,6 +18,7 @@ export class Thought<MetaThought>{
     image?: string;
     link?: string;
 
+
     // constructor(){
     //     this.createdAt = null;
     //     this.creator = '';
@@ -29,5 +30,13 @@ export class Thought<MetaThought>{
         this.creator = username;
         this.text = text;
         this.privacy = 'global';
+        this.authorProfile = null;
+        this.image = null;
+        this.link = null;
+
     };
+    // setAuthorProfile(docRef){
+    //     this.authorProfile
+    //     //  = docRef;
+    // }
 }

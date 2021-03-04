@@ -1,10 +1,11 @@
 <mat-dialog-content>
     <!-- <mat-form-field> -->
-        <div class="dialog__container">
+        <div class="dialog__container" *ngIf="(username$ | async) as username">
             <div class="dialog__header" mat-dialog-title>
                 <button class="cancelThoughtButton" mat-icon-button color="primary" mat-dialog-close><mat-icon>cancel</mat-icon></button>
                 <!-- <hr size="100"> -->
-                <h3 >What's on your mind?</h3>
+                <h3>What's on your mind {{username}}?</h3>
+                
             </div>
             
 
@@ -12,8 +13,8 @@
                 <img class="profile__picture__image" src="{{profilePicture}}">
             </div>
 
-            <mat-form-field class="dialog__textarea__formfield" appearance="fill">
-                <textarea class="dialog__textarea" #dialogInput matInput mat-autosize='true' matAutosizeMinRows="1" matAutosizeMaxRows="4"></textarea>
+            <mat-form-field [formGroup]="newThoughtFormGroup" class="dialog__textarea__formfield" appearance="fill">
+                <textarea class="dialog__textarea" formControlName="textInputControl" #dialogInput matInput mat-autosize='true' matAutosizeMinRows="1" matAutosizeMaxRows="4"></textarea>
             </mat-form-field>
 
             
@@ -26,7 +27,7 @@
                 </div>
 
                 <!-- <hr width="1" size="5"> -->
-                <button class="createThoughtButton" mat-raised-button color="primary" mat-dialog-close><mat-icon>mediation</mat-icon>'meta'</button>
+                <button class="createThoughtButton" (click)="createThought(username)" mat-raised-button color="primary" mat-dialog-close><mat-icon>mediation</mat-icon>'meta'</button>
             </div>
         </div>
 

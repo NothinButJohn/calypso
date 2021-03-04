@@ -17,15 +17,15 @@ export class MetaThoughtService {
     // this.currentUserUID$ = store.select(currentUserUIDSelector)
   }
 
-  getAllMetaThoughtsByCurrentUser(uid: string): Observable<Thought<MetaThought>[]>{
+  getAllMetaThoughtsByCurrentUser(uid: string): Observable<unknown>{
     console.log('service::getAllThoughtsByCurrentUser(), querying with uid: ', uid)
     return this.afs.collection(`users/${uid}/meta-thoughts`).get().pipe(
       map((qs) => {
         console.log('service::getAllThoughtsByCurrentUser(), querySnapshot', qs)
-        let formatedMetaThoughts: Thought<MetaThought>[] = [];
+        let formatedMetaThoughts = [];
         let allThoughtDocs = qs.docs
 
-        let tempThought: Thought<MetaThought> = {
+        let tempThought = {
           createdAt: null,
           authorProfile: '',
           creator: '',
@@ -68,7 +68,7 @@ export class MetaThoughtService {
           map(ref => {
             // console.log(ref.get('profile'))
             newThoughts = [...newThoughts,ref.get('profile')]
-            let repl:Thought<MetaThought> = {
+            let repl = {
               createdAt:formatedMetaThoughts[i].createdAt,
               creator:formatedMetaThoughts[i].creator,
               privacy:formatedMetaThoughts[i].privacy,
@@ -106,9 +106,22 @@ export class MetaThoughtService {
     ).subscribe()
   }
 
-  createNewThought(thought: string, uid: string, username: string) {
-    let newThought = new Thought(thought, username)
-    return this.afs.collection(`users/${uid}/meta-thoughts`).add(newThought).then(
+  createNewThought(thought: Thought<MetaThought>, uid: string, username: string) {
+    let x = this.afs.doc(`users/${uid}`).ref;
+    console.log(x)
+    let repl = {
+      createdAt:thought.createdAt,
+      creator:thought.creator,
+      privacy:thought.privacy,
+      text:thought.text,
+      authorRef:x,
+      link:thought.link,
+      image:thought.image,
+    }
+    // Object.defineProperty(thought, 'authorProfile', {value:x,writable: true})
+    // console.log(JSON.parse(JSON.stringify(repl)))
+    // let newThought = JSON.parse(JSON.stringify(repl))
+    return this.afs.collection(`users/${uid}/meta-thoughts`).add(repl).then(
       (val) =>{return val}, 
       (reason) => {
         console.log('Failed to create a new thought, reason: ',reason);
