@@ -1,11 +1,13 @@
 .mat__card__content{
     display: grid;
-    grid-template-columns: 100px repeat(2, 1fr);
+    grid-template-columns: 70px repeat(2, 1fr);
     grid-template-rows: auto;
 }
 .mat__card{
-    padding:5%;
-    margin: 5%;
+    // padding:5%;
+    margin: 1%;
+    margin-left: 5%;
+    max-width: 600px;
 }
 
 .profile__picture__container{
@@ -25,16 +27,31 @@
     border-width: 5px;
     box-sizing: border-box;
 }
+.author{
+    grid-area: 1/2/1/4;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    h2{
+        display: flex;
+        margin-right: 2%;
+        align-items: center;
+    }
+    p{
+        display: flex;
+        align-items: center;
+        margin: 1%;
+        color: darkgrey;
+    }
+}
 
 .thought__text__container{
-    grid-area: 1/2/2/4;
+    grid-area: 2/2/2/4;
     grid-auto-flow: row;
 }
 
 .thought__image__container{
-    // grid-area: 2/2/2/4;
-    // width: min-content;
-    // height: min-content;
+    align-content: flex-start;
 }
 
 .thought__image{

@@ -3,7 +3,7 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>
+    <mat-toolbar class="mat__toolbar" [class.mat-elevation-z8]='true'>
       <div class="core__lotus">
         <div class="logo">
           <!-- <div class="creed__insignia__image__container"><img class="creed__insignia__image" src="assets\assassins-creed-logo-assassin-creed-celtic-logo-quidek-deviantart-28.png"></div> -->

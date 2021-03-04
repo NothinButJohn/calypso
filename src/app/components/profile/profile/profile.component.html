@@ -2,6 +2,7 @@
 
 <div >
   <mat-card class="profile__card">
+    <div class="snapCracklePop">
     <div class="headerPicture__container" *ngIf="(headerPicture$ | async) as headerPicture">
       <img class="headerPicture" src="{{headerPicture}}">
     </div>
@@ -28,6 +29,7 @@
         {{ bio }}
       </ng-container>
     </mat-card-content>
+  </div>
   </mat-card>
 </div>
 

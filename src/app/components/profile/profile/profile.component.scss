@@ -4,6 +4,8 @@
     top: auto;
     display: grid;
     grid-area: 1/2/7/7;
+    width: auto;
+    max-height: 55%;
 }
 
 .headerPicture{
@@ -14,43 +16,47 @@
     box-sizing: border-box;
 }
 
-.profile__container{
+// .profile__container{
+//     display: grid;
+// }
+
+// .profile__header{
+//     position: relative;
+//     flex-direction: column;
+//     top: auto;
+//     display: grid;
+
+// }
+
+// .profile__header__img{
+//     height: 200px;
+//     width: auto;
+// }
+
+// .profile__bio{
+//     display: grid;
+//     position: relative;
+// }
+
+// .profile__pic{
+//     display: grid;
+//     position: absolute;
+//     flex-direction: column;
+//     margin-left: 5%;
+//     margin-top: 5%;
+// }
+
+.snapCracklePop{
+    // max-height: 300px;
+    // width: 70%;
+    // margin: 5%;
     display: grid;
-}
-
-.profile__header{
-    position: relative;
-    flex-direction: column;
-    top: auto;
-    display: grid;
-
-}
-
-.profile__header__img{
-    height: 200px;
-    width: auto;
-}
-
-.profile__bio{
-    display: grid;
-    position: relative;
-}
-
-.profile__pic{
-    display: grid;
-    position: absolute;
-    flex-direction: column;
-    margin-left: 5%;
-    margin-top: 5%;
-}
-
-
-.profile__card {
-    width: 70%;
-    margin: 1%;
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: 10px repeat(5, 1fr) 10px;
     grid-template-rows: auto;
+}
+.profile__card {
+    max-width: 600px;
+    margin: 5%;
 }
 
 

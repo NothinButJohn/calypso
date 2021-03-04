@@ -6,6 +6,11 @@
                 <div class="profile__picture__container">
                     <img class="profile__picture__image" src="{{thought.authorProfile.profilePicture}}">
                 </div>
+                <div class="author" *ngIf="thought.authorProfile">
+                   <h2>{{thought.authorProfile.name}}</h2> <p>@{{thought.authorProfile.username}}</p><p>&#8226;</p>
+                   <p style="font-size:xx-small">{{thought.createdAt.toDate().getMonth()}}.{{thought.createdAt.toDate().getDate()}}.{{thought.createdAt.toDate().getFullYear()}}</p>
+                </div>
+                
                 <div class="thought__text__container" *ngIf="thought.text">
                     {{thought.text}}
                 </div>

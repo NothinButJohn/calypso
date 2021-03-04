@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { NewThoughtDialogComponent } from '../../meta-creation/thought/new-meta-thought-dialog/new-thought-dialog';
 import { AsunaTestAccount, unknownMethodTestAccount } from 'src/app/store/models/profile.model';
 import { LoadUserProfile } from 'src/app/store/actions/profile.actions';
+import { MatToolbar } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-material-nav',
@@ -16,7 +17,7 @@ import { LoadUserProfile } from 'src/app/store/actions/profile.actions';
   styleUrls: ['./material-nav.component.scss']
 })
 export class MaterialNavComponent {
-
+  
   // svg = new SVGElement()
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -30,6 +31,7 @@ export class MaterialNavComponent {
       // auto login a test account
       this.store.dispatch(googleLoginSuccess({uid: unknownMethodTestAccount}))
       this.store.dispatch(LoadUserProfile({uid: unknownMethodTestAccount}))
+
     }
 
   signIn(){
