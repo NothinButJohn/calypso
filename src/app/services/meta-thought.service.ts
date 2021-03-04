@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentSnapshot, QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { asyncScheduler, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MetaThought, Thought } from '../store/models/meta-thoughts.model';
 import { Profile } from '../store/models/profile.model';
@@ -59,8 +59,10 @@ export class MetaThoughtService {
     let p = new Promise((resolve, reject) => {
     let newThoughts = []
     let bool = false;
+    let count = 0;
     let t = []
     t = [...formatedMetaThoughts]
+    
       formatedMetaThoughts.forEach((element, i) => {
         this.afs.doc(element.authorProfile).get().pipe(
           map(ref => {
@@ -78,15 +80,17 @@ export class MetaThoughtService {
             
             // t = [...formatedMetaThoughts]
             t.splice(i, 1, repl)
-            console.log('this is repl',repl, 'this is t', t)
+            console.log('index',i,'this is repl',repl, 'this is t', t)
             // formatedMetaThoughts[i].authorProfile = ref.get('profile')
           })
         ).subscribe({
           next(x){console.log('within promise, got value x:', x)},
           error(err){reject(err)},
-          complete(){resolve(t)}
+          complete(){ count++;}
         })
       })
+      const task = () => {resolve(t)}
+      asyncScheduler.schedule(task, 1000)
   }
     ) 
     return p
