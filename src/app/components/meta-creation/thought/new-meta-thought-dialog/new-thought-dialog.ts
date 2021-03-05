@@ -1,12 +1,16 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
+import { asyncScheduler, Observable, of } from "rxjs";
 import { profilePictureSelector, usernameSelector } from "src/app/store/selectors/profile.selectors";
 import { MatFormField } from "@angular/material/form-field";
 import { MatInput } from "@angular/material/input";
 import { FormControl, FormGroup } from "@angular/forms";
 import { CreateNewMetaThought } from "src/app/store/actions/profile.actions";
 import { MetaThought, Thought } from "src/app/store/models/meta-thoughts.model";
+import { FileInput } from "ngx-material-file-input";
+import { map } from "rxjs/operators";
+import { fileURLToPath } from "url";
+// import { Console } from "console";
 
 
 @Component({
@@ -16,16 +20,44 @@ import { MetaThought, Thought } from "src/app/store/models/meta-thoughts.model";
 })
 export class NewThoughtDialogComponent implements OnInit {
     @ViewChild('dialogInput') dialogInput: MatInput
+    @ViewChild('mediaFileInput') mediaFileInput: FileInput
     profilePicture$: Observable<string>;
     username$:Observable<string>;
+    mediaInputPreview$: Observable<any>;
+
+    
 
     newThoughtFormGroup = new FormGroup({
-        textInputControl: new FormControl('')
+        textInputControl: new FormControl(''),
+        mediaInputControl: new FormControl()
     })
     constructor(private store: Store){}
     ngOnInit(){
         this.profilePicture$ = this.store.select(profilePictureSelector)
         this.username$ = this.store.select(usernameSelector)
+        // this.mediaInputPreview$ = this.newThoughtFormGroup.get('mediaInputControl').valueChanges
+        // let f = new FileList()
+        console.log('viewChild access', )
+        this.mediaInputPreview$ = this.newThoughtFormGroup.get('mediaInputControl').valueChanges.pipe(
+            map((FileInput: FileInput) => {
+                let mediaArray = []
+                // let file: File
+                // pathT
+                console.log(FileInput.files)
+                for(let i=0; i<FileInput.files.length; i++) {
+                    (function(file){
+                        let reader = new FileReader();    
+                        reader.onloadend = (_event) => {
+                                mediaArray.push(reader.result)
+                            }
+                        reader.readAsDataURL(file)
+                    })(FileInput.files[i])
+
+                }
+                console.log(mediaArray)
+                return mediaArray;
+            })
+        )
     }
     createThought(username: string){
         console.log(username)

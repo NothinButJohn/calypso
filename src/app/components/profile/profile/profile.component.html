@@ -28,7 +28,11 @@
       <ng-container *ngIf="(bio$ | async) as bio">
         {{ bio }}
       </ng-container>
+
     </mat-card-content>
+    <div class="editProfile__button">
+      <button mat-raised-button color="basic" (click)="editProfile()">Edit</button>
+    </div>
   </div>
   </mat-card>
 </div>

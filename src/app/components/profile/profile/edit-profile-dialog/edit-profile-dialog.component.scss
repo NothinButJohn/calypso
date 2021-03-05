@@ -1,0 +1,14 @@
+.editProfile__dialog__header{
+    display: flex;
+    place-content: space-between;
+    .saveprofile__btn{
+        // align-items: end;
+    }
+}
+
+.matDialogContent{
+    display: flex;
+    flex-direction: column;
+    .nameInput__container{}
+    .bioInput__container{}
+}

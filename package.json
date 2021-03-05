@@ -28,6 +28,7 @@
     "apexcharts": "^3.25.0",
     "firebase": "^7.0 || ^8.0",
     "ng-apexcharts": "^1.5.8",
+    "ngx-material-file-input": "^2.1.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

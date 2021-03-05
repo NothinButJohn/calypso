@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LoadCurrentUserMetaThoughts } from 'src/app/store/actions/profile.actions';
 import { bioSelector, headerPictureSelector, metaThoughtsSelector, profilePictureSelector, usernameSelector } from 'src/app/store/selectors/profile.selectors';
+import { EditProfileDialogComponent } from './edit-profile-dialog/edit-profile-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +19,7 @@ export class ProfileComponent implements OnInit {
   bio$: Observable<string>;
   metaThoughts$: Observable<any>;
 
-  constructor(private store: Store) 
+  constructor(private store: Store, private dialog: MatDialog) 
     {
     }
 
@@ -36,5 +38,8 @@ export class ProfileComponent implements OnInit {
     this.metaThoughts$ = this.store.select(metaThoughtsSelector)
   }
 
+  editProfile(){
+    let editDialog = this.dialog.open(EditProfileDialogComponent)
+  }
 
 }

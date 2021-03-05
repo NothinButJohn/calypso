@@ -29,8 +29,8 @@ export class MaterialNavComponent {
   constructor(private breakpointObserver: BreakpointObserver, 
     private store: Store, private dialog: MatDialog) {
       // auto login a test account
-      this.store.dispatch(googleLoginSuccess({uid: unknownMethodTestAccount}))
-      this.store.dispatch(LoadUserProfile({uid: unknownMethodTestAccount}))
+      this.store.dispatch(googleLoginSuccess({uid: AsunaTestAccount}))
+      this.store.dispatch(LoadUserProfile({uid: AsunaTestAccount}))
 
     }
 

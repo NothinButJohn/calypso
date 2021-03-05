@@ -51,6 +51,8 @@ import { GroupsComponent } from './components/groups/groups.component';
 import { NewGroupDialogComponent } from './components/groups/new-group-dialog/new-group-dialog.component';
 import { ThoughtComponent } from './components/meta-creation/thought/thought.component';
 import { NewThoughtDialogComponent } from './components/meta-creation/thought/new-meta-thought-dialog/new-thought-dialog';
+import { EditProfileDialogComponent } from './components/profile/profile/edit-profile-dialog/edit-profile-dialog.component';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,8 @@ import { NewThoughtDialogComponent } from './components/meta-creation/thought/ne
     GroupsComponent,
     NewGroupDialogComponent,
     ThoughtComponent,
-    NewThoughtDialogComponent
+    NewThoughtDialogComponent,
+    EditProfileDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -99,6 +102,7 @@ import { NewThoughtDialogComponent } from './components/meta-creation/thought/ne
     NgApexchartsModule,
     MatSelectModule,
     MatTabsModule,
+    MaterialFileInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

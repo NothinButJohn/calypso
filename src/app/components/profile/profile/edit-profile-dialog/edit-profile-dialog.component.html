@@ -1,0 +1,21 @@
+<div mat-dialog-title class="editProfile__dialog__header">
+    <button mat-icon-button color="primary" mat-dialog-close><mat-icon>cancel</mat-icon></button>
+    <h2>edit profile</h2>
+    <!-- <div  class="saveprofile__btn"> -->
+        <button mat-flat-button class="saveprofile__btn" color="primary" mat-dialog-close>save</button>
+    <!-- </div> -->
+</div>
+<mat-dialog-content class="matDialogContent">
+    <mat-form-field appearance='outline' *ngIf="(name$ | async)as name">
+        <!-- <div class="nameInput__container"> -->
+            <mat-label>Name</mat-label>
+            <input matInput type="text" placeholder="{{name}}">
+        <!-- </div> -->
+    </mat-form-field>
+    <mat-form-field appearance='outline' *ngIf="(bio$ | async)as bio">
+        <!-- <div class="bioInput__container"> -->
+            <mat-label>Bio</mat-label>
+            <textarea matInput placeholder="{{bio}}"></textarea>
+        <!-- </div> -->
+    </mat-form-field>
+</mat-dialog-content>
