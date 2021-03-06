@@ -6,7 +6,7 @@ export interface MetaThought {
     creator: string,
     privacy: string,
     text?: string,
-    image?: string,
+    media?: any,
     link?: string,
 }
 export class Thought<MetaThought>{
@@ -15,28 +15,16 @@ export class Thought<MetaThought>{
     creator: string;
     privacy: string;
     text?: string;
-    image?: string;
+    media?: any;
     link?: string;
 
-
-    // constructor(){
-    //     this.createdAt = null;
-    //     this.creator = '';
-    //     this.privacy = '';
-    // };
-    
-    constructor(text: string, username: string) {
+    constructor(text: string, username: string, media?: string[]) {
         this.createdAt = firebase.default.firestore.Timestamp.now();
         this.creator = username;
         this.text = text;
         this.privacy = 'global';
         this.authorProfile = null;
-        this.image = null;
+        this.media = media;
         this.link = null;
-
     };
-    // setAuthorProfile(docRef){
-    //     this.authorProfile
-    //     //  = docRef;
-    // }
 }

@@ -31,7 +31,7 @@ export class MetaThoughtService {
           creator: '',
           privacy: '',
           text: '',
-          image: '',
+          media: '',
           link: '',
         }
         let authorProfiles = []
@@ -43,7 +43,7 @@ export class MetaThoughtService {
             creator: queryDocumentSnapshot.get('creator'),
             privacy: queryDocumentSnapshot.get('privacy'),
             text: queryDocumentSnapshot.get('text'),
-            image: queryDocumentSnapshot.get('image'),
+            media: queryDocumentSnapshot.get('media'),
             link: queryDocumentSnapshot.get('link'),
           }
           formatedMetaThoughts = [...formatedMetaThoughts, tempThought]
@@ -75,7 +75,7 @@ export class MetaThoughtService {
               text:formatedMetaThoughts[i].text,
               authorProfile:ref.get('profile'),
               link:formatedMetaThoughts[i].link,
-              image:formatedMetaThoughts[i].image,
+              media:formatedMetaThoughts[i].media,
             }
             
             // t = [...formatedMetaThoughts]
@@ -91,37 +91,25 @@ export class MetaThoughtService {
       })
       const task = () => {resolve(t)}
       asyncScheduler.schedule(task, 1000)
-  }
-    ) 
+  }) 
     return p
-    // console.log(newThoughts)
-    // return of(newThoughts)
-  }
-
-  myHelper(path: string){
-    this.afs.doc(path).get().pipe(
-      map(ref => {
-        return ref.get('profile')
-      }) 
-    ).subscribe()
   }
 
   createNewThought(thought: Thought<MetaThought>, uid: string, username: string) {
-    let x = this.afs.doc(`users/${uid}`).ref;
-    console.log(x)
-    let repl = {
-      createdAt:thought.createdAt,
-      creator:thought.creator,
-      privacy:thought.privacy,
-      text:thought.text,
-      authorRef:x,
+    console.log('[meta-thought service]::createNewThought() args: ',thought, uid, username);
+    // Prepare Data Object to send to firestore
+    let currentUserProfileDocRef = this.afs.doc(`users/${uid}`).ref;
+    let newThought = {
+      createdAt: thought.createdAt,
+      creator: thought.creator,
+      privacy: thought.privacy,
+      text: thought.text,
+      authorRef: currentUserProfileDocRef,
       link:thought.link,
-      image:thought.image,
+      media:thought.media,
     }
-    // Object.defineProperty(thought, 'authorProfile', {value:x,writable: true})
-    // console.log(JSON.parse(JSON.stringify(repl)))
-    // let newThought = JSON.parse(JSON.stringify(repl))
-    return this.afs.collection(`users/${uid}/meta-thoughts`).add(repl).then(
+    // Write the thought to firestore; returns the documentRef or false
+    return this.afs.collection(`users/${uid}/meta-thoughts`).add(newThought).then(
       (val) =>{return val}, 
       (reason) => {
         console.log('Failed to create a new thought, reason: ',reason);

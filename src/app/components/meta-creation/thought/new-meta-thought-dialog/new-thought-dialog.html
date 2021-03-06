@@ -1,40 +1,47 @@
-<mat-dialog-content>
-    <!-- <mat-form-field> -->
+<mat-dialog-content [style.overflow]="'hidden'">
         <div class="dialog__container" *ngIf="(username$ | async) as username">
+
+            
             <div class="dialog__header" mat-dialog-title>
-                <button class="cancelThoughtButton" mat-icon-button color="primary" mat-dialog-close><mat-icon>cancel</mat-icon></button>
-                <!-- <hr size="100"> -->
+                <button class="cancelThoughtButton" mat-icon-button color="primary" mat-dialog-close>
+                    <mat-icon>cancel</mat-icon>
+                </button>
                 <h3>What's on your mind {{username}}?</h3>
-                
             </div>
             
 
             <div class="profile__picture__container" *ngIf="(profilePicture$ | async) as profilePicture">
-                <img class="profile__picture__image" src="{{profilePicture}}">
+                <img mat-card-avatar class="profile__picture__image" src="{{profilePicture}}">
             </div>
 
             <mat-form-field [formGroup]="newThoughtFormGroup" class="dialog__textarea__formfield" appearance="fill">
                 <textarea class="dialog__textarea" formControlName="textInputControl" #dialogInput matInput mat-autosize='true' matAutosizeMinRows="1" matAutosizeMaxRows="4"></textarea>
             </mat-form-field>
-            <div *ngIf="(mediaInputPreview$ | async) as files">
-                <div *ngFor="let file of files">
-                    <img src="{{file}}" alt="upload">
+
+
+            <div class="media__outer__div" *ngIf="(mediaInputPreview$ | async) as files">
+                <div class="media__div" *ngFor="let file of files">
+                    <img mat-card-image class="mediaContent" src="{{file}}" alt="upload">
                 </div>
             </div>
 
             
-            <div class="dialog__footer">
-                <!-- <hr> -->
-                <div class="thought__options__container">
-                    <button mat-icon-button color="primary"><mat-icon>gif</mat-icon></button>
-                    <mat-form-field [formGroup]="newThoughtFormGroup">
-                        <ngx-mat-file-input #mediaFileInput multiple='true' formControlName="mediaInputControl"><mat-icon>image</mat-icon></ngx-mat-file-input>
-                    </mat-form-field>
-                    <!-- <button mat-icon-button color="primary"><mat-icon>image</mat-icon></button> -->
-                    <button mat-icon-button color="primary"><mat-icon>emoji_emotions</mat-icon></button>
-                </div>
-
-                <!-- <hr width="1" size="5"> -->
+            <div mat-card-footer class="dialog__footer">
+                    
+                        <div mat-card-actions class="newThoughtFormFields">
+                            <mat-form-field [formGroup]="newThoughtFormGroup" [style.width]="'40px'">
+                                <button mat-icon-button color="primary"><mat-icon style="place-content: center;">gif</mat-icon></button>
+                            </mat-form-field>
+                            <mat-form-field  [style.width]="'40px'">
+                                    <button mat-icon-button color="primary"><mat-icon style="place-content: center;">image</mat-icon></button>
+                                    <ngx-mat-file-input class="mediaInputElement" multiple='true' formControlName="mediaInputControl" ></ngx-mat-file-input>
+                            </mat-form-field>
+                            <mat-form-field [formGroup]="newThoughtFormGroup" [style.width]="'40px'">
+                                <button mat-icon-button color="primary"><mat-icon style="place-content: center;">emoji_emotions</mat-icon></button>
+                            </mat-form-field>
+                            
+                        </div>
+                    
                 <button class="createThoughtButton" (click)="createThought(username)" mat-raised-button color="primary" mat-dialog-close><mat-icon>mediation</mat-icon>'meta'</button>
             </div>
         </div>

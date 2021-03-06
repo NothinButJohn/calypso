@@ -40,8 +40,8 @@ export class MaterialNavComponent {
 
   createNewThought(){
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.minHeight = '200px'
-    dialogConfig.minWidth = '200px'
+    dialogConfig.minHeight = '250px'
+    dialogConfig.minWidth = '600px'
     let newThoughtDialog = this.dialog.open(NewThoughtDialogComponent, dialogConfig)
   }
 

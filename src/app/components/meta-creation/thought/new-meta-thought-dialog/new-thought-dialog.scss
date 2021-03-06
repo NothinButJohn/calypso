@@ -4,7 +4,7 @@
 .dialog__container{
     display: grid;
     grid-template-columns: 100px repeat(2, 1fr);
-    grid-template-rows: 50px, repeat(2, 1fr), 50px;
+    grid-template-rows: 50px 50px 20px minmax(100px, 200px) 20px 50px;
 }
 
 .dialog__header{
@@ -17,43 +17,216 @@
         grid-area: 1/2/1/4;
     }
 }
-.dialog__footer{
-    grid-area: 4 / 1 / 4 / 4;
-    display: grid;
-}
 
 .profile__picture__container{
-    grid-area: 2/1/4/1;
-    width: 30%;
-    // height: 100%;
-}
-.profile__picture__image{
+    grid-area: 2/1/4/2;
     width: 100%;
-    height: auto;
-    border-radius: 9999px;
-    border: 1px;
-    margin-left: 3%;
-    min-width: 58px;
-    border: solid black;
-    border-width: 5px;
-    box-sizing: border-box;
+    padding:5px;
+    .profile__picture__image{
+        width: 75px;
+        height: 75px;
+        object-fit: cover;
+
+        border-radius: 9999px;
+        margin: 5px;
+        border: 1px solid black;
+        box-sizing: border-box;
+    }
 }
 
 .dialog__textarea__formfield{
-    grid-area: 2/2/3/3;
+    grid-area: 2/2/2/3;
     width: 200%;
+    height: 100%;
+    .dialog__textarea{}
 }
 
 // .dialog__textarea{
 //     width: 200%;
 //     grid-area: 2/2/3/3;
 // }
-.createThoughtButton{
-    grid-area: 1/4;
-}
 
-.thought__options__container{
-    grid-area: 1/2;
+.dialog__footer{
+    grid-area: 6 / 1 / 7 / 4;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    .newThoughtFormFields{
+        align-content: space-between;
+        display: flex;
+        place-content: center;
+        .mediaInputElement{
+            display: none;
+            width: 24px;
+        }
+        .mediaInput__container{
+            display: flex;
+            cursor: pointer;
+        }
+    }
+
+    .createThoughtButton{
+        display: flex;
+        right: 0;
+        bottom: 0;
+
+    }
 }
+
+
+
+// .thought__options__container{
+//     grid-area: 1/2;
+//     display: flex;
+//     flex-direction: row;
+
+//     display: flex;
+//     flex-basis: auto;
+//     flex-direction: column;
+//     flex-shrink: 0;
+//     margin-bottom: 0px;
+//     margin-left: 0px;
+//     margin-right: 0px;
+//     margin-top: 0px;
+//     min-height: 0px;
+//     min-width: 0px;
+//     padding-bottom: 0px;
+//     padding-left: 0px;
+//     padding-right: 0px;
+//     padding-top: 0px;
+
+//     align-items: stretch;
+//     box-sizing: border-box;
+// }
+
+
+
+
+.media__outer__div{
+    grid-area: 4/2/5/4;
+    .media__div{
+        object-fit: cover;
+        width: 400px;
+        height: 200px;
+        .mediaContent{
+
+        }
+    }
+}
+
+// attempt 1 save css 
+//_____________________________________
+// <div class="copy">
+// <div class="mediaPreview__container__outer" *ngIf="(mediaInputPreview$ | async) as files">
+//     <!-- <div *ngFor="let file of files" > -->
+//         <div class="out">
+
+
+//         <div *ngFor="let file of files" class="mediaPreview__container" [style.background-image]="'url('+file+')'">
+//         <!-- <div *ngFor="let file of files" class="mediaPreview__container" > -->
+//             <img mat-card-image class="mediaContent" src="{{file}}" alt="upload">
+//         </div>
+//     </div>
+//     <!-- </div> -->
+// </div>
+// </div>
+//_______________________________________
+// .mediaPreview__container__outer{
+//     // grid-area: 4/2/5/4;
+
+//     background-size: cover;
+//     background-repeat: no-repeat;
+//     background-position: center center;
+//     z-index: 0;
+//     background-color: rgba(0,0,0,0);
+//     height: 100%;
+//     width: 100%;
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+
+//     padding-bottom: 60%;
+// }
+// .mediaPreview__container{
+//     background-size: cover;
+//     background-repeat: no-repeat;
+//     background-position: center center;
+//     z-index: -1;
+//     background-color: rgba(0,0,0,0);
+//     height: 100%;
+//     width: 100%;
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+
+//     display: contents;
+//     flex-basis: auto;
+//     flex-direction: column;
+//     flex-shrink: 0;
+//     margin-bottom: 0px;
+//     margin-left: 0px;
+//     margin-right: 0px;
+//     margin-top: 0px;
+//     min-height: 0px;
+//     min-width: 0px;
+//     padding-bottom: 0px;
+//     padding-left: 0px;
+//     padding-right: 0px;
+//     padding-top: 0px;
+
+//     align-items: stretch;
+//     box-sizing: border-box;
+    
+
+
+// }
+// .mediaContent{
+//     // aspect-ratio: 2/1;
+//     display: block;
+//     overflow: hidden;
+//     z-index: -1;
+//     flex-basis: auto;
+//     height: 100%;
+//     width: 100%;
+// }
+// .copy{
+//     z-index: 1;
+//     margin-top: 5px;
+//     margin-bottom: 5px;
+//     position: relative;
+//     align-items: stretch;
+//     box-sizing: border-box;
+
+// }
+
+// .out{
+//     flex-basis: auto;
+//     height: 100%;
+//     z-index: 0;
+//     width: 100%;
+//     display: block;
+
+//     align-items: stretch;
+//     box-sizing: border-box;
+
+//     flex-direction: column;
+//     flex-shrink: 0;
+//     margin-bottom: 0px;
+//     margin-left: 0px;
+//     margin-right: 0px;
+//     margin-top: 0px;
+//     min-height: 0px;
+//     min-width: 0px;
+//     padding-bottom: 0px;
+//     padding-left: 0px;
+//     padding-right: 0px;
+//     padding-top: 0px;
+
+//     position: relative;
+// }
+
+

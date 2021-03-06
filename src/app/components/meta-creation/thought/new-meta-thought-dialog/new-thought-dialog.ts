@@ -25,8 +25,6 @@ export class NewThoughtDialogComponent implements OnInit {
     username$:Observable<string>;
     mediaInputPreview$: Observable<any>;
 
-    
-
     newThoughtFormGroup = new FormGroup({
         textInputControl: new FormControl(''),
         mediaInputControl: new FormControl()
@@ -35,34 +33,38 @@ export class NewThoughtDialogComponent implements OnInit {
     ngOnInit(){
         this.profilePicture$ = this.store.select(profilePictureSelector)
         this.username$ = this.store.select(usernameSelector)
-        // this.mediaInputPreview$ = this.newThoughtFormGroup.get('mediaInputControl').valueChanges
-        // let f = new FileList()
-        console.log('viewChild access', )
         this.mediaInputPreview$ = this.newThoughtFormGroup.get('mediaInputControl').valueChanges.pipe(
             map((FileInput: FileInput) => {
                 let mediaArray = []
-                // let file: File
-                // pathT
-                console.log(FileInput.files)
                 for(let i=0; i<FileInput.files.length; i++) {
                     (function(file){
                         let reader = new FileReader();    
                         reader.onloadend = (_event) => {
-                                mediaArray.push(reader.result)
-                            }
+                            mediaArray.push(reader.result)
+                        }
                         reader.readAsDataURL(file)
                     })(FileInput.files[i])
-
                 }
-                console.log(mediaArray)
                 return mediaArray;
             })
         )
     }
     createThought(username: string){
-        console.log(username)
-        let payload = this.newThoughtFormGroup.get('textInputControl').value
-        let newThought: Thought<MetaThought> = new Thought(payload, username)
-        this.store.dispatch(CreateNewMetaThought({thought: newThought}))
+        console.log('[new-thought-dialog]createThought()')
+        this.mediaInputPreview$.pipe(
+            map(uploadedMedia => {
+                let newThought: Thought<MetaThought> 
+                if(uploadedMedia.length > 0){
+                    let payload = this.newThoughtFormGroup.get('textInputControl').value
+                    newThought = new Thought(payload, username, uploadedMedia)
+                }else {
+                    let payload = this.newThoughtFormGroup.get('textInputControl').value
+                    newThought = new Thought(payload, username)
+                }
+                this.store.dispatch(CreateNewMetaThought({thought: newThought}))
+            })
+        ).subscribe()
+        
+        
     }
 }
