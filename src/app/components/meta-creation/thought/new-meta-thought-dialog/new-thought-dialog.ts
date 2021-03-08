@@ -27,7 +27,9 @@ export class NewThoughtDialogComponent implements OnInit {
 
     newThoughtFormGroup = new FormGroup({
         textInputControl: new FormControl(''),
-        mediaInputControl: new FormControl()
+        mediaInputControl: new FormControl(),
+        emojiInputControl: new FormControl(''),
+        gifInputControl: new FormControl(''),
     })
     constructor(private store: Store){}
     ngOnInit(){

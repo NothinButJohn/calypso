@@ -29,16 +29,16 @@
             <div mat-card-footer class="dialog__footer">
                     
                         <div mat-card-actions class="newThoughtFormFields">
-                            <mat-form-field [formGroup]="newThoughtFormGroup" [style.width]="'40px'">
+                            <!-- <mat-form-field [formGroup]="newThoughtFormGroup" [style.width]="'40px'">
                                 <button mat-icon-button color="primary"><mat-icon style="place-content: center;">gif</mat-icon></button>
-                            </mat-form-field>
-                            <mat-form-field  [style.width]="'40px'">
+                            </mat-form-field> -->
+                            <mat-form-field [formGroup]="newThoughtFormGroup" [style.width]="'40px'">
                                     <button mat-icon-button color="primary"><mat-icon style="place-content: center;">image</mat-icon></button>
                                     <ngx-mat-file-input class="mediaInputElement" multiple='true' formControlName="mediaInputControl" ></ngx-mat-file-input>
                             </mat-form-field>
-                            <mat-form-field [formGroup]="newThoughtFormGroup" [style.width]="'40px'">
+                            <!-- <mat-form-field [formGroup]="newThoughtFormGroup" [style.width]="'40px'">
                                 <button mat-icon-button color="primary"><mat-icon style="place-content: center;">emoji_emotions</mat-icon></button>
-                            </mat-form-field>
+                            </mat-form-field> -->
                             
                         </div>
                     

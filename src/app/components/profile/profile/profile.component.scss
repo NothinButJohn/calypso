@@ -1,55 +1,39 @@
 .headerPicture__container{
     position: relative;
-    flex-direction: column;
-    top: auto;
     display: grid;
     grid-area: 1/2/7/7;
-    width: auto;
-    max-height: 55%;
+
+    .headerPicture{
+        border-radius: 9999px;
+        width: 600px;
+        height: 200px;
+        object-fit: cover;
+        border: 1px solid black;
+        box-sizing: border-box;
+    }
 }
 
-.headerPicture{
-    border-radius: 9999px;
+.profile__picture__container{
+    // grid-area: 2/1/4/2;
     width: 100%;
-    border: solid black;
-    border-width: 5px;
-    box-sizing: border-box;
+    padding:5px;
+    .profile__picture__image{
+        width: 75px;
+        height: 75px;
+        object-fit: cover;
+
+        border-radius: 9999px;
+        margin: 5px;
+        border: 1px solid black;
+        box-sizing: border-box;
+    }
 }
 
-// .profile__container{
-//     display: grid;
-// }
+// ______________>>
 
-// .profile__header{
-//     position: relative;
-//     flex-direction: column;
-//     top: auto;
-//     display: grid;
 
-// }
-
-// .profile__header__img{
-//     height: 200px;
-//     width: auto;
-// }
-
-// .profile__bio{
-//     display: grid;
-//     position: relative;
-// }
-
-// .profile__pic{
-//     display: grid;
-//     position: absolute;
-//     flex-direction: column;
-//     margin-left: 5%;
-//     margin-top: 5%;
-// }
 
 .snapCracklePop{
-    // max-height: 300px;
-    // width: 70%;
-    // margin: 5%;
     display: grid;
     grid-template-columns: 10px repeat(5, 1fr) 10px;
     grid-template-rows: auto;

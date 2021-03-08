@@ -3,12 +3,14 @@
 <div >
   <mat-card class="profile__card">
     <div class="snapCracklePop">
+
     <div class="headerPicture__container" *ngIf="(headerPicture$ | async) as headerPicture">
       <img class="headerPicture" src="{{headerPicture}}">
     </div>
+    
     <div class="profilePicture__container" *ngIf="(profilePicture$ | async) as profilePicture">
-      <div class="profilePicture__imageContainer">
-        <img class="profilePicture" src="{{profilePicture}}">
+      <div class="profile__picture__container">
+        <img class="profile__picture__image" src="{{profilePicture}}">
       </div>
 
       <div class="updateProfilePicture" role="button">
