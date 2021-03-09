@@ -41,8 +41,13 @@
                             </mat-form-field> -->
                             
                         </div>
-                    
-                <button class="createThoughtButton" (click)="createThought(username)" mat-raised-button color="primary" mat-dialog-close><mat-icon>mediation</mat-icon>'meta'</button>
+                <div *ngIf="(mediaInputPreview$ | async) as files; else textButton" >
+                    <button class="createThoughtButton" (click)="createThought(username, files)" mat-raised-button color="primary" ><mat-icon>mediation</mat-icon>'meta'</button>
+                </div>
+                <ng-template #textButton>
+                    <button class="createThoughtButton" (click)="createThought(username, [])" mat-raised-button color="primary" ><mat-icon>mediation</mat-icon>'meta'</button>
+                </ng-template>
+                <!-- <button class="createThoughtButton" (click)="createThought(username)" mat-raised-button color="primary" ><mat-icon>mediation</mat-icon>'meta'</button> -->
             </div>
         </div>
 

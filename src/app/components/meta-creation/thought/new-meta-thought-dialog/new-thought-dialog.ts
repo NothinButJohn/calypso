@@ -51,22 +51,18 @@ export class NewThoughtDialogComponent implements OnInit {
             })
         )
     }
-    createThought(username: string){
-        console.log('[new-thought-dialog]createThought()')
-        this.mediaInputPreview$.pipe(
-            map(uploadedMedia => {
+    createThought(username: string, mediaArray?: any){
+
                 let newThought: Thought<MetaThought> 
-                if(uploadedMedia.length > 0){
+                if(mediaArray.length > 0){
                     let payload = this.newThoughtFormGroup.get('textInputControl').value
-                    newThought = new Thought(payload, username, uploadedMedia)
+                    newThought = new Thought(payload, username, mediaArray)
                 }else {
                     let payload = this.newThoughtFormGroup.get('textInputControl').value
-                    newThought = new Thought(payload, username)
+                    newThought = new Thought(payload, username, mediaArray)
                 }
+                console.log('[new-thought-dialog]createThought()', newThought)
                 this.store.dispatch(CreateNewMetaThought({thought: newThought}))
-            })
-        ).subscribe()
-        
         
     }
 }

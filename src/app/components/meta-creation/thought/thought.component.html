@@ -14,9 +14,15 @@
                 <div class="thought__text__container" *ngIf="thought.text">
                     {{thought.text}}
                 </div>
-                <div class="thought__image__container" *ngIf="thought.image">
-                    <img class="thought__image" src="{{thought.image}}" >
+                <div class="thought__image__container" *ngIf="thought.media">
+                    <div *ngFor="let image of thought.media">
+                        <img class="thought__image" src="{{image}}" >
+                    </div>
+                    
                 </div>
+                <!-- <div class="thought__image__container" *ngIf="thought.image">
+                    <img class="thought__image" src="{{thought.image}}" >
+                </div> -->
             </mat-card-content>
         </mat-card>
     <!-- </div> -->
