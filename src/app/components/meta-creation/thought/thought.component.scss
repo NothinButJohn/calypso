@@ -1,7 +1,7 @@
 .mat__card__content{
     display: grid;
     grid-template-columns: 70px repeat(2, 1fr);
-    grid-template-rows: 25px  minmax(10px, 100px) minmax(10px, 100px);
+    grid-template-rows: 25px  auto auto;
 }
 .mat__card{
     // padding:5%;
@@ -47,15 +47,23 @@
 .thought__text__container{
     grid-area: 2/2/3/4;
     grid-auto-flow: row;
+
 }
 
-.thought__image__container{
-    align-content: flex-start;
+.thought__image__container__outer{
     grid-area: 3/2/4/4;
+    margin: 5px;
+    .thought__image__container{
+        align-content: flex-start;
+        width: 200px;
+        height: 100px;
+        .thought__image{
+            object-fit: cover;
+            width: inherit;
+            height: inherit;
+        }
+    }
+    
 }
 
-.thought__image{
-    // grid-area: 3/2/4/4;
-    object-fit: cover;
-    max-width: 40%;
-}
+

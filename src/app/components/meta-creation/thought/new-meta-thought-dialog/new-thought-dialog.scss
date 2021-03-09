@@ -4,7 +4,7 @@
 .dialog__container{
     display: grid;
     grid-template-columns: 100px repeat(2, 1fr);
-    grid-template-rows: 50px 50px 20px minmax(100px, 200px) 20px 50px;
+    grid-template-rows: 50px 50px 20px auto 20px 50px;
 }
 
 .dialog__header{
@@ -68,42 +68,23 @@
     }
 }
 
-
-
-// .thought__options__container{
-//     grid-area: 1/2;
-//     display: flex;
-//     flex-direction: row;
-
-//     display: flex;
-//     flex-basis: auto;
-//     flex-direction: column;
-//     flex-shrink: 0;
-//     margin-bottom: 0px;
-//     margin-left: 0px;
-//     margin-right: 0px;
-//     margin-top: 0px;
-//     min-height: 0px;
-//     min-width: 0px;
-//     padding-bottom: 0px;
-//     padding-left: 0px;
-//     padding-right: 0px;
-//     padding-top: 0px;
-
-//     align-items: stretch;
-//     box-sizing: border-box;
-// }
-
-
-
-
 .media__outer__div{
     grid-area: 4/2/5/4;
+    justify-self: center;
+    margin: 5px;
+    // display: flex;
     .media__div{
-        object-fit: cover;
+        // object-fit: cover;
+        // display: flex;
+        // align-content: flex-start;
         width: 400px;
         height: 200px;
+        margin: 5px;
         .mediaContent{
+            object-fit: cover;
+            width: inherit;
+            height: inherit;
+            border-radius: 16px;
 
         }
     }

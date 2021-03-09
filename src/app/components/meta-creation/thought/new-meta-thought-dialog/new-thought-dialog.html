@@ -20,9 +20,24 @@
 
 
             <div class="media__outer__div" *ngIf="(mediaInputPreview$ | async) as files">
-                <div class="media__div" *ngFor="let file of files">
-                    <img mat-card-image class="mediaContent" src="{{file}}" alt="upload">
+                <div *ngIf="files.length > 1; else media" style="display: flex;">
+                    <div style="display: flex; margin: 5px; flex-direction: column;">
+                        <div class="media__div" *ngFor="let file of files.slice(0,2)" style="width: 200px; height: 100px;">
+                            <img mat-card-image class="mediaContent" src="{{file}}" alt="upload">
+                        </div>
+                    </div>
+                    <div style="display: flex; margin: 5px; flex-direction: column;">
+                        <div class="media__div" *ngFor="let file of files.slice(2)" style="width: 200px; height: 100px;">
+                            <img mat-card-image class="mediaContent" src="{{file}}" alt="upload">
+                        </div>
+                    </div>
                 </div>
+                <ng-template #media>
+                    <div class="media__div" *ngFor="let file of files">
+                        <img mat-card-image class="mediaContent" src="{{file}}" alt="upload">
+                    </div>
+                </ng-template>
+
             </div>
 
             

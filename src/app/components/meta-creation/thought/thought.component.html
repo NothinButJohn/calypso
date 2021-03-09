@@ -14,8 +14,8 @@
                 <div class="thought__text__container" *ngIf="thought.text">
                     {{thought.text}}
                 </div>
-                <div class="thought__image__container" *ngIf="thought.media">
-                    <div *ngFor="let image of thought.media">
+                <div class="thought__image__container__outer" *ngIf="thought.media">
+                    <div class="thought__image__container" *ngFor="let image of thought.media">
                         <img class="thought__image" src="{{image}}" >
                     </div>
                     

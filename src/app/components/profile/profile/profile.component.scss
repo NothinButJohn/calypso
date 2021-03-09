@@ -1,7 +1,20 @@
+
+
+
+.profile__card {
+    max-width: fit-content;
+    margin: 5%;
+    .profile__info__container{
+        display: grid;
+        grid-template-columns: 100px 100px 100px 100px 100px 100px ;
+        grid-template-rows: 100px 50px 50px 50px auto auto;
+    }
+}
+
 .headerPicture__container{
     position: relative;
     display: grid;
-    grid-area: 1/2/7/7;
+    grid-area: 1/1/4/7;
 
     .headerPicture{
         border-radius: 9999px;
@@ -14,9 +27,10 @@
 }
 
 .profile__picture__container{
-    // grid-area: 2/1/4/2;
+    grid-area: 3/1/4/2;
     width: 100%;
     padding:5px;
+    z-index: 1;
     .profile__picture__image{
         width: 75px;
         height: 75px;
@@ -29,82 +43,16 @@
     }
 }
 
-// ______________>>
-
-
-
-.snapCracklePop{
-    display: grid;
-    grid-template-columns: 10px repeat(5, 1fr) 10px;
-    grid-template-rows: auto;
-}
-.profile__card {
-    max-width: 600px;
-    margin: 5%;
-}
-
-
-
-.profile__edit__button{
-    right: auto;
-}
-
-.profilePicture__container{
-    display: grid;
-    // grid-area: 1/ 1;
-    grid-area: 6/2/8/2;
-    align-self: center;
-    // grid-template-columns: repeat(2, 1fr);
-    // grid-template-rows: auto;
-    z-index: 1;
-// other look/option
-    // display: grid;
-    // grid-area: 2/2/6/8;
-    // align-self: flex-end;
-    // grid-template-columns: repeat(2, 1fr);
-    // grid-template-rows: auto;
-    // z-index: 1;
-
-    .profilePictureInput{
-        display: none;
-         
-    }
-
-    .updateProfilePicture{
-        grid-area: 9/5/10/2;
-        cursor: pointer;
-        display: grid;
-
-    }
-
-    .profilePicture__imageContainer{
-        grid-area: 2/2/10/7;
-        width: 100%;
-        height: 100%;
-    }
-}
-.profilePicture{
-    width: 100%;
-    height: auto;
-    border-radius: 9999px;
-    border: 1px;
-    margin-left: 3%;
-    min-width: 58px;
-    border: solid black;
-    border-width: 5px;
-    box-sizing: border-box;
-}
-
 .profile__username{
-    grid-area: 7/3/10/3;
+    grid-area: 4/2/5/3;
     align-self: center;
     margin-top: 4px;
 }
 .card__content{
-    grid-area: 10/3/10/7;
+    grid-area: 5/3/6/7;
 }
 
 
 .editProfile__button{
-    grid-area: 10/10/10/10;
+    grid-area: 6/6/7/7;
 }
