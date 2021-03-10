@@ -51,11 +51,11 @@ export class ProfileEffects {
         return this.actions$.pipe(
             ofType(SettleAuthorProfileReferences),
             switchMap((action) => {
-                        return this.mts.loadAuthorProfiles(action.metaThoughtDocs).then(
-                            res => {
+                        return this.mts.loadAuthorProfiles(action.metaThoughtDocs).pipe(
+                            map((res) => {
                                 console.log('res', res)
                                 return LoadCurrentUserMetaThoughtsSuccess({metaThoughtDocs: res})
-                            }
+                            })
                         )
                     
                 
@@ -69,15 +69,30 @@ export class ProfileEffects {
             withLatestFrom(this.store.select(currentUserUIDSelector)),
             withLatestFrom(this.store.select(usernameSelector)),
             switchMap( ([[action, uid], username]) => {
-                return this.mts.createNewThought(action.thought, uid, username).then(
-                    (response) => {
-                        if(response == false){
-                            throw new Error('metathought creation failed in service')
-                        }else {
-                            return LoadCurrentUserMetaThoughts()
-                        }
+
+                return this.mts.uploadMedia(action.fileInput, uid).then((mediaURLs: string[]) => {
+                    let mediaArray = mediaURLs
+                    let newThought: Thought<MetaThought> 
+                    if(mediaArray.length > 0){
+                        let payload = action.thought
+                        newThought = new Thought(payload, username, mediaArray)
+                    }else {
+                        let payload = action.thought
+                        newThought = new Thought(payload, username, mediaArray)
                     }
-                )
+                    console.log('[new-thought-dialog]createThought()', newThought)
+                    return this.mts.createNewThought(newThought, uid, username).then(
+                        (response) => {
+                            if(response == false){
+                                throw new Error('metathought creation failed in service')
+                            }else {
+                                return LoadCurrentUserMetaThoughts()
+                            }
+                        }
+                    )
+
+                })
+
             })
         )
     })

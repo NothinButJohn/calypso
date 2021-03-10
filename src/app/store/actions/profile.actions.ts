@@ -25,7 +25,7 @@ export const LoadCurrentUserMetaThoughtsSuccess = createAction(
 )
 export const CreateNewMetaThought = createAction(
     '[Meta] create new meta-thought',
-    props<{ thought }>()
+    props<{ thought, fileInput }>()
 )
 export const SettleAuthorProfileReferences = createAction(
     '[Profile] load AuthorProfiles from reference paths',

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentSnapshot, QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
-import { asyncScheduler, Observable, of } from 'rxjs';
+import { asyncScheduler, forkJoin, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MetaThought, Thought } from '../store/models/meta-thoughts.model';
 import { Profile } from '../store/models/profile.model';
 import { currentUserUIDSelector } from '../store/selectors/auth.selectors';
 import { FireAuthService } from './fire-auth.service';
+import * as firebase from 'firebase'
+import { FileInput } from 'ngx-material-file-input';
 
 @Injectable({
   providedIn: 'root'
@@ -54,49 +56,95 @@ export class MetaThoughtService {
     )
   }
 
-  loadAuthorProfiles(formatedMetaThoughts:Thought<MetaThought>[]){
-    
-    let p = new Promise((resolve, reject) => {
-    let newThoughts = []
-    let bool = false;
-    let count = 0;
-    let t = []
-    t = [...formatedMetaThoughts]
-    
-      formatedMetaThoughts.forEach((element, i) => {
-        this.afs.doc(element.authorProfile).get().pipe(
-          map(ref => {
-            // console.log(ref.get('profile'))
-            newThoughts = [...newThoughts,ref.get('profile')]
-            let repl = {
-              createdAt:formatedMetaThoughts[i].createdAt,
-              creator:formatedMetaThoughts[i].creator,
-              privacy:formatedMetaThoughts[i].privacy,
-              text:formatedMetaThoughts[i].text,
-              authorProfile:ref.get('profile'),
-              link:formatedMetaThoughts[i].link,
-              media:formatedMetaThoughts[i].media,
-            }
-            
-            // t = [...formatedMetaThoughts]
-            t.splice(i, 1, repl)
-            console.log('index',i,'this is repl',repl, 'this is t', t)
-            // formatedMetaThoughts[i].authorProfile = ref.get('profile')
-          })
-        ).subscribe({
-          next(x){console.log('within promise, got value x:', x)},
-          error(err){reject(err)},
-          complete(){ count++;}
-        })
+  loadAuthorProfiles(formatedMetaThoughts:Thought<MetaThought>[]) {
+    let formatedMetaThoughtsWithProfileReplaced = []
+    formatedMetaThoughtsWithProfileReplaced = [...formatedMetaThoughts] // initialize to original thought list
+
+    let observable = forkJoin(
+      formatedMetaThoughtsWithProfileReplaced.map((thought) => {
+        this.afs.doc(thought.authorProfile).get()
+        
+        // .pipe(
+        //   map((ref) => 
+        //   {
+        //     let profileRef = ref.data();
+        //     let formattedThought = {
+        //         createdAt:thought.createdAt,
+        //         creator:thought.creator,
+        //         privacy:thought.privacy,
+        //         text:thought.text,
+        //         authorProfile: profileRef,
+        //         link:thought.link,
+        //         media:thought.media,
+        //     }
+        //     thought = formattedThought;
+        //   })
+        // )
       })
-      const task = () => {resolve(t)}
-      asyncScheduler.schedule(task, 1000)
-  }) 
-    return p
+    ).pipe(map(ele=> {console.log('wtf', ele)}))
+    return observable
+
+  }
+  //_____version as promises, doesnt work________
+  // loadAuthorProfiles(formatedMetaThoughts:Thought<MetaThought>[]) {
+  //   let formatedMetaThoughtsWithProfileReplaced = []
+  //   formatedMetaThoughtsWithProfileReplaced = [...formatedMetaThoughts] // initialize to original thought list
+  //   let promises = [];
+
+  //   for(let i=0; i<formatedMetaThoughts.length; i++){
+  //     let element = formatedMetaThoughts[i];
+  //     let promise = this.afs.doc(element.authorProfile).get().toPromise().then(
+  //       (ref) => 
+  //       {
+  //         let profileRef = ref.data();
+  //         let formattedThought = {
+  //             createdAt:formatedMetaThoughts[i].createdAt,
+  //             creator:formatedMetaThoughts[i].creator,
+  //             privacy:formatedMetaThoughts[i].privacy,
+  //             text:formatedMetaThoughts[i].text,
+  //             authorProfile: profileRef,
+  //             link:formatedMetaThoughts[i].link,
+  //             media:formatedMetaThoughts[i].media,
+  //         }
+  //           formatedMetaThoughtsWithProfileReplaced.splice(i, 1, formattedThought); // remove and replace thought with updated authorProfile field
+  //           console.log('Replaced index: ', i, 'with ', formattedThought, 'current list: ', formatedMetaThoughtsWithProfileReplaced); 
+            
+  //       }).catch((error) =>{
+  //         console.log('[meta-thought.service]::laodAuthorProfiles() - There was an error retrieving the authorProfile. Error: ', error)
+  //       })
+  //       promises.push(promise)
+  //     }
+
+  //     return Promise.all(promises).then(() => {
+  //       return formatedMetaThoughtsWithProfileReplaced
+  //     })
+  // }
+
+  async uploadMedia(fileInput: FileInput, uid: string){
+    // let uploadPromise = new Promise((resolve, reject)=> {
+      let fbStorage = firebase.default.storage().ref();
+      let mediaDownloadURLs = []
+      let uploadCount = 0;
+      for(const file of fileInput.files){
+        let mediaName = Date.now().toString();
+  
+        await fbStorage.child(`${uid}/media/${mediaName}`).put(file).then(snapshot => {
+          //nothing more to do currently...//
+          console.log('uploadMedia(), upload complete, snapshot reference: ',snapshot.ref)
+          fbStorage.child(`${uid}/media/${mediaName}`).getDownloadURL().then(url => {
+            mediaDownloadURLs.push(url)
+            uploadCount++;
+          })
+        })
+      }
+      console.log('uploadMedia()::mediaDownloadURLs: ', mediaDownloadURLs)
+    
+    return mediaDownloadURLs
   }
 
   createNewThought(thought: Thought<MetaThought>, uid: string, username: string) {
     console.log('[meta-thought service]::createNewThought() args: ',thought, uid, username);
+
     // Prepare Data Object to send to firestore
     let currentUserProfileDocRef = this.afs.doc(`users/${uid}`).ref;
     let newThought = {

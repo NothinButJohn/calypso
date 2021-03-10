@@ -10,6 +10,8 @@ import { MetaThought, Thought } from "src/app/store/models/meta-thoughts.model";
 import { FileInput } from "ngx-material-file-input";
 import { map } from "rxjs/operators";
 import { fileURLToPath } from "url";
+import { X } from "@angular/cdk/keycodes";
+import { MetaThoughtService } from "src/app/services/meta-thought.service";
 // import { Console } from "console";
 
 
@@ -31,7 +33,7 @@ export class NewThoughtDialogComponent implements OnInit {
         emojiInputControl: new FormControl(''),
         gifInputControl: new FormControl(''),
     })
-    constructor(private store: Store){}
+    constructor(private store: Store, private mts: MetaThoughtService){}
     ngOnInit(){
         this.profilePicture$ = this.store.select(profilePictureSelector)
         this.username$ = this.store.select(usernameSelector)
@@ -51,18 +53,10 @@ export class NewThoughtDialogComponent implements OnInit {
             })
         )
     }
-    createThought(username: string, mediaArray?: any){
-
-                let newThought: Thought<MetaThought> 
-                if(mediaArray.length > 0){
-                    let payload = this.newThoughtFormGroup.get('textInputControl').value
-                    newThought = new Thought(payload, username, mediaArray)
-                }else {
-                    let payload = this.newThoughtFormGroup.get('textInputControl').value
-                    newThought = new Thought(payload, username, mediaArray)
-                }
-                console.log('[new-thought-dialog]createThought()', newThought)
-                this.store.dispatch(CreateNewMetaThought({thought: newThought}))
+    createThought(username: string){
+        let temp:FileInput = this.newThoughtFormGroup.get('mediaInputControl').value
+        let payload = this.newThoughtFormGroup.get('textInputControl').value
+        this.store.dispatch(CreateNewMetaThought({thought: payload, fileInput: temp}))
         
     }
 }
