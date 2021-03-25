@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { metaThoughtsSelector } from 'src/app/store/selectors/profile.selectors';
 
 @Component({
@@ -18,7 +19,11 @@ export class ThoughtComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.metaThoughts$ = this.store.select(metaThoughtsSelector)
+    this.metaThoughts$ = this.store.select(metaThoughtsSelector).pipe(
+      tap((res) => {
+        console.log('[thought.component]::tap on observable; metaThoughtsSelector response: ', res)
+      })
+    )
     // this.haha.get
     
   }

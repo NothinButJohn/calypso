@@ -1,10 +1,9 @@
 
 <div *ngIf="(metaThoughts$ | async) as thoughts">
-    <!-- <div *ngFor="let thought of thoughts"> -->
         <mat-card class="mat__card" *ngFor="let thought of thoughts">
             <mat-card-content class="mat__card__content">
-                <div class="profile__picture__container">
-                    <img class="profile__picture__image" src="{{thought.authorProfile.profilePicture}}">
+                <div class="profile__picture__container" *ngIf="(thought.authorProfile.profilePicture) as profilePicture">
+                    <img class="profile__picture__image" src="{{profilePicture}}">
                 </div>
                 <div class="author" *ngIf="thought.authorProfile">
                    <h2>{{thought.authorProfile.name}}</h2> <p>@{{thought.authorProfile.username}}</p><p>&#8226;</p>
@@ -20,10 +19,6 @@
                     </div>
                     
                 </div>
-                <!-- <div class="thought__image__container" *ngIf="thought.image">
-                    <img class="thought__image" src="{{thought.image}}" >
-                </div> -->
             </mat-card-content>
         </mat-card>
-    <!-- </div> -->
 </div>

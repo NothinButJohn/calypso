@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentSnapshot, QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
-import { asyncScheduler, forkJoin, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { asyncScheduler, forkJoin, from, Observable, of, zip } from 'rxjs';
+import { combineAll, concatMap, exhaustMap, map, mergeAll, mergeMap, reduce, switchAll, switchMap, tap } from 'rxjs/operators';
 import { MetaThought, Thought } from '../store/models/meta-thoughts.model';
 import { Profile } from '../store/models/profile.model';
 import { currentUserUIDSelector } from '../store/selectors/auth.selectors';
@@ -57,34 +57,66 @@ export class MetaThoughtService {
   }
 
   loadAuthorProfiles(formatedMetaThoughts:Thought<MetaThought>[]) {
-    let formatedMetaThoughtsWithProfileReplaced = []
-    formatedMetaThoughtsWithProfileReplaced = [...formatedMetaThoughts] // initialize to original thought list
+    let metaThoughtsWithAuthorProfileReplacements:Thought<MetaThought>[] = []
+    let formatedMetaThoughtsWithProfileReplaced:Thought<MetaThought>[] = [...formatedMetaThoughts] // initialize to original thought list
+    let metaThoughts$ = of(formatedMetaThoughtsWithProfileReplaced)
+    let observable = 
+      metaThoughts$.pipe(
+        concatMap((metaThoughts:Thought<MetaThought>[]) => {
+          let t=  []
+          for(let i=0; i<metaThoughts.length; i++){
+            let metaThought = metaThoughts[i]
+            console.log('arg1, metaThoughts[i]: ', metaThought, '\n arg2, metaThoughts',metaThoughts)
+            let userDocSnapshot = this.afs.doc(metaThought.authorProfile).get()
+            let s = userDocSnapshot.pipe(
+              map((docSnapshot) => {
+                let userProfile = docSnapshot.get('profile')
+                let formattedThought:Thought<MetaThought> = {
+                  createdAt: metaThought.createdAt,
+                  creator: metaThought.creator,
+                  privacy: metaThought.privacy,
+                  text: metaThought.text,
+                  authorProfile: userProfile,
+                  link: metaThought.link,
+                  media: metaThought.media,
+              }
+              return formattedThought
+                // return {metaThought, userProfile}
+                // return metaThoughtsWithAuthorProfileReplacements
+                
+              })
+            )
+            t.push(s)
+          }
+          return forkJoin(t)
+        }),
 
-    let observable = forkJoin(
-      formatedMetaThoughtsWithProfileReplaced.map((thought) => {
-        this.afs.doc(thought.authorProfile).get()
-        
-        // .pipe(
-        //   map((ref) => 
-        //   {
-        //     let profileRef = ref.data();
-        //     let formattedThought = {
-        //         createdAt:thought.createdAt,
-        //         creator:thought.creator,
-        //         privacy:thought.privacy,
-        //         text:thought.text,
-        //         authorProfile: profileRef,
-        //         link:thought.link,
-        //         media:thought.media,
-        //     }
-        //     thought = formattedThought;
-        //   })
-        // )
-      })
-    ).pipe(map(ele=> {console.log('wtf', ele)}))
+      ).pipe(
+        // combineAll(),
+        tap((result) => {
+
+          console.log('[meta-thought.service]::loadAuthorProfiles() | returning', result)})
+      )
     return observable
 
   }
+  loadAuthorProfiles2(formatedMetaThoughts:Thought<MetaThought>[]) {
+    let metaThoughtsReformat:Thought<MetaThought>[] = []
+    let formatedMetaThoughtsWithProfileReplaced:Thought<MetaThought>[] = [...formatedMetaThoughts] // initialize to original thought list
+
+    let metaThought$ = from(formatedMetaThoughtsWithProfileReplaced)
+    let observable = 
+      metaThought$.pipe(
+        map((metaThought:Thought<MetaThought>) => {
+          console.log('metaThought', metaThought)
+        })
+      )
+
+      return observable
+  }
+
+
+
   //_____version as promises, doesnt work________
   // loadAuthorProfiles(formatedMetaThoughts:Thought<MetaThought>[]) {
   //   let formatedMetaThoughtsWithProfileReplaced = []

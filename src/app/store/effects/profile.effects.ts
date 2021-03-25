@@ -53,7 +53,7 @@ export class ProfileEffects {
             switchMap((action) => {
                         return this.mts.loadAuthorProfiles(action.metaThoughtDocs).pipe(
                             map((res) => {
-                                console.log('res', res)
+                                console.log('[profile.effects]::loadAuthorProfiles$ Response from meta-thought service: ', res)
                                 return LoadCurrentUserMetaThoughtsSuccess({metaThoughtDocs: res})
                             })
                         )
