@@ -27,6 +27,10 @@ export const CreateNewMetaThought = createAction(
     '[Meta] create new meta-thought',
     props<{ thought, fileInput }>()
 )
+export const CreateNewMetaThought2 = createAction(
+    '[Meta] create new meta-thought23',
+    props<{ thought, fileInput }>()
+)
 export const SettleAuthorProfileReferences = createAction(
     '[Profile] load AuthorProfiles from reference paths',
     props<{ metaThoughtDocs }>()

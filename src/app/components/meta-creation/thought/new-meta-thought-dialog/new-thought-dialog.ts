@@ -5,7 +5,7 @@ import { profilePictureSelector, usernameSelector } from "src/app/store/selector
 import { MatFormField } from "@angular/material/form-field";
 import { MatInput } from "@angular/material/input";
 import { FormControl, FormGroup } from "@angular/forms";
-import { CreateNewMetaThought } from "src/app/store/actions/profile.actions";
+import { CreateNewMetaThought, CreateNewMetaThought2 } from "src/app/store/actions/profile.actions";
 import { MetaThought, Thought } from "src/app/store/models/meta-thoughts.model";
 import { FileInput } from "ngx-material-file-input";
 import { map } from "rxjs/operators";
@@ -56,7 +56,7 @@ export class NewThoughtDialogComponent implements OnInit {
     createThought(username: string){
         let temp:FileInput = this.newThoughtFormGroup.get('mediaInputControl').value
         let payload = this.newThoughtFormGroup.get('textInputControl').value
-        this.store.dispatch(CreateNewMetaThought({thought: payload, fileInput: temp}))
+        this.store.dispatch(CreateNewMetaThought2({thought: payload, fileInput: temp}))
         
     }
 }

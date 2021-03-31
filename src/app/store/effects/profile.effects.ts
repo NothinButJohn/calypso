@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { catchError, concatAll, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { MetaThoughtService } from 'src/app/services/meta-thought.service';
 import { ProfileService } from 'src/app/services/profile.service';
-import { CreateNewMetaThought, LoadCurrentUserMetaThoughts, LoadCurrentUserMetaThoughtsSuccess, LoadUserProfile, LoadUserProfileSuccess, SettleAuthorProfileReferences } from '../actions/profile.actions';
+import { CreateNewMetaThought, CreateNewMetaThought2, LoadCurrentUserMetaThoughts, LoadCurrentUserMetaThoughtsSuccess, LoadUserProfile, LoadUserProfileSuccess, SettleAuthorProfileReferences } from '../actions/profile.actions';
 import { MetaThought, Thought } from '../models/meta-thoughts.model';
 import { Profile } from '../models/profile.model';
 import { currentUserUIDSelector } from '../selectors/auth.selectors';
@@ -69,30 +69,59 @@ export class ProfileEffects {
             withLatestFrom(this.store.select(currentUserUIDSelector)),
             withLatestFrom(this.store.select(usernameSelector)),
             switchMap( ([[action, uid], username]) => {
-
-                return this.mts.uploadMedia(action.fileInput, uid).then((mediaURLs: string[]) => {
-                    let mediaArray = mediaURLs
-                    let newThought: Thought<MetaThought> 
-                    if(mediaArray.length > 0){
-                        let payload = action.thought
-                        newThought = new Thought(payload, username, mediaArray)
-                    }else {
-                        let payload = action.thought
-                        newThought = new Thought(payload, username, mediaArray)
-                    }
-                    console.log('[new-thought-dialog]createThought()', newThought)
-                    return this.mts.createNewThought(newThought, uid, username).then(
-                        (response) => {
-                            if(response == false){
-                                throw new Error('metathought creation failed in service')
-                            }else {
-                                return LoadCurrentUserMetaThoughts()
-                            }
-                        }
+                let newThought: Thought<MetaThought>
+                
+                    let r = this.mts.uploadMedia2(action.fileInput, uid).pipe(
+                        switchMap(val => {
+                            val[0].then((r)=> {
+                                console.log(r)
+                            })
+                            console.log(val)
+                            let mediaArray = []
+                            let payload = action.thought
+                            newThought = new Thought(payload, username, mediaArray)
+                            console.log('[new-thought-dialog|profile.effects]createThought()', newThought)
+                            return this.mts.createNewThought(newThought, uid, username).then(
+                                (response) => {
+                                    if(response == false){
+                                        throw new Error('metathought creation failed in service')
+                                    }else {
+                                        return LoadCurrentUserMetaThoughts()
+                                    }
+                                }
+                            )
+                        })
                     )
-
-                })
-
+                    return r
+            })
+        )
+    })
+    createMetaThought$2 = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(CreateNewMetaThought2),
+            withLatestFrom(this.store.select(currentUserUIDSelector)),
+            withLatestFrom(this.store.select(usernameSelector)),
+            switchMap( ([[action, uid], username]) => {
+                let newThought: Thought<MetaThought>
+                
+                    return this.mts.uploadMedia3(action.fileInput, uid).pipe(
+                        switchMap(val => {
+                            let mediaArray = val
+                            let payload = action.thought
+                            newThought = new Thought(payload, username, mediaArray)
+                            console.log('[new-thought-dialog|profile.effects]createThought()', newThought)
+                            return this.mts.createNewThought(newThought, uid, username).then(
+                                (response) => {
+                                    if(response == false){
+                                        throw new Error('metathought creation failed in service')
+                                    }else {
+                                        return LoadCurrentUserMetaThoughts()
+                                    }
+                                }
+                            )
+                        })
+                    )
+                    // return r
             })
         )
     })

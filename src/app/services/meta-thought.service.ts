@@ -2,20 +2,21 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentSnapshot, QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
 import { asyncScheduler, forkJoin, from, Observable, of, zip } from 'rxjs';
-import { combineAll, concatMap, exhaustMap, map, mergeAll, mergeMap, reduce, switchAll, switchMap, tap } from 'rxjs/operators';
+import { combineAll, concatMap, exhaustMap, finalize, map, mergeAll, mergeMap, reduce, switchAll, switchMap, tap } from 'rxjs/operators';
 import { MetaThought, Thought } from '../store/models/meta-thoughts.model';
 import { Profile } from '../store/models/profile.model';
 import { currentUserUIDSelector } from '../store/selectors/auth.selectors';
 import { FireAuthService } from './fire-auth.service';
 import * as firebase from 'firebase'
 import { FileInput } from 'ngx-material-file-input';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MetaThoughtService {
   // currentUserUID$: Observable<string>
-  constructor(private afs: AngularFirestore, private store: Store) {
+  constructor(private afs: AngularFirestore, private store: Store, private afstorage: AngularFireStorage) {
     // this.currentUserUID$ = store.select(currentUserUIDSelector)
   }
 
@@ -66,7 +67,7 @@ export class MetaThoughtService {
           let t=  []
           for(let i=0; i<metaThoughts.length; i++){
             let metaThought = metaThoughts[i]
-            console.log('arg1, metaThoughts[i]: ', metaThought, '\n arg2, metaThoughts',metaThoughts)
+            // console.log('arg1, metaThoughts[i]: ', metaThought, '\n arg2, metaThoughts',metaThoughts)
             let userDocSnapshot = this.afs.doc(metaThought.authorProfile).get()
             let s = userDocSnapshot.pipe(
               map((docSnapshot) => {
@@ -100,63 +101,16 @@ export class MetaThoughtService {
     return observable
 
   }
-  loadAuthorProfiles2(formatedMetaThoughts:Thought<MetaThought>[]) {
-    let metaThoughtsReformat:Thought<MetaThought>[] = []
-    let formatedMetaThoughtsWithProfileReplaced:Thought<MetaThought>[] = [...formatedMetaThoughts] // initialize to original thought list
-
-    let metaThought$ = from(formatedMetaThoughtsWithProfileReplaced)
-    let observable = 
-      metaThought$.pipe(
-        map((metaThought:Thought<MetaThought>) => {
-          console.log('metaThought', metaThought)
-        })
-      )
-
-      return observable
-  }
-
-
-
-  //_____version as promises, doesnt work________
-  // loadAuthorProfiles(formatedMetaThoughts:Thought<MetaThought>[]) {
-  //   let formatedMetaThoughtsWithProfileReplaced = []
-  //   formatedMetaThoughtsWithProfileReplaced = [...formatedMetaThoughts] // initialize to original thought list
-  //   let promises = [];
-
-  //   for(let i=0; i<formatedMetaThoughts.length; i++){
-  //     let element = formatedMetaThoughts[i];
-  //     let promise = this.afs.doc(element.authorProfile).get().toPromise().then(
-  //       (ref) => 
-  //       {
-  //         let profileRef = ref.data();
-  //         let formattedThought = {
-  //             createdAt:formatedMetaThoughts[i].createdAt,
-  //             creator:formatedMetaThoughts[i].creator,
-  //             privacy:formatedMetaThoughts[i].privacy,
-  //             text:formatedMetaThoughts[i].text,
-  //             authorProfile: profileRef,
-  //             link:formatedMetaThoughts[i].link,
-  //             media:formatedMetaThoughts[i].media,
-  //         }
-  //           formatedMetaThoughtsWithProfileReplaced.splice(i, 1, formattedThought); // remove and replace thought with updated authorProfile field
-  //           console.log('Replaced index: ', i, 'with ', formattedThought, 'current list: ', formatedMetaThoughtsWithProfileReplaced); 
-            
-  //       }).catch((error) =>{
-  //         console.log('[meta-thought.service]::laodAuthorProfiles() - There was an error retrieving the authorProfile. Error: ', error)
-  //       })
-  //       promises.push(promise)
-  //     }
-
-  //     return Promise.all(promises).then(() => {
-  //       return formatedMetaThoughtsWithProfileReplaced
-  //     })
-  // }
 
   async uploadMedia(fileInput: FileInput, uid: string){
     // let uploadPromise = new Promise((resolve, reject)=> {
       let fbStorage = firebase.default.storage().ref();
       let mediaDownloadURLs = []
-      let uploadCount = 0;
+
+      const testObs = new Observable(subscriber => {
+        
+      })
+
       for(const file of fileInput.files){
         let mediaName = Date.now().toString();
   
@@ -165,13 +119,67 @@ export class MetaThoughtService {
           console.log('uploadMedia(), upload complete, snapshot reference: ',snapshot.ref)
           fbStorage.child(`${uid}/media/${mediaName}`).getDownloadURL().then(url => {
             mediaDownloadURLs.push(url)
-            uploadCount++;
           })
         })
       }
       console.log('uploadMedia()::mediaDownloadURLs: ', mediaDownloadURLs)
     
     return mediaDownloadURLs
+  }
+  uploadMedia2(fileInput: FileInput, uid: string) {
+      let fbStorage = firebase.default.storage().ref();
+      let files$ = from(fileInput.files)
+
+      let lo = files$.pipe(
+        concatMap(file => {
+          let mediaDownloadURLs = []
+          let mediaName = Date.now().toString();
+          let upload$ = of(fbStorage.child(`${uid}/media/${mediaName}`).put(file).then(snapshot => {
+            //nothing more to do currently...//
+            console.log('uploadMedia(), upload complete, snapshot reference: ',snapshot.ref)
+            fbStorage.child(`${uid}/media/${mediaName}`).getDownloadURL().then(url => {
+              mediaDownloadURLs.push(url)
+            })
+          })
+          )
+          return forkJoin(upload$)
+          // return upload$;
+        })
+      )
+      
+      // console.log('uploadMedia()::mediaDownloadURLs: ', mediaDownloadURLs)
+    
+    return lo
+  }
+  uploadMedia3(fileInput: FileInput, uid: string) {
+    let mediaDownloadURLs: Observable<any>[] = [];
+    let mediaName = Date.now().toString();
+    let path = `${uid}/media/${mediaName}`;
+    let uploads = [];
+    let files$ = of(fileInput.files)
+
+    let obs = files$.pipe(
+      concatMap((files) => {
+        files.map((file) => {
+          let task = this.afstorage.upload(path, file)
+          let downloadURL$ = task.snapshotChanges().pipe(
+            finalize(() => {
+              mediaDownloadURLs.push(this.afstorage.ref(path).getDownloadURL() )
+            })
+          )
+          uploads.push(downloadURL$)
+        })
+        let xyz = forkJoin(mediaDownloadURLs).pipe(
+          tap((x) => {console.log('in here we got x which is ', x)})
+        )
+        return xyz
+      })
+    )
+    return obs
+
+  }
+  uploadMedia4(fileInput: FileInput, uid: string) {
+    let files$ = from(fileInput.files);
   }
 
   createNewThought(thought: Thought<MetaThought>, uid: string, username: string) {

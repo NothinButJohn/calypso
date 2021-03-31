@@ -53,6 +53,8 @@ import { ThoughtComponent } from './components/meta-creation/thought/thought.com
 import { NewThoughtDialogComponent } from './components/meta-creation/thought/new-meta-thought-dialog/new-thought-dialog';
 import { EditProfileDialogComponent } from './components/profile/profile/edit-profile-dialog/edit-profile-dialog.component';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { AngularFireStorageModule, BUCKET } from '@angular/fire/storage';
+import { B } from '@angular/cdk/keycodes';
 
 @NgModule({
   declarations: [
@@ -70,7 +72,8 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
     NewGroupDialogComponent,
     ThoughtComponent,
     NewThoughtDialogComponent,
-    EditProfileDialogComponent
+    EditProfileDialogComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -102,9 +105,12 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
     NgApexchartsModule,
     MatSelectModule,
     MatTabsModule,
-    MaterialFileInputModule
+    MaterialFileInputModule,
+    AngularFireStorageModule
   ],
-  providers: [],
+  providers: [
+    { provide: BUCKET, useValue: 'gs://buddha-sasana.appspot.com'}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
