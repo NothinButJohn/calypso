@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { googleLogin, googleLoginSuccess } from 'src/app/store/actions/auth.actions';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { NewThoughtDialogComponent } from '../../meta-creation/thought/new-meta-thought-dialog/new-thought-dialog';
-import { AsunaTestAccount, unknownMethodTestAccount } from 'src/app/store/models/profile.model';
+import { AsunaTestAccount, unknownMethodTestAccount, ChetTestAccount } from 'src/app/store/models/profile.model';
 import { LoadUserProfile } from 'src/app/store/actions/profile.actions';
 import { MatToolbar } from '@angular/material/toolbar';
 
@@ -29,8 +29,8 @@ export class MaterialNavComponent {
   constructor(private breakpointObserver: BreakpointObserver, 
     private store: Store, private dialog: MatDialog) {
       // auto login a test account
-      this.store.dispatch(googleLoginSuccess({uid: AsunaTestAccount}))
-      this.store.dispatch(LoadUserProfile({uid: AsunaTestAccount}))
+      this.store.dispatch(googleLoginSuccess({uid: unknownMethodTestAccount}))
+      this.store.dispatch(LoadUserProfile({uid: unknownMethodTestAccount}))
 
     }
 
